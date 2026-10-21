@@ -4,18 +4,17 @@
   description: job-description-detective
   playTimeTracker: JobDetective
   requirements:
-    - !type:RoleTimeRequirement # DeltaV - JobSecurityOfficer time requirement
-      role: JobSecurityOfficer
-      time: 21600 # DeltaV - 6 hrs
+  - !type:RoleTimeRequirement
+    role: JobSecurityOfficer
+    time: 5h
   startingGear: DetectiveGear
   icon: "JobIconDetective"
   supervisors: job-supervisors-hos
   canBeAntag: false
   access:
   - Security
-  #- Brig # Delta V: Removed
+  #- Brig # DeltaV - Removed brig access
   - Maintenance
-  #- Service # Delta V: Access adjustments
   - Detective
   - Cryogenics
   - External
@@ -26,12 +25,23 @@
 - type: startingGear
   id: DetectiveGear
   equipment:
-    eyes: ClothingEyesGlassesSecurity
+    #eyes: ClothingEyesGlassesSecurity # DeltaV - loadouts
     id: DetectivePDA
+    gloves: ClothingHandsGlovesForensic # DeltaV - roundstart detective forensic gloves
     ears: ClothingHeadsetSecurity
-    belt: ClothingBeltHolsterFilled
+    belt: ClothingBeltHolster # DeltaV - loadouts
   storage:
     back:
     - Flash
     - ForensicPad
     - ForensicScanner
+
+- type: chameleonOutfit
+  id: DetectiveChameleonOutfit
+  job: Detective
+  hasMindShield: true
+  equipment:
+    head: ClothingHeadHatFedoraBrown
+    mask: ClothingMaskGasSecurity
+    neck: ClothingNeckTieDet
+    gloves: ClothingHandsGlovesForensic

@@ -1,8 +1,10 @@
+using System.Linq; // DeltaV
 using Content.Shared.Access;
 using Content.Shared.Access.Components;
 using Content.Shared.Access.Systems;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.CrewManifest;
+using Content.Shared.Roles;
 using Robust.Shared.Prototypes;
 using static Content.Shared.Access.Components.IdCardConsoleComponent;
 
@@ -27,7 +29,8 @@ namespace Content.Client.Access.UI
 
             if (EntMan.TryGetComponent<IdCardConsoleComponent>(Owner, out var idCard))
             {
-                accessLevels = idCard.AccessLevels;
+                // DeltaV - Sort the access list
+                accessLevels = idCard.AccessLevels.OrderBy(x => _prototypeManager.TryIndex<AccessLevelPrototype>(x.Id, out var access) ? access.GetAccessLevelName() : x.Id).ToList();
             }
             else
             {
@@ -64,14 +67,8 @@ namespace Content.Client.Access.UI
             _window?.UpdateState(castState);
         }
 
-        public void SubmitData(string newFullName, string newJobTitle, List<ProtoId<AccessLevelPrototype>> newAccessList, string newJobPrototype)
+        public void SubmitData(string newFullName, string newJobTitle, List<ProtoId<AccessLevelPrototype>> newAccessList, ProtoId<JobPrototype> newJobPrototype)
         {
-            if (newFullName.Length > MaxFullNameLength)
-                newFullName = newFullName[..MaxFullNameLength];
-
-            if (newJobTitle.Length > MaxJobTitleLength)
-                newJobTitle = newJobTitle[..MaxJobTitleLength];
-
             SendMessage(new WriteToTargetIdMessage(
                 newFullName,
                 newJobTitle,

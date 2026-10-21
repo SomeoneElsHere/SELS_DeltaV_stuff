@@ -1,0 +1,18 @@
+## Static
+- type: latheRecipePack
+  id: EpistemicsStaticDeltaV
+  recipes:
+  - HoloprojectorAnomaly
+
+## Dynamic
+
+- type: latheRecipePack
+  id: EpistemicsEquipment
+  recipes: []
+  #- CoreSilver # TODO golemancy
+
+- type: latheRecipePack
+  id: EpistemicsBoards
+  recipes:
+  - ReverseEngineeringMachineCircuitboard
+  - ArtifactDisplayCaseMachineCircuitBoard

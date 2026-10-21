@@ -5,24 +5,20 @@
   playTimeTracker: JobQuartermaster
   antagAdvantage: 6 # DeltaV - Reduced TC: Head of Staff
   requirements:
-  #  - !type:RoleTimeRequirement #DeltaV
-  #    role: JobCargoTechnician
-  #    time: 21600 #6 hrs
+    - !type:RoleTimeRequirement
+      role: JobCargoTechnician
+      time: 5h
     - !type:RoleTimeRequirement
       role: JobSalvageSpecialist
-      time: 10800 #3 hrs
-    - !type:RoleTimeRequirement # DeltaV - Courier role time requirement
-      role: JobCourier
-      time: 7200 # 2 hours
+      time: 2.5h
     - !type:DepartmentTimeRequirement
-      department: Logistics # DeltaV - Logistics Department replacing Cargo
-      time: 43200 #DeltaV 12 hours
-    - !type:OverallPlaytimeRequirement
-      time: 144000 #40 hrs
+      department: Logistics # DeltaV
+      time: 10h
   weight: 10
   startingGear: QuartermasterGear
   icon: "JobIconQuarterMaster"
-  requireAdminNotify: true
+  requireAdminNotify: true # DeltaV
+  joinNotifyCrew: true # DeltaV
   supervisors: job-supervisors-captain
   canBeAntag: false
   access:
@@ -33,22 +29,40 @@
   - Maintenance
   - External
   - Command
-  - Orders # DeltaV - Orders, see Resources/Prototypes/DeltaV/Access/cargo.yml
+  #- Brig # DeltaV - Removed brig access
+  - Orders # DeltaV - Orders, see Resources/Prototypes/_DV/Access/cargo.yml
   - Cryogenics
+  - Funding # DeltaV
   special:
   - !type:AddImplantSpecial
     implants: [ MindShieldImplant ]
   - !type:AddComponentSpecial
     components:
       - type: CommandStaff
+  # Start DeltaV Additions
+  - !type:ModifyPsionicChanceSpecial # Command are more likely to be psionic.
+    jobBonusChance: 0.05 # Additional 5% chance.
+  # End DeltaV Additions
 
 - type: startingGear
   id: QuartermasterGear
   equipment:
     id: QuartermasterPDA
     ears: ClothingHeadsetQM
-    belt: BoxFolderClipboard
+    belt: BoxFolderClipboardThreePapers
     pocket1: AppraisalTool
   storage:
     back:
     - Flash
+
+- type: chameleonOutfit
+  id: QuartermasterChameleonOutfit
+  job: Quartermaster
+  hasMindShield: true
+  equipment:
+    head: ClothingHeadHatQMsoft
+    eyes: ClothingEyesGlassesSunglasses
+    mask: ClothingMaskBreath
+    outerClothing: ClothingOuterWinterQM
+    neck: ClothingNeckCloakQm
+    gloves: ClothingHandsKnuckleDustersQM

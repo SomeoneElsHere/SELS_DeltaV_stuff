@@ -5,29 +5,24 @@
   playTimeTracker: JobCaptain
   requirements:
     - !type:DepartmentTimeRequirement
-      department: Logistics # DeltaV - Logistics Department replacing Cargo
-      time: 18000 # DeltaV - 5 hours
-    - !type:DepartmentTimeRequirement
       department: Engineering
-      time: 18000 # DeltaV - 5 hours
+      time: 4h
     - !type:DepartmentTimeRequirement
       department: Medical
-      time: 18000 # DeltaV - 5 hours
+      time: 4h
+    - !type:DepartmentTimeRequirement
+      department: Epistemics # DeltaV
+      time: 4h
     - !type:DepartmentTimeRequirement
       department: Security
-      time: 18000 # DeltaV - 5 hours
-    - !type:DepartmentTimeRequirement # DeltaV - Epistemics dept time requirement
-      department: Epistemics # DeltaV - Epistemics Department replacing Science
-      time: 18000 # 5 hours
+      time: 4h
     - !type:DepartmentTimeRequirement
       department: Command
-      time: 108000 # DeltaV - 30 hours, was 15
-    - !type:OverallPlaytimeRequirement # DeltaV - Playtime requirement
-      time: 108000 # 30 hours
+      time: 4h
   weight: 20
   startingGear: CaptainGear
   icon: "JobIconCaptain"
-  requireAdminNotify: true
+  requireAdminNotify: true # DeltaV
   joinNotifyCrew: true
   supervisors: job-supervisors-centcom
   canBeAntag: false
@@ -40,20 +35,30 @@
   - !type:AddComponentSpecial
     components:
       - type: CommandStaff
-  - !type:AddComponentSpecial
-    components:
-    - type: PsionicBonusChance #Nyano - Summary: makes it more likely to become psionic.
-      flatBonus: 0.025
+      - type: Condemned # Goobstation - Nanotrasen owns your soul pal.
+        soulOwnedNotDevil: true
+  - !type:ModifyPsionicChanceSpecial # DeltaV - Command Roles are more likely to be psionic.
+    jobBonusChance: 0.05 # Additional 5% chance.
 
 - type: startingGear
   id: CaptainGear
   equipment:
-    #shoes: ClothingShoesBootsLaceup - DeltaV - Commented out for loadout options
-    eyes: ClothingEyesGlassesSunglasses
-    #gloves: ClothingHandsGlovesCaptain - DeltaV - Commented out for loadout options
+    #shoes: ClothingShoesBootsLaceup # DeltaV - Commented out for loadout options
+    eyes: ClothingEyesGlassesCommand
+    #gloves: ClothingHandsGlovesCaptain # DeltaV - Commented out for loadout options
     id: CaptainPDA
     ears: ClothingHeadsetAltCommand
   storage:
     back:
     - Flash
     # - StationCharter
+
+- type: chameleonOutfit
+  id: CaptainChameleonOutfit
+  job: Captain
+  hasMindShield: true
+  equipment:
+    head: ClothingHeadHatCapcap
+    eyes: ClothingEyesGlassesCommand
+    mask: ClothingMaskGasCaptain
+    neck: ClothingNeckCloakCap

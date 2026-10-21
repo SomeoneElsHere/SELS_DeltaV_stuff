@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: 2025 starch
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+- type: species
+  id: Asakim
+  name: species-name-asakim
+  roundStart: false # sad...
+  prototype: MobAsakim
+  dollPrototype: AppearanceAsakim
+  skinColoration: Hues
+  defaultSkinTone: "#444541"
+  maleFirstNames: NamesReptilianMale # DeltaV
+  femaleFirstNames: NamesReptilianFemale # DeltaV
+  naming: FirstDashFirst

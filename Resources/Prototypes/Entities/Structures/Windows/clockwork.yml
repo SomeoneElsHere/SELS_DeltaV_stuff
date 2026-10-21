@@ -12,6 +12,7 @@
   - type: Repairable
     fuelCost: 10
     doAfterDelay: 2
+    qualityNeeded: Welding # DeltaV
   - type: Damageable
     damageContainer: StructuralInorganic
     damageModifierSet: RGlass
@@ -52,6 +53,8 @@
     trackAllDamage: true
     damageOverlay:
       sprite: Structures/Windows/cracks.rsi
+  - type: CosmicCorruptible # DeltaV - Cosmic Cult
+    convertTo: WindowCosmicCult
 
 - type: entity
   id: WindowClockworkDirectional
@@ -122,6 +125,10 @@
     drawdepth: WallTops
     sprite: Structures/Windows/clockwork_diagonal.rsi
     state: state0
+  - type: Tag
+    tags:
+    - Diagonal
+    - Window
   - type: IconSmooth
     mode: Diagonal
     key: windows

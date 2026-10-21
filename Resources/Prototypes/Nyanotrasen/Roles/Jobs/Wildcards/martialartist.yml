@@ -5,7 +5,7 @@
   playTimeTracker: JobMartialArtist
   requirements:
     - !type:OverallPlaytimeRequirement
-      time: 7200 #2 hours
+      time: 2h
   startingGear: MartialArtistGear
   icon: "JobIconMartialArtist"
   supervisors: job-supervisors-hop
@@ -15,18 +15,18 @@
   - Maintenance
   - Theatre # DeltaV - Add Theatre access
   - Boxer # DeltaV - Add Boxer access
-  special:
-  - !type:AddComponentSpecial
-    components:
-    - type: Boxer
-      modifiers:
-        coefficients: # These only apply to unarmed
-          Blunt: 1.5
-          Slash: 1.5
-          Piercing: 1.5
 
 - type: startingGear
   id: MartialArtistGear
   equipment:
     id: MartialArtistPDA
     ears: ClothingHeadsetService
+
+- type: chameleonOutfit
+  id: MartialArtistChameleonOutfit
+  job: MartialArtist
+  equipment:
+    id: MartialArtistPDA
+    ears: ClothingHeadsetService
+    jumpsuit: ClothingUniformMartialGi
+    shoes: ClothingShoesGeta

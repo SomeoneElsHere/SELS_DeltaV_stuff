@@ -3,12 +3,6 @@
   name: job-name-psychologist
   description: job-description-psychologist
   playTimeTracker: JobPsychologist
-  requirements:
-    - !type:OverallPlaytimeRequirement
-      time: 36000 #DeltaV 10 hours
-    - !type:DepartmentTimeRequirement
-      department: Medical
-      time: 14400 #DeltaV 4 hrs
   startingGear: PsychologistGear
   icon: "JobIconPsychologist"
   supervisors: job-supervisors-cmo
@@ -22,9 +16,22 @@
 - type: startingGear
   id: PsychologistGear
   equipment:
-    shoes: ClothingShoesLeather
-    id: PsychologistPDA
+    #shoes: ClothingShoesLeather # DeltaV - loadouts
+    #id: PsychologistPDA # DeltaV - loadouts
     ears: ClothingHeadsetMedical
   storage:
     back:
     - RubberStampPsychologist
+    - BoxFolderBlue # DeltaV
+
+- type: chameleonOutfit
+  id: PsychologistChameleonOutfit
+  job: Psychologist
+  equipment:
+    head: ClothingHeadHatBeretMedic
+    eyes: ClothingEyesHudMedical
+    mask: ClothingMaskSterile
+    outerClothing: ClothingOuterCoatLab
+    neck: ClothingNeckStethoscope
+    belt: ClothingBeltMedical
+    gloves: ClothingHandsGlovesLatex

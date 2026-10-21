@@ -2,8 +2,10 @@
   id: Glacier
   mapName: Glacier
   mapPath: /Maps/glacier.yml
+  maxRandomOffset: 0
+  randomRotation: false
   minPlayers: 15
-  maxPlayers: 60
+  maxPlayers: 70
   stations:
     Glacier:
       stationProto: StandardNanotrasenStation
@@ -14,14 +16,14 @@
           !type:NanotrasenNameGenerator
           prefixCreator: 'NY'
       - type: StationEmergencyShuttle
-        emergencyShuttlePath: /Maps/Shuttles/DeltaV/NTES_Vertex.yml
-      # uncomment when planets arent fucked sideways
-      #- type: StationSurface
-      #  mapPath: /Maps/Nonstations/glacier_surface.yml
-      #  biome: Snow
+        emergencyShuttlePath: /Maps/_DV/Shuttles/Evac/ntes_vertex.yml
+      - type: StationPlanetSpawner
+        planet: GlacierSurface
+        gridPath: /Maps/_DV/Nonstations/glacier_surface_outpost.yml
       - type: StationJobs
         availableJobs:
           Captain: [ 1, 1 ]
+          StationAi: [ 1, 1 ]
         #service
           HeadOfPersonnel: [ 1, 1 ]
           Bartender: [ 2, 2 ]
@@ -37,7 +39,7 @@
           Mime: [ 1, 2 ]
         #engineering
           ChiefEngineer: [ 1, 1 ]
-          AtmosphericTechnician: [ 1, 2 ]
+          AtmosphericTechnician: [ 1, 1 ]
           StationEngineer: [ 2, 3 ]
           TechnicalAssistant: [ 2, 2 ]
         #justice
@@ -47,16 +49,16 @@
           Prosecutor: [ 1, 1 ]
         #medical
           ChiefMedicalOfficer: [ 1, 1 ]
-          Chemist: [ 1, 2 ]
-          Paramedic: [ 1, 2 ]
+          Chemist: [ 2, 2 ]
+          Paramedic: [ 2, 2 ]
           Psychologist: [ 1, 1 ]
           MedicalDoctor: [ 2, 3 ]
           MedicalIntern: [ 2, 2 ]
-          MedicalBorg: [ 1, 2 ]
         #science
           ResearchDirector: [ 1, 1 ]
           Chaplain: [ 1, 1 ]
           ForensicMantis: [ 1, 1 ]
+          Roboticist: [ 1, 2 ]
           Scientist: [ 2, 3 ]
           ResearchAssistant: [ 2, 2 ]
           Borg: [ 2, 3 ]
@@ -70,8 +72,9 @@
           Prisoner: [ 2, 3 ]
         #logistics
           Quartermaster: [ 1, 1 ]
-          Courier: [ 2, 3 ]
+          Courier: [ 2, 2 ]
           SalvageSpecialist: [ 2, 3 ]
           CargoTechnician: [ 2, 3 ]
+          CargoAssistant: [ 2, 2 ]
         #civilian
           Passenger: [ -1, -1 ]

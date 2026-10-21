@@ -36,6 +36,12 @@
       collection: FelinidGrowls
     Purr:
       collection: FelinidPurrs
+    Gasp:
+      collection: MaleGasp
+    DefaultDeathgasp:
+      collection: MaleDeathGasp
+    Gulp: # Goob
+      path: /Audio/_Goobstation/Voice/Human/gulp.ogg
 
 - type: emoteSounds
   id: FemaleFelinid
@@ -74,3 +80,9 @@
       collection: FelinidGrowls
     Purr:
       collection: FelinidPurrs
+    Gasp:
+      collection: FemaleGasp
+    DefaultDeathgasp:
+      collection: FemaleDeathGasp
+    Gulp: # Goob
+      path: /Audio/_Goobstation/Voice/Human/gulp.ogg

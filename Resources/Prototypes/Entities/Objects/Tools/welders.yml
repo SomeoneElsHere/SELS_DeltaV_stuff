@@ -14,11 +14,11 @@
     - state: welder_flame
       visible: false
       shader: unshaded
-      map: ["enum.ToggleVisuals.Layer"]
+      map: ["enum.ToggleableVisuals.Layer"]
   - type: GenericVisualizer
     visuals:
-      enum.ToggleVisuals.Toggled:
-        enum.ToggleVisuals.Layer:
+      enum.ToggleableVisuals.Enabled:
+        enum.ToggleableVisuals.Layer:
           True: { visible: true }
           False: { visible: false }
   - type: Item
@@ -59,7 +59,7 @@
     components:
     - type: DisarmMalus
       malus: 0.6
-  - type: ToggleableLightVisuals
+  - type: ToggleableVisuals
     spriteLayer: flame
     inhandVisuals:
       left:
@@ -105,6 +105,9 @@
     price: 40
   - type: IgnitionSource
     temperature: 700
+  - type: Tag # DeltaV - To make it work w/ the guns
+    tags:
+    - WeldingTool
 
 - type: entity
   name: industrial welding tool
@@ -159,8 +162,8 @@
       Welder:
         reagents:
         - ReagentId: WeldingFuel
-          Quantity: 1000
-        maxVol: 1000
+          Quantity: 200 # DeltaV - Experimental Welder Nerf
+        maxVol: 200 # DeltaV - Experimental Welder Nerf
   - type: PointLight
     enabled: false
     radius: 1.5
@@ -171,6 +174,9 @@
       reagents:
       - ReagentId: WeldingFuel
         Quantity: 1
+    duration: 2 # DeltaV - Experimental Welder Nerf - Loses fuel while active
+  - type: RequiresEyeProtection
+    statusEffectTime: 5 # less harmful; sunglasses can block it
 
 - type: entity
   name: emergency welding tool
@@ -198,3 +204,24 @@
     enabled: false
     radius: 1.0
     color: orange
+  - type: Tag
+    tags:
+      - EmergencyWelder #Starlight, distinction needed for use in crafting recipies.
+
+- type: entity
+  parent: [ Welder, BaseXenoborgContraband ]
+  id: RefuelingWelder
+  name: refueling welding tool
+  description: "A slow welder that can refuel itself over time."
+  components:
+  - type: Tool
+    speedModifier: 0.5
+  - type: Welder
+    fuelConsumption: 2
+    fuelLitCost: 1
+  - type: SolutionRegeneration
+    solution: Welder
+    generated:
+      reagents:
+      - ReagentId: WeldingFuel
+        Quantity: 0.1

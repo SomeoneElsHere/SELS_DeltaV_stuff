@@ -1,6 +1,9 @@
 ﻿using Content.Shared.MedicalScanner;
-using JetBrains.Annotations;
+using Content.Shared._DV.Medical; // DeltaV
+using Content.Shared._DV.MedicalRecords; // DeltaV
+using JetBrains.Annotations; // DeltaV
 using Robust.Client.UserInterface;
+
 
 namespace Content.Client.HealthAnalyzer.UI
 {
@@ -19,7 +22,9 @@ namespace Content.Client.HealthAnalyzer.UI
             base.Open();
 
             _window = this.CreateWindow<HealthAnalyzerWindow>();
-
+            _window.HealthAnalyzer.OnTriageStatusChanged += SendTriageStatusMessage; // DeltaV - Medical Records
+            _window.HealthAnalyzer.OnClaimPatient += SendTriageClaimMessage; // DeltaV - Medical Records
+            _window.HealthAnalyzer.OnPrintMedTekRecord += () => SendMessage(new HealthAnalyzerPrintReportMessage()); // DeltaV - MedTekReports
             _window.Title = EntMan.GetComponent<MetaDataComponent>(Owner).EntityName;
         }
 
@@ -33,5 +38,13 @@ namespace Content.Client.HealthAnalyzer.UI
 
             _window.Populate(cast);
         }
+
+        // Begin DeltaV - Medical Records
+        private void SendTriageStatusMessage(TriageStatus status)
+            => SendMessage(new HealthAnalyzerTriageStatusMessage(status));
+
+        private void SendTriageClaimMessage()
+            => SendMessage(new HealthAnalyzerTriageClaimMessage());
+        // End DeltaV - Medical Records
     }
 }

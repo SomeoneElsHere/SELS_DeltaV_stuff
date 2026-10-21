@@ -37,6 +37,7 @@
     - replay_stop
     - replay_load
     - saveconfig
+    - chatwindow
 
 - Flags: DEBUG
   Commands:
@@ -64,7 +65,6 @@
     - showemergencyshuttle
     - zoom
     - showsubfloor
-    - showsubfloorforever
     - showmarkers
     - nodevis
     - nodevisfilter
@@ -73,15 +73,31 @@
     - fullstatereset
     - dumpentities
     - fuckrules # DeltaV: move fuckrules to DEBUG
+    - showwallmounts
+    - showaccessreaders
+    - quickinspect
+
+- Flags: ADMIN # DeltaV
+  Commands:
+    - adminoverlay
 
 - Flags: MAPPING
   Commands:
     - mapping
+    - mappingclientsidesetup
+    - showsubfloor
+    - showsubfloorforever
     - toggleautosave
     - toggledecals
+    - showwallmounts
+    - showaccessreaders
 
 - Flags: QUERY
   Commands:
     - uploadfile
     - loadprototype
     - uploadfolder
+
+- Flags: ADMINCHAT
+  Commands:
+    - achatwindow

@@ -1,23 +1,21 @@
 using Content.Shared.Actions;
-using Content.Shared.Construction.Components;
-using Content.Shared.Damage;
+using Content.Shared.Coordinates;
 using Content.Shared.Hands;
 using Content.Shared.Interaction;
 using Content.Shared.Item;
-using Content.Shared.Mobs;
-using Content.Shared.Mobs.Components;
-using Content.Shared.Mobs.Systems;
-using Content.Shared.Polymorph;
 using Content.Shared.Polymorph.Components;
 using Content.Shared.Popups;
 using Content.Shared.Storage.Components;
+using Content.Shared.Verbs;
+using Content.Shared.Whitelist;
 using Robust.Shared.Containers;
 using Robust.Shared.Network;
-using Robust.Shared.Physics.Components;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.Manager;
 using System.Diagnostics.CodeAnalysis;
-using Content.Shared.Whitelist;
+using Content.Shared.Damage.Systems;
+using Content.Shared.Item.ItemToggle;
+using Content.Shared.Item.ItemToggle.Components;
 
 namespace Content.Shared.Polymorph.Systems;
 
@@ -27,48 +25,61 @@ namespace Content.Shared.Polymorph.Systems;
 /// </summary>
 public abstract class SharedChameleonProjectorSystem : EntitySystem
 {
+    [Dependency] private readonly DamageableSystem _damageable = default!;
+    [Dependency] private readonly EntityWhitelistSystem _whitelist = default!;
     [Dependency] private readonly INetManager _net = default!;
     [Dependency] private readonly IPrototypeManager _proto = default!;
     [Dependency] private readonly ISerializationManager _serMan = default!;
     [Dependency] private readonly MetaDataSystem _meta = default!;
-    [Dependency] private readonly MobThresholdSystem _mobThreshold = default!;
     [Dependency] private readonly SharedActionsSystem _actions = default!;
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly SharedContainerSystem _container = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly SharedTransformSystem _xform = default!;
-    [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!;
+    [Dependency] private readonly ItemToggleSystem _toggle = default!;
 
     public override void Initialize()
     {
         base.Initialize();
 
-        SubscribeLocalEvent<ChameleonDisguiseComponent, GotEquippedHandEvent>(OnDisguiseEquippedHand);
+        SubscribeLocalEvent<ChameleonDisguiseComponent, InteractHandEvent>(OnDisguiseInteractHand, before: [typeof(SharedItemSystem)]);
+        SubscribeLocalEvent<ChameleonDisguiseComponent, DamageChangedEvent>(OnDisguiseDamaged);
         SubscribeLocalEvent<ChameleonDisguiseComponent, InsertIntoEntityStorageAttemptEvent>(OnDisguiseInsertAttempt);
         SubscribeLocalEvent<ChameleonDisguiseComponent, ComponentShutdown>(OnDisguiseShutdown);
+        SubscribeLocalEvent<ChameleonDisguiseComponent, BeforeGettingEquippedHandEvent>(OnDisguiseBeforeEquippedHand);
 
-        SubscribeLocalEvent<ChameleonDisguisedComponent, DamageChangedEvent>(OnDamageChanged);
+        SubscribeLocalEvent<ChameleonDisguisedComponent, EntGotInsertedIntoContainerMessage>(OnDisguisedInserted);
 
         SubscribeLocalEvent<ChameleonProjectorComponent, AfterInteractEvent>(OnInteract);
+        SubscribeLocalEvent<ChameleonProjectorComponent, GetVerbsEvent<UtilityVerb>>(OnGetVerbs);
         SubscribeLocalEvent<ChameleonProjectorComponent, DisguiseToggleNoRotEvent>(OnToggleNoRot);
         SubscribeLocalEvent<ChameleonProjectorComponent, DisguiseToggleAnchoredEvent>(OnToggleAnchored);
         SubscribeLocalEvent<ChameleonProjectorComponent, HandDeselectedEvent>(OnDeselected);
         SubscribeLocalEvent<ChameleonProjectorComponent, GotUnequippedHandEvent>(OnUnequipped);
         SubscribeLocalEvent<ChameleonProjectorComponent, ComponentShutdown>(OnProjectorShutdown);
+        SubscribeLocalEvent<ChameleonProjectorComponent, ItemToggledEvent>(OnProjectorToggled);
     }
 
     #region Disguise entity
 
-    private void OnDisguiseEquippedHand(Entity<ChameleonDisguiseComponent> ent, ref GotEquippedHandEvent args)
+    private void OnDisguiseInteractHand(Entity<ChameleonDisguiseComponent> ent, ref InteractHandEvent args)
     {
         TryReveal(ent.Comp.User);
         args.Handled = true;
+    }
+
+    private void OnDisguiseDamaged(Entity<ChameleonDisguiseComponent> ent, ref DamageChangedEvent args)
+    {
+        // this mirrors damage 1:1
+        if (args.DamageDelta is {} damage)
+            _damageable.TryChangeDamage(ent.Comp.User, damage);
     }
 
     private void OnDisguiseInsertAttempt(Entity<ChameleonDisguiseComponent> ent, ref InsertIntoEntityStorageAttemptEvent args)
     {
         // stay parented to the user, not the storage
         args.Cancelled = true;
+        TryReveal(ent.Comp.User);
     }
 
     private void OnDisguiseShutdown(Entity<ChameleonDisguiseComponent> ent, ref ComponentShutdown args)
@@ -76,21 +87,20 @@ public abstract class SharedChameleonProjectorSystem : EntitySystem
         _actions.RemoveProvidedActions(ent.Comp.User, ent.Comp.Projector);
     }
 
+    private void OnDisguiseBeforeEquippedHand(Entity<ChameleonDisguiseComponent> ent, ref BeforeGettingEquippedHandEvent args)
+    {
+        args.Cancelled = true;
+        TryReveal(ent.Comp.User);
+    }
+
     #endregion
 
     #region Disguised player
 
-    private void OnDamageChanged(Entity<ChameleonDisguisedComponent> ent, ref DamageChangedEvent args)
+    private void OnDisguisedInserted(Entity<ChameleonDisguisedComponent> ent, ref EntGotInsertedIntoContainerMessage args)
     {
-        if (args.DamageDelta is not {} damage)
-            return;
-
-        // reveal once enough damage is taken for the disguise to reveal itself
-        var total = damage.GetTotal();
-        if (total > ent.Comp.Integrity)
-            TryReveal((ent, ent.Comp));
-        else
-            ent.Comp.Integrity -= total;
+        // prevent player going into locker/mech/etc while disguised
+        TryReveal((ent, ent));
     }
 
     #endregion
@@ -99,26 +109,63 @@ public abstract class SharedChameleonProjectorSystem : EntitySystem
 
     private void OnInteract(Entity<ChameleonProjectorComponent> ent, ref AfterInteractEvent args)
     {
-        if (!args.CanReach || args.Target is not {} target)
+        if (args.Handled || !args.CanReach || args.Target is not {} target)
+            return;
+
+        args.Handled = true;
+        TryDisguise(ent, args.User, target);
+    }
+
+    private void OnProjectorToggled(Entity<ChameleonProjectorComponent> ent, ref ItemToggledEvent args)
+    {
+        if (args.Activated)
+            return;
+
+        if (ent.Comp.Disguised == null)
+            return;
+
+        // We don't toggle here as this is only called when we subscribe to being toggled off.
+        TryReveal(ent.Comp.Disguised.Value);
+    }
+
+    private void OnGetVerbs(Entity<ChameleonProjectorComponent> ent, ref GetVerbsEvent<UtilityVerb> args)
+    {
+        if (!args.CanAccess)
             return;
 
         var user = args.User;
-        args.Handled = true;
-
-        if (_container.IsEntityInContainer(target))
+        var target = args.Target;
+        args.Verbs.Add(new UtilityVerb()
         {
-            _popup.PopupClient(Loc.GetString(ent.Comp.ContainerPopup), target, user);
-            return;
+            Act = () =>
+            {
+                TryDisguise(ent, user, target);
+            },
+            Text = Loc.GetString("chameleon-projector-set-disguise")
+        });
+    }
+
+    public bool TryDisguise(Entity<ChameleonProjectorComponent> ent, EntityUid user, EntityUid target)
+    {
+        if (_container.IsEntityInContainer(target) || _container.IsEntityInContainer(user))
+        {
+            _popup.PopupClient(Loc.GetString("chameleon-projector-inside-container"), target, user);
+            return false;
         }
 
         if (IsInvalid(ent.Comp, target))
         {
-            _popup.PopupClient(Loc.GetString(ent.Comp.InvalidPopup), target, user);
-            return;
+            _popup.PopupClient(Loc.GetString("chameleon-projector-invalid"), target, user);
+            return false;
         }
 
-        _popup.PopupClient(Loc.GetString(ent.Comp.SuccessPopup), target, user);
+        // We do a TryComp, so if the item has variations without ItemToggle, they can still be used just fine.
+        if (TryComp<ItemToggleComponent>(ent.Owner, out var itemToggle) && !_toggle.TryActivate((ent.Owner, itemToggle), user))
+            return false;
+
+        _popup.PopupClient(Loc.GetString("chameleon-projector-success"), target, user);
         Disguise(ent, user, target);
+        return true;
     }
 
     private void OnToggleNoRot(Entity<ChameleonProjectorComponent> ent, ref DisguiseToggleNoRotEvent args)
@@ -170,8 +217,8 @@ public abstract class SharedChameleonProjectorSystem : EntitySystem
     /// </summary>
     public bool IsInvalid(ChameleonProjectorComponent comp, EntityUid target)
     {
-        return _whitelistSystem.IsWhitelistFail(comp.Whitelist, target)
-            || _whitelistSystem.IsBlacklistPass(comp.Blacklist, target);
+        return _whitelist.IsWhitelistFail(comp.Whitelist, target)
+            || _whitelist.IsWhitelistPass(comp.Blacklist, target);
     }
 
     /// <summary>
@@ -186,7 +233,8 @@ public abstract class SharedChameleonProjectorSystem : EntitySystem
             return;
 
         // reveal first to allow quick switching
-        TryReveal(user);
+        if (ent.Comp.Disguised != null)
+            ClearDisguise(ent, ent.Comp.Disguised.Value);
 
         // add actions for controlling transform aspects
         _actions.AddAction(user, ref proj.NoRotActionEntity, proj.NoRotAction, container: ent);
@@ -194,12 +242,9 @@ public abstract class SharedChameleonProjectorSystem : EntitySystem
 
         proj.Disguised = user;
 
-        var xform = Transform(user);
-        var disguise = Spawn(proj.DisguiseProto, xform.Coordinates);
-        var disguiseXform = Transform(disguise);
-        _xform.SetParent(disguise, disguiseXform, user, xform);
+        var disguise = SpawnAttachedTo(proj.DisguiseProto, user.ToCoordinates());
 
-        var disguised = AddComp<ChameleonDisguisedComponent>(user);
+        var disguised = EnsureComp<ChameleonDisguisedComponent>(user);
         disguised.Disguise = disguise;
         Dirty(user, disguised);
 
@@ -219,19 +264,6 @@ public abstract class SharedChameleonProjectorSystem : EntitySystem
         CopyComp<ItemComponent>((disguise, comp));
 
         _appearance.CopyData(entity, disguise);
-
-        var mass = CompOrNull<PhysicsComponent>(entity)?.Mass ?? 0f;
-
-        // let the disguise die when its taken enough damage, which then transfers to the player
-        // health is proportional to mass, and capped to not be insane
-        if (TryComp<MobThresholdsComponent>(disguise, out var thresholds) && TryComp<MobThresholdsComponent>(user, out var userThresholds))
-        {
-            // cap disguise integrity at max health so you dont have to kill beforeif the player is of flesh and blood, cap max health to theirs
-            // so that when reverting damage scales 1:1 and not round removing
-            var playerMax = _mobThreshold.GetThresholdForState(user, MobState.Dead, userThresholds).Float();
-            var max = playerMax == 0f ? proj.MaxHealth : Math.Max(proj.MaxHealth, playerMax);
-            disguised.Integrity = max;
-        }
     }
 
     /// <summary>
@@ -242,19 +274,36 @@ public abstract class SharedChameleonProjectorSystem : EntitySystem
         if (!Resolve(ent, ref ent.Comp, false))
             return false;
 
-        if (TryComp<ChameleonDisguiseComponent>(ent.Comp.Disguise, out var disguise)
-            && TryComp<ChameleonProjectorComponent>(disguise.Projector, out var proj))
-        {
-            proj.Disguised = null;
-        }
+        if (!TryComp<ChameleonDisguiseComponent>(ent.Comp.Disguise, out var disguise)
+            || !TryComp<ChameleonProjectorComponent>(disguise.Projector, out var proj))
+            return false;
 
-        var xform = Transform(ent);
-        xform.NoLocalRotation = false;
-        _xform.Unanchor(ent, xform);
+        ClearDisguise((disguise.Projector, proj), ent);
+        _toggle.TryDeactivate(disguise.Projector);
 
-        Del(ent.Comp.Disguise);
         RemComp<ChameleonDisguisedComponent>(ent);
         return true;
+    }
+
+    /// <summary>
+    /// Clears the disguise for the projector, allowing the user to immediately disguise again.
+    /// </summary>
+    /// <param name="ent">The entity for which to clear the disguise</param>
+    /// <param name="disguised">The disguised entity.</param>
+    private void ClearDisguise(Entity<ChameleonProjectorComponent> ent, Entity<ChameleonDisguisedComponent?> disguised)
+    {
+        if (!Resolve(disguised, ref disguised.Comp, false))
+            return;
+
+        if (ent.Comp.Disguised == null)
+            return;
+
+        var xform = Transform(ent.Comp.Disguised.Value);
+        xform.NoLocalRotation = false;
+        _xform.Unanchor(disguised, xform);
+
+        ent.Comp.Disguised = null;
+        Del(disguised.Comp.Disguise);
     }
 
     /// <summary>
@@ -290,19 +339,18 @@ public abstract class SharedChameleonProjectorSystem : EntitySystem
     /// <summary>
     /// Try to get a single component from the source entity/prototype.
     /// </summary>
-    private bool GetSrcComp<T>(ChameleonDisguiseComponent comp, [NotNullWhen(true)] out T? src) where T: Component
+    private bool GetSrcComp<T>(ChameleonDisguiseComponent comp, [NotNullWhen(true)] out T? src) where T : Component, new()
     {
-        src = null;
         if (TryComp(comp.SourceEntity, out src))
             return true;
 
-        if (comp.SourceProto is not {} protoId)
+        if (comp.SourceProto is not { } protoId)
             return false;
 
         if (!_proto.TryIndex<EntityPrototype>(protoId, out var proto))
             return false;
 
-        return proto.TryGetComponent(out src);
+        return proto.TryGetComponent(out src, EntityManager.ComponentFactory);
     }
 }
 

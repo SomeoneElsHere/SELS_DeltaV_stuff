@@ -1,0 +1,101 @@
+- type: entity
+  parent: BaseImplantOnlyImplanterSyndi
+  id: BionicVoiceMaskImplanter
+  name: bionic voice mask implanter
+  components:
+  - type: Implanter
+    implant: BionicVoiceMaskImplant
+
+- type: entity
+  parent: BionicVoiceMaskImplanter
+  id: BionicSyrinxImplanter
+  name: bionic syrinx implanter
+  components:
+  - type: Implanter
+    implant: BionicSyrinxImplant
+
+- type: entity
+  parent: BaseImplantOnlyImplanter
+  id: WatchdogImplanter
+  name: watchdog implanter
+  components:
+  - type: Implanter
+    implant: WatchdogImplant
+
+- type: entity
+  parent: BaseImplantOnlyImplanterCentcomm
+  id: CentCommImplanter
+  name: centcomm mindshield implanter
+  suffix: mindshield
+  components:
+  - type: Implanter
+    implant: CentCommImplant
+
+# Nukie implants
+
+- type: entity
+  parent: BaseImplantOnlyImplanterSyndi
+  id: HostageImplanter
+  name: hostage implanter
+  components:
+  - type: Implanter
+    implant: HostageImplant
+    implantTime: 20
+    drawTime: 15
+
+- type: entity
+  id: NukeopsUplinkImplanter
+  suffix: Nukeops Uplink
+  parent: BaseImplantOnlyImplanterSyndi
+  components:
+  - type: Implanter
+    implant: NukeopsUplinkImplant
+
+# NTAgent
+
+- type: entity
+  parent: BaseImplantOnlyImplanterCentcomm
+  id: NanolinkImplant
+  name: nanolink implant
+  suffix: NanolinkImplant
+  components:
+  - type: Implanter
+    implant: NanolinkSubImplant
+
+- type: entity
+  parent: [BaseImplantOnlyImplanterCentcomm, ChameleonControllerImplanter]
+  id: ChameleonControllerImplanterNT
+
+- type: entity
+  parent: [BaseImplantOnlyImplanterCentcomm, FakeMindShieldImplanter]
+  id: FakeMindShieldImplantNT
+  name: fake mindshield implanter
+
+# hitman
+
+- type: entity
+  id: HitmanCardImplanter
+  name: hitman card implanter
+  parent: BaseImplantOnlyImplanterSyndi
+  components:
+  - type: Implanter
+    implant: HitmanCardImplant
+
+# MARK: DAGD
+- type: entity
+  parent: BaseImplantOnlyImplanterSyndi
+  id: UnrevivableImplanterSyndicate
+  name: true death implanter
+  suffix: DAGD
+  components:
+  - type: Implanter
+    implant: UnrevivableImplantSyndicate
+
+- type: entity
+  parent: BaseImplantOnlyImplanterSyndi
+  id: MicroBombImplanterSyndicateDAGD
+  name: micro-bomb implanter
+  suffix: DAGD
+  components:
+  - type: Implanter
+    implant: MicroBombImplantSyndicateDAGD

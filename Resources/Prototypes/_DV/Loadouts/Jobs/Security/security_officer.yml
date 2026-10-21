@@ -1,0 +1,212 @@
+# Sidearm
+
+- type: loadout
+  id: SecurityFirearmWeaponPistolPollock
+  equipment:
+    pocket1: WeaponPistolPollock
+
+- type: loadout
+  id: SecurityFirearmWeaponPistolSLP57
+  equipment:
+    pocket1: WeaponPistolSLP57
+
+- type: loadout
+  id: SecurityFirearmWeaponPistolMk58
+  equipment:
+    pocket1: WeaponPistolMk58
+
+- type: loadout
+  id: SecurityFirearmWeaponDisabler
+  equipment:
+    pocket1: WeaponDisabler
+
+- type: loadout
+  id: SecurityFirearmTruncheon
+  storage:
+    back:
+    - Truncheon
+
+- type: loadout
+  id: SecurityFirearmWeaponPistolSV213
+  equipment:
+    pocket1: WeaponLaserSvalinnSecurity
+
+# Ammo
+
+- type: loadout
+  id: SecurityFirearmMagazinePistolRubber
+  storage:
+    back:
+    - MagazinePistolRubber
+
+- type: loadout
+  id: SecurityFirearmMagazinePistol
+  storage:
+    back:
+    - MagazinePistol
+
+- type: loadout
+  id: SecurityFirearmPowercellMedium
+  storage:
+    back:
+    - PowerCellMedium
+
+# Head
+
+- type: loadout
+  id: SecurityCap
+  equipment:
+    head: ClothingHeadHatCapSec
+
+- type: loadout
+  id: SecurityBeretGrey
+  equipment:
+    head: ClothingHeadHatBeretSecurityGrey
+
+# Jumpsuit
+
+- type: loadout
+  id: SecurityJumpsuitWhite
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitSecWhite
+
+- type: loadout
+  id: SecurityJumpskirtWhite
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtSecWhite
+
+- type: loadout
+  id: SeniorSecOfficerJumpsuit
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: SeniorOfficer
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitSecSenior
+
+- type: loadout
+  id: SeniorSecOfficerJumpskirt
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: SeniorOfficer
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtSecSenior
+
+- type: loadout
+  id: SeniorSecOfficerTurtlesuit
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: SeniorOfficer
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitSecTurtle
+
+- type: loadout
+  id: SeniorSecOfficerTurtleskirt
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: SeniorOfficer
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtSecTurtle
+
+- type: loadout
+  id: SeniorSecOfficerFormalSuit
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: SeniorOfficer
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitSecFormal
+
+- type: loadout
+  id: SeniorSecOfficerFormalSkirt
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: SeniorOfficer
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtSecFormal
+
+# OuterClothing
+
+- type: loadout
+  id: PlateCarrier
+  equipment:
+    outerClothing: ClothingOuterArmorPlateCarrier
+
+- type: loadout
+  id: DuraVest
+  equipment:
+    outerClothing: ClothingOuterArmorDuraVest
+
+- type: loadout
+  id: StasecSweater
+  equipment:
+    outerClothing: ClothingOuterStasecSweater
+
+- type: loadout
+  id: StasecWinterCoat
+  equipment:
+    outerClothing: ClothingOuterCoatStasec
+
+- type: loadout
+  id: LongcoatSecurity
+  equipment:
+    outerClothing: ClothingLongcoatSecurity
+
+- type: loadout
+  id: BomberSecurity
+  equipment:
+    outerClothing: ClothingOuterCoatBomberSecurity
+
+# Gloves
+
+- type: loadout
+  id: SecurityClothingHandsGlovesColorBlack
+  equipment:
+    gloves: ClothingHandsGlovesColorBlack
+
+- type: loadout
+  id: SecurityClothingHandsGlovesFingerless
+  equipment:
+    gloves: ClothingHandsGlovesFingerless
+
+# SecBelt utility
+
+- type: loadout
+  id: FlashBangLoadout
+  storage:
+    belt:
+    - GrenadeFlashBang
+
+- type: loadout
+  id: TearGasLoadout
+  storage:
+    belt:
+    - TearGasGrenade
+
+- type: loadout
+  id: SecHoloProjectorLoadout
+  storage:
+    belt:
+    - HoloprojectorSecurity
+
+- type: loadout
+  id: StingerGrenadeLoadout
+  storage:
+    belt:
+    - GrenadeStinger
+
+- type: loadout
+  id: RadioHandheldSecurityLoadout
+  storage:
+    belt:
+    - RadioHandheldSecurity
+
+- type: loadout
+  id: HandcuffsLoadout
+  storage:
+    belt:
+    - Handcuffs
+
+- type: loadout
+  id: SecLiteLoadout
+  storage:
+    belt:
+    - FlashlightSeclite

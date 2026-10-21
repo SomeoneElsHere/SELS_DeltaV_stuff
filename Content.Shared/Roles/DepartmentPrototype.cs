@@ -1,12 +1,13 @@
+using Content.Shared.Radio; // DeltaV - Latejoin in department channels
 using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Roles;
 
-[Prototype("department")]
+[Prototype]
 public sealed partial class DepartmentPrototype : IPrototype
 {
     [IdDataField]
-    public string ID { get; } = string.Empty;
+    public string ID { get; private set; } = string.Empty;
 
     /// <summary>
     /// The name LocId of the department that will be displayed in the various menus.
@@ -41,6 +42,13 @@ public sealed partial class DepartmentPrototype : IPrototype
     /// </summary>
     [DataField]
     public int Weight { get; private set; }
+
+    /// <summary>
+    /// DeltaV - Radio channel associated with this department.
+    /// If set, latejoin arrivals for jobs in this department are announced on this channel.
+    /// </summary>
+    [DataField]
+    public ProtoId<RadioChannelPrototype>? RadioChannel;
 
     /// <summary>
     /// Toggles the display of the department in the priority setting menu in the character editor.

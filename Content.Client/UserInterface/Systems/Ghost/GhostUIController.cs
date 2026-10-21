@@ -2,9 +2,13 @@
 using Content.Client.Ghost;
 using Content.Client.UserInterface.Systems.Gameplay;
 using Content.Client.UserInterface.Systems.Ghost.Widgets;
+using Content.Shared._DV.Ghost.Roles; // DeltaV - freeform ghosties
 using Content.Shared.Ghost;
+using Robust.Shared.Console; // Frontier
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controllers;
+using Robust.Shared.Prototypes; // DeltaV - freeform ghosties
+using Content.Shared._Corvax.Respawn; // Frontier
 
 namespace Content.Client.UserInterface.Systems.Ghost;
 
@@ -12,8 +16,12 @@ namespace Content.Client.UserInterface.Systems.Ghost;
 public sealed class GhostUIController : UIController, IOnSystemChanged<GhostSystem>
 {
     [Dependency] private readonly IEntityNetworkManager _net = default!;
+    [Dependency] private readonly IConsoleHost _consoleHost = default!; // Frontier
 
     [UISystemDependency] private readonly GhostSystem? _system = default;
+
+    // Updated when get death time from the server.
+    private TimeSpan? DeathTime;
 
     private GhostGui? Gui => UIManager.GetActiveUIWidgetOrNull<GhostGui>();
 
@@ -24,6 +32,10 @@ public sealed class GhostUIController : UIController, IOnSystemChanged<GhostSyst
         var gameplayStateLoad = UIManager.GetUIController<GameplayStateLoadController>();
         gameplayStateLoad.OnScreenLoad += OnScreenLoad;
         gameplayStateLoad.OnScreenUnload += OnScreenUnload;
+
+        // DeltaV
+        SubscribeNetworkEvent<RespawnResetEvent>(OnRespawnReseted);
+        SubscribeNetworkEvent<DVSpawnableGhostRoleCooldownUpdateEvent>(OnVentCritterCooldownUpdate); // DeltaV - freeform ghosties
     }
 
     private void OnScreenLoad()
@@ -56,6 +68,15 @@ public sealed class GhostUIController : UIController, IOnSystemChanged<GhostSyst
         system.GhostRoleCountUpdated -= OnRoleCountUpdated;
     }
 
+    // Begin DeltaV
+    private void OnRespawnReseted(RespawnResetEvent ev, EntitySessionEventArgs args)
+    {
+        DeathTime = ev.Time;
+        UpdateGui();
+        UpdateRespawn();
+    }
+    // End DeltaV
+
     public void UpdateGui()
     {
         if (Gui == null)
@@ -66,6 +87,13 @@ public sealed class GhostUIController : UIController, IOnSystemChanged<GhostSyst
         Gui.Visible = _system?.IsGhost ?? false;
         Gui.Update(_system?.AvailableGhostRoleCount, _system?.Player?.CanReturnToBody);
     }
+
+    // Begin Frontier
+    private void UpdateRespawn()
+    {
+        Gui?.UpdateRespawn(DeathTime);
+    }
+    // End Frontier
 
     private void OnPlayerRemoved(GhostComponent component)
     {
@@ -83,6 +111,7 @@ public sealed class GhostUIController : UIController, IOnSystemChanged<GhostSyst
             return;
 
         Gui.Visible = true;
+        UpdateRespawn(); // Frontier, DeltaV
         UpdateGui();
     }
 
@@ -125,11 +154,21 @@ public sealed class GhostUIController : UIController, IOnSystemChanged<GhostSyst
         Gui.RequestWarpsPressed += RequestWarps;
         Gui.ReturnToBodyPressed += ReturnToBody;
         Gui.GhostRolesPressed += GhostRolesPressed;
+        Gui.VentCritterPressed += OnVentCritterPressed; // DeltaV - freeform ghosties
+        Gui.VentCritterSelected += OnVentCritterSelected; // DeltaV - freeform ghosties
         Gui.TargetWindow.WarpClicked += OnWarpClicked;
         Gui.TargetWindow.OnGhostnadoClicked += OnGhostnadoClicked;
+        Gui.GhostRespawnPressed += GuiOnGhostRespawnPressed; // Frontier
 
         UpdateGui();
     }
+
+    // Begin Frontier
+    private void GuiOnGhostRespawnPressed()
+    {
+        _consoleHost.ExecuteCommand("ghostrespawn");
+    }
+    // End Frontier
 
     public void UnloadGui()
     {
@@ -139,7 +178,10 @@ public sealed class GhostUIController : UIController, IOnSystemChanged<GhostSyst
         Gui.RequestWarpsPressed -= RequestWarps;
         Gui.ReturnToBodyPressed -= ReturnToBody;
         Gui.GhostRolesPressed -= GhostRolesPressed;
+        Gui.VentCritterPressed -= OnVentCritterPressed; // DeltaV - freeform ghosties
+        Gui.VentCritterSelected -= OnVentCritterSelected; // DeltaV - freeform ghosties
         Gui.TargetWindow.WarpClicked -= OnWarpClicked;
+        Gui.GhostRespawnPressed -= GuiOnGhostRespawnPressed; // Frontier
 
         Gui.Hide();
     }
@@ -160,4 +202,21 @@ public sealed class GhostUIController : UIController, IOnSystemChanged<GhostSyst
     {
         _system?.OpenGhostRoles();
     }
+
+    // Begin DeltaV - freeform ghosties
+    private void OnVentCritterPressed()
+    {
+        _net.SendSystemNetworkMessage(new DVSpawnableGhostRoleCooldownRequestEvent());
+    }
+
+    private void OnVentCritterSelected(ProtoId<DVSpawnableGhostRolePrototype> role)
+    {
+        _net.SendSystemNetworkMessage(new DVSpawnableGhostRoleRequestEvent(role));
+    }
+
+    private void OnVentCritterCooldownUpdate(DVSpawnableGhostRoleCooldownUpdateEvent msg, EntitySessionEventArgs args)
+    {
+        Gui?.VentCritterWindow.SetCooldownEnd(msg.CooldownEnd);
+    }
+    // End DeltaV - freeform ghosties
 }

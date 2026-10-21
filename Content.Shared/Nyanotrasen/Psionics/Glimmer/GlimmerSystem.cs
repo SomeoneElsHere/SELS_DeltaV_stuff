@@ -1,6 +1,6 @@
 using Robust.Shared.Serialization;
 using Robust.Shared.Configuration;
-using Content.Shared.CCVar;
+using Content.Shared._DV.CCVars;
 using Content.Shared.GameTicking;
 
 namespace Content.Shared.Psionics.Glimmer
@@ -15,15 +15,23 @@ namespace Content.Shared.Psionics.Glimmer
         public int Glimmer
         {
             get { return _glimmer; }
-            set { _glimmer = _enabled ? Math.Clamp(value, 0, 1000) : 0; }
+            set
+            {
+                var newGlimmer = _enabled ? Math.Clamp(value, 0, 1000) : 0;
+                if (_glimmer == newGlimmer)
+                    return;
+
+                _glimmer = newGlimmer;
+                RaiseNetworkEvent(new GlimmerChangedEvent(_glimmer));
+            }
         }
         private bool _enabled;
         public override void Initialize()
         {
             base.Initialize();
             SubscribeLocalEvent<RoundRestartCleanupEvent>(Reset);
-            _enabled = _cfg.GetCVar(CCVars.GlimmerEnabled);
-            _cfg.OnValueChanged(CCVars.GlimmerEnabled, value => _enabled = value, true);
+            _enabled = _cfg.GetCVar(DCCVars.GlimmerEnabled);
+            _cfg.OnValueChanged(DCCVars.GlimmerEnabled, value => _enabled = value, true);
         }
 
         private void Reset(RoundRestartCleanupEvent args)
@@ -61,5 +69,16 @@ namespace Content.Shared.Psionics.Glimmer
         High,
         Dangerous,
         Critical,
+    }
+
+    [Serializable, NetSerializable]
+    public sealed class GlimmerChangedEvent : EntityEventArgs
+    {
+        public int Glimmer { get; }
+
+        public GlimmerChangedEvent(int glimmer)
+        {
+            Glimmer = glimmer;
+        }
     }
 }

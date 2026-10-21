@@ -13,6 +13,8 @@
   - type: Appearance
   - type: Charger
     slotId: charger_slot
+  - type: ApcPowerReceiver
+    powerLoad: 1 # same as draw given in ChargerComponent.PassiveDraw; increased when it is actually charging something
   - type: Anchorable
     delay: 1
   - type: Destructible
@@ -72,6 +74,7 @@
   parent: BaseItemRecharger
   id: PowerCellRecharger
   name: cell recharger
+  description: An older model recharger that can recharge power cells.
   components:
   - type: Sprite
     sprite: Structures/Power/cell_recharger.rsi
@@ -86,6 +89,10 @@
       visible: false
   - type: Machine
     board: CellRechargerCircuitboard
+  # Begin DeltaV additions
+  - type: Charger
+    chargeRate: 40
+  # End DeltaV additions
   - type: WiresPanel
   - type: GenericVisualizer
     visuals:
@@ -105,11 +112,15 @@
           tags:
           - PowerCell
           - PowerCellSmall
+        blacklist:
+          tags:
+          - PotatoBattery
 
 - type: entity
   parent: [ BaseItemRecharger, ConstructibleMachine ]
   id: PowerCageRecharger
   name: cage recharger
+  description: A specialized machine made for recharging the heavy cage batteries used by ship-mounted weapons.
   components:
   - type: Fixtures
     fixtures:
@@ -128,19 +139,22 @@
     color: "#03fc4e"
     energy: 0.7
   - type: Charger
-    chargeRate: 50
+    chargeRate: 400 # DeltaV - Raised from 50 to 400
   - type: Sprite
     sprite: Structures/Power/cage_recharger.rsi
-  - type: PowerCellSlot
-    cellSlotId: charger_slot
-  - type: ItemSlots
+  - type: ItemSlots # DeltaV - Removed PowerCellSlot
     slots:
       charger_slot:
         ejectOnInteract: true
-        name: Power cage
         whitelist:
           tags:
           - PowerCage
+          components:
+          - BatteryAmmoProvider # DeltaV - allows hitscan guns to be charged
+        blacklist:
+          tags:
+          - PowerCell
+          - GamblagatorCartridge # DeltaV - Disallows recharging of superweapon
   - type: Machine
     board: PowerCageRechargerCircuitboard
   - type: StaticPrice
@@ -150,30 +164,42 @@
   parent: BaseItemRecharger
   id: WeaponCapacitorRecharger
   name: recharger
+  description: A modern recharging station that can fit both power cells and small electronic devices.
   components:
+# Begin DeltaV Changes - Directional Sprite
   - type: Sprite
-    sprite: Structures/Power/recharger.rsi
+    sprite: _DV/Structures/Power/recharger.rsi
+    snapCardinals: false
+  - type: Rotatable
+# End DeltaV Changes - Directional Sprite
   - type: Machine
     board: WeaponCapacitorRechargerCircuitboard
-  # no powercellslot since stun baton etc arent powercells
   - type: ItemSlots
     slots:
       charger_slot:
         ejectOnInteract: true
         whitelist:
           components:
-          - HitscanBatteryAmmoProvider
-          - ProjectileBatteryAmmoProvider
+          - BatteryAmmoProvider
           - Stunbaton
+          - PowerCell
+        blacklist:
+          tags:
+          - PotatoBattery
+          - GamblagatorCartridge # DeltaV - prevents recharging of superweapon cartridges
 
 - type: entity
   parent: BaseItemRecharger
   id: TurboItemRecharger
   name: turbo recharger
-  description: An overclocked recharger that's been adapted with a global port.
+  description: An overclocked recharger. Not recommended for use around asthmatics.
   components:
+# Begin DeltaV Changes - Directional Sprite
   - type: Sprite
-    sprite: Structures/Power/turbo_recharger.rsi
+    sprite: _DV/Structures/Power/turbo_recharger.rsi
+    snapCardinals: false
+  - type: Rotatable
+# End DeltaV Changes - Directional Sprite
   - type: Machine
     board: TurboItemRechargerCircuitboard
   - type: Charger
@@ -184,28 +210,32 @@
         ejectOnInteract: true
         whitelist:
           components:
-          - HitscanBatteryAmmoProvider
-          - ProjectileBatteryAmmoProvider
+          - BatteryAmmoProvider
           - Stunbaton
           - PowerCell
         blacklist:
           tags:
           - PotatoBattery
+          - GamblagatorCartridge # DeltaV - Disallows recharging of superweapon
 
 - type: entity
-  parent: BaseItemRecharger
+  parent: [ BaseItemRecharger, BaseWallmount ]
   id: WallWeaponCapacitorRecharger
   name: wall recharger
+  description: A compact wall-mounted recharger. It can only recharge electronic devices and has no space for power cells.
   components:
+# Begin DeltaV Changes - Directional Sprite
+  - type: Rotatable
   - type: Sprite
-    sprite: Structures/Power/wall_recharger.rsi
+    sprite: _DV/Structures/Power/wall_recharger.rsi
+    snapCardinals: false
+# End DeltaV Changes - Directional Sprite
     layers:
     - map: ["enum.PowerChargerVisualLayers.Base"]
       state: "empty"
     - map: ["enum.PowerChargerVisualLayers.Light"]
       state: "light-off"
       shader: "unshaded"
-  - type: WallMount
   - type: Charger
     chargeRate: 25
   - type: ItemSlots
@@ -214,9 +244,12 @@
         ejectOnInteract: true
         whitelist:
           components:
-          - HitscanBatteryAmmoProvider
-          - ProjectileBatteryAmmoProvider
+          - BatteryAmmoProvider
           - Stunbaton
+        blacklist:
+          tags:
+          - PotatoBattery
+          - GamblagatorCartridge # DeltaV - Disallows recharging of superweapon
 
 - type: entity
   parent: BaseRecharger
@@ -226,6 +259,7 @@
   components:
   - type: Sprite
     sprite: Structures/Power/borg_charger.rsi
+    noRot: True
     layers:
       - state: borgcharger-u1
         map: ["base"]
@@ -293,3 +327,23 @@
       entity_storage: !type:Container
       machine_board: !type:Container
       machine_parts: !type:Container
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.48
+        density: 190
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+
+- type: entity
+  parent: BorgCharger
+  id: BorgChargerXenoborg
+  name: xenoborg recharging station
+  description: A stationary charger for xenoborgs. Feels claustrophobic.
+  components:
+  - type: Sprite
+    sprite: Structures/Power/xenoborg_charger.rsi

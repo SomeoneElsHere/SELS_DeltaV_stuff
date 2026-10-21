@@ -53,6 +53,8 @@
   - type: VendingMachineRestock
     canRestock:
     - BoozeOMatInventory
+    - BoozeOMatUnlockedInventory # DeltaV - Make maint booz-o-mat refillable
+    - BoozeOMatCommandInventory # DeltaV - Make command booz-o-mat refillable
   - type: Sprite
     layers:
     - state: base
@@ -85,6 +87,7 @@
   - type: VendingMachineRestock
     canRestock:
     - ChefvendInventory
+    - ChefvendUnlockedInventory # DeltaV - Make unlocked chefvend refillable
   - type: Sprite
     layers:
     - state: base
@@ -282,6 +285,12 @@
     canRestock:
     - NanoMedInventory
     - NanoMedPlusInventory
+    - NanoMedCivilianInventory
+    - NanoMedCivilianWallInventory
+    # Begin DeltaV Additions - NanoMed Civilian and Nanoblood Inventory refillable
+    - NanoMedPublicInventory
+    - NanobloodInventory
+    # End DeltaV Additions
   - type: Sprite
     layers:
     - state: base
@@ -337,6 +346,7 @@
     - SpaceUpInventory
     - SodaInventory
     - DrGibbInventory
+    - SmiteInventory
   - type: Sprite
     layers:
     - state: base
@@ -361,6 +371,7 @@
     - state: refill_sec
 
 - type: entity
+  abstract: true # DeltaV: Salvage vendor doesn't have stock anymore
   parent: BaseVendingMachineRestock
   id: VendingMachineRestockSalvageEquipment
   name: Salvage Vendor restock box

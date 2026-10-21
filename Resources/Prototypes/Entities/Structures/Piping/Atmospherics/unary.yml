@@ -26,7 +26,7 @@
   name: air vent
   description: Has a valve and a pump attached to it.
   placement:
-    mode: SnapgridCenter
+    mode: AlignAtmosPipeLayers # Funky
   components:
     - type: ApcPowerReceiver
     - type: ExtensionCableReceiver
@@ -36,12 +36,15 @@
       tags:
         - GasVent
         - Unstackable
+    - type: SubFloorHide
+      visibleLayers:
+      - enum.SubfloorLayers.FirstLayer
     - type: Sprite
       drawdepth: FloorObjects
-      sprite: Structures/Piping/Atmospherics/vent.rsi
+      sprite: _DV/Structures/Piping/Atmospherics/vent.rsi # DeltaV
       layers:
         - sprite: Structures/Piping/Atmospherics/pipe.rsi
-          state: pipeHalf
+          state: pipeUnaryConnectors
           map: [ "enum.PipeVisualLayers.Pipe" ]
         - state: vent_off
           map: [ "enabled", "enum.SubfloorLayers.FirstLayer" ]
@@ -69,6 +72,18 @@
       sound:
         path: /Audio/Ambience/Objects/gas_vent.ogg
     - type: Weldable
+    - type: AtmosMonitoringConsoleDevice
+      navMapBlip: GasVentOpening
+    - type: GuideHelp
+      guides:
+      - AirVent
+      - DeviceMonitoringAndControl
+    - type: AtmosPipeLayers # Funky
+      alternativePrototypes:
+        Primary: GasVentPump
+        Secondary: GasVentPumpAlt1
+        Tertiary: GasVentPumpAlt2
+    - type: NodeCrawlVentAccess # DeltaV
 
 - type: entity
   parent: GasUnaryBase
@@ -76,14 +91,17 @@
   name: passive vent
   description: It's an open vent.
   placement:
-    mode: SnapgridCenter
+    mode: AlignAtmosPipeLayers # Funky
   components:
+    - type: SubFloorHide
+      visibleLayers:
+      - enum.SubfloorLayers.FirstLayer
     - type: Sprite
       drawdepth: FloorObjects
-      sprite: Structures/Piping/Atmospherics/vent.rsi
+      sprite: _DV/Structures/Piping/Atmospherics/vent.rsi # DeltaV
       layers:
         - sprite: Structures/Piping/Atmospherics/pipe.rsi
-          state: pipeHalf
+          state: pipeUnaryConnectors
           map: [ "enum.PipeVisualLayers.Pipe" ]
         - state: vent_passive
           map: [ "enum.SubfloorLayers.FirstLayer" ]
@@ -93,6 +111,17 @@
     - type: Construction
       graph: GasUnary
       node: passivevent
+    - type: AtmosMonitoringConsoleDevice
+      navMapBlip: GasVentOpening
+    - type: GuideHelp
+      guides:
+      - PassiveVent
+    - type: AtmosPipeLayers # Funky
+      alternativePrototypes:
+        Primary: GasPassiveVent
+        Secondary: GasPassiveVentAlt1
+        Tertiary: GasPassiveVentAlt2
+    - type: NodeCrawlVentAccess # DeltaV
 
 - type: entity
   parent: [GasUnaryBase, AirSensorBase]
@@ -100,7 +129,7 @@
   name: air scrubber
   description: Has a valve and pump attached to it.
   placement:
-    mode: SnapgridCenter
+    mode: AlignAtmosPipeLayers # Funky
   components:
     - type: ApcPowerReceiver
     - type: ExtensionCableReceiver
@@ -110,12 +139,15 @@
       tags:
         - GasScrubber
         - Unstackable
+    - type: SubFloorHide
+      visibleLayers:
+      - enum.SubfloorLayers.FirstLayer
     - type: Sprite
       drawdepth: FloorObjects
-      sprite: Structures/Piping/Atmospherics/scrubber.rsi
+      sprite: _DV/Structures/Piping/Atmospherics/scrubber.rsi # DeltaV
       layers:
         - sprite: Structures/Piping/Atmospherics/pipe.rsi
-          state: pipeHalf
+          state: pipeUnaryConnectors
           map: [ "enum.PipeVisualLayers.Pipe" ]
         - state: scrub_off
           map: [ "enabled", "enum.SubfloorLayers.FirstLayer" ]
@@ -142,6 +174,19 @@
       sound:
         path: /Audio/Ambience/Objects/gas_vent.ogg
     - type: Weldable
+    - type: AtmosMonitoringConsoleDevice
+      navMapBlip: GasVentScrubber
+    - type: VentCritterSpawnLocation # DeltaV
+    - type: GuideHelp
+      guides:
+      - AirScrubber
+      - DeviceMonitoringAndControl
+    - type: AtmosPipeLayers # Funky
+      alternativePrototypes:
+        Primary: GasVentScrubber
+        Secondary: GasVentScrubberAlt1
+        Tertiary: GasVentScrubberAlt2
+    - type: NodeCrawlVentAccess # DeltaV
 
 - type: entity
   parent: GasUnaryBase
@@ -149,13 +194,13 @@
   name: air injector
   description: Has a valve and pump attached to it.
   placement:
-    mode: SnapgridCenter
+    mode: AlignAtmosPipeLayers # Funky
   components:
     - type: Sprite
       drawdepth: FloorObjects
       sprite: Structures/Piping/Atmospherics/outletinjector.rsi
       layers:
-        - state: pipeHalf
+        - state: pipeUnaryConnectors
           sprite: Structures/Piping/Atmospherics/pipe.rsi
           map: [ "enum.PipeVisualLayers.Pipe" ]
         - state: injector
@@ -164,6 +209,7 @@
           shader: unshaded
           map: [ "enum.LightLayers.Unshaded" ]
           color: "#990000"
+    - type: Appearance
     - type: GenericVisualizer
       visuals:
        # toggle color of the unshaded light:
@@ -171,7 +217,6 @@
          enum.LightLayers.Unshaded:
            True: { color: "#5eff5e" }
            False: { color: "#990000" }
-    - type: Appearance
     - type: PipeColorVisuals
     - type: GasOutletInjector
     - type: Construction
@@ -181,6 +226,17 @@
       visibleLayers:
       - enum.SubfloorLayers.FirstLayer
       - enum.LightLayers.Unshaded
+    - type: AtmosMonitoringConsoleDevice
+      navMapBlip: GasVentOpening
+    - type: GuideHelp
+      guides:
+      - AirInjector
+    - type: AtmosPipeLayers # Funky
+      alternativePrototypes:
+        Primary: GasOutletInjector
+        Secondary: GasOutletInjectorAlt1
+        Tertiary: GasOutletInjectorAlt2
+    - type: NodeCrawlVentAccess # DeltaV
 
 - type: entity
   parent: [ BaseMachinePowered, ConstructibleMachine ]
@@ -198,6 +254,12 @@
     - type: Rotatable
     - type: GasThermoMachine
     - type: AtmosPipeColor
+    - type: AtmosPipeLayers
+      spriteLayersRsiPaths:
+        enum.PipeVisualLayers.Pipe:
+          Primary: Structures/Piping/Atmospherics/thermomachine.rsi
+          Secondary: Structures/Piping/Atmospherics/thermomachine_alt1.rsi
+          Tertiary: Structures/Piping/Atmospherics/thermomachine_alt2.rsi
     - type: AtmosDevice
     - type: UserInterface
       interfaces:
@@ -225,6 +287,13 @@
       examinableAddress: true
     - type: WiredNetworkConnection
     - type: PowerSwitch
+    - type: AtmosMonitoringConsoleDevice
+      navMapBlip: Thermoregulator
+    - type: GuideHelp
+      guides:
+      - Thermomachines
+    - type: CrawlableNode # DeltaV - node crawling
+      reachableNodeTypes: [ Content.Server.NodeContainer.Nodes.PipeNode ]
 
 - type: entity
   parent: BaseGasThermoMachine
@@ -370,6 +439,7 @@
       map: ["enum.SolutionContainerLayers.Fill"]
       visible: false
     - state: trans
+  - type: Appearance
   - type: GenericVisualizer
     visuals:
       enum.PowerDeviceVisuals.Powered:
@@ -379,15 +449,20 @@
   - type: SolutionContainerVisuals
     maxFillLevels: 7
     fillBaseName: fill-
-  - type: Appearance
   - type: PipeColorVisuals
   - type: Rotatable
   - type: GasCondenser
   - type: AtmosPipeColor
+  - type: AtmosPipeLayers
+    spriteLayersRsiPaths:
+      enum.PipeVisualLayers.Pipe:
+        Primary: Structures/Piping/Atmospherics/condenser.rsi
+        Secondary: Structures/Piping/Atmospherics/condenser_alt1.rsi
+        Tertiary: Structures/Piping/Atmospherics/condenser_alt2.rsi
   - type: AtmosDevice
   - type: PipeRestrictOverlap
   - type: ApcPowerReceiver
-    powerLoad: 10000
+    powerLoad: 2000 # DeltaV
   - type: Machine
     board: CondenserMachineCircuitBoard
   - type: WiresPanel
@@ -430,3 +505,11 @@
   - type: ExaminableSolution
     solution: tank
   - type: PowerSwitch
+  - type: AtmosMonitoringConsoleDevice
+    navMapBlip: Thermoregulator
+  - type: GuideHelp
+    guides:
+    - GasCondensing
+  - type: CrawlableNode # DeltaV - node crawling
+    reachableNodeTypes: [ Content.Server.NodeContainer.Nodes.PipeNode ]
+

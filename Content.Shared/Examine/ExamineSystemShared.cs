@@ -1,10 +1,8 @@
-using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
-using System.Text;
 using Content.Shared.Eye.Blinding.Components;
 using Content.Shared.Ghost;
 using Content.Shared.Interaction;
+using Content.Shared.Inventory; // Harmony - for lanyards
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using JetBrains.Annotations;
@@ -42,7 +40,7 @@ namespace Content.Shared.Examine
         public const float DeadExamineRange = 0.75f;
 
         public const float ExamineRange = 16f;
-        protected const float ExamineDetailsRange = 3f;
+        protected const float ExamineDetailsRange = ExamineRange; // DeltaV - increase examine range
 
         protected const float ExamineBlurrinessMult = 2.5f;
 
@@ -114,7 +112,7 @@ namespace Content.Shared.Examine
             if (!examinerComp.CheckInRangeUnOccluded)
                 return true;
 
-            if (EntityManager.GetComponent<TransformComponent>(examiner).MapID != target.MapId)
+            if (Comp<TransformComponent>(examiner).MapID != target.MapId)
                 return false;
 
             // Do target InRangeUnoccluded which has different checks.
@@ -296,7 +294,7 @@ namespace Content.Shared.Examine
     ///     If you're pushing multiple messages that should be grouped together (or ordered in some way),
     ///     call <see cref="PushGroup"/> before pushing and <see cref="PopGroup"/> when finished.
     /// </summary>
-    public sealed class ExaminedEvent : EntityEventArgs
+    public sealed class ExaminedEvent : EntityEventArgs, IInventoryRelayEvent //Harmony InventoryRelayEvent for Lanyards
     {
         /// <summary>
         ///     The message that will be displayed as the examine text.
@@ -385,6 +383,8 @@ namespace Content.Shared.Examine
                     totalMessage.PushNewline();
             }
 
+            totalMessage.TrimEnd();
+
             return totalMessage;
         }
 
@@ -409,8 +409,10 @@ namespace Content.Shared.Examine
         private void PopGroup()
         {
             DebugTools.Assert(_currentGroupPart != null);
-            if (_currentGroupPart != null)
+            if (_currentGroupPart != null && !_currentGroupPart.Message.IsEmpty)
+            {
                 Parts.Add(_currentGroupPart);
+            }
 
             _currentGroupPart = null;
         }
@@ -528,6 +530,7 @@ namespace Content.Shared.Examine
         }
 
         private record ExamineMessagePart(FormattedMessage Message, int Priority, bool DoNewLine, string? Group);
+        public SlotFlags TargetSlots { get; } = SlotFlags.NECK; // Harmony - For targeting lanyards.
     }
 
 

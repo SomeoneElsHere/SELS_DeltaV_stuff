@@ -5,16 +5,18 @@
     CigPackRed: 2
     CigPackBlue: 2
     CigPackBlack: 2
-    CigPackPurple: 2 # DeltaV 
+    CigPackPurple: 2 # DeltaV
     CigPackCandy: 2 # DeltaV
     CigPackMixed: 2
     CigarCase: 1
     SmokingPipeFilledTobacco: 1
-    # Vape: 1 # DeltaV - Disable the Vape
+    Vape: 1
     Matchbox: 5
     PackPaperRollingFilters: 3
     CheapLighter: 4
     Lighter: 2
     FlippoLighter: 2
-  emaggedInventory:
-    CigPackSyndicate: 1
+    GroundTobacco: 6 #DeltaV - Moved this from contraband
+  contrabandInventory:
+    CigarGold: 2
+    Igniter: 1

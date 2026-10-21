@@ -20,6 +20,18 @@ namespace Content.Shared.Anomaly.Components;
 public sealed partial class AnomalyComponent : Component
 {
     /// <summary>
+    /// Imp. If true, skips doing supercritical logic for this anomaly. Used for Anomalites.
+    /// </summary>
+    [DataField]
+    public bool CannotSupercrit;
+
+    /// <summary>
+    /// imp. if true, skips random pulsing and health change over time.
+    /// </summary>
+    [DataField]
+    public bool CannotRandomPulse;
+
+    /// <summary>
     /// How likely an anomaly is to grow more dangerous. Moves both up and down.
     /// Ranges from 0 to 1.
     /// Values less than 0.5 indicate stability, whereas values greater
@@ -129,6 +141,20 @@ public sealed partial class AnomalyComponent : Component
     /// </summary>
     [DataField]
     public SoundSpecifier? SupercriticalSound = new SoundCollectionSpecifier("Explosion");
+
+    /// <summary>
+    /// The sound plays at the start of the animation when an anomaly goes supercritical
+    /// </summary>
+    [DataField]
+    public SoundSpecifier? SupercriticalSoundAtAnimationStart;
+
+    /// <summary>
+    /// The length of the animation before it goes supercritical in seconds.
+    /// </summary>
+    ///
+    [DataField, AutoNetworkedField]
+    [ViewVariables(VVAccess.ReadWrite)]
+    public TimeSpan SupercriticalDuration = TimeSpan.FromSeconds(10f);
     #endregion
 
     /// <summary>
@@ -259,6 +285,11 @@ public sealed partial class AnomalyComponent : Component
 
     [DataField]
     public bool DeleteEntity = true;
+
+    // DeltaV - Colossus additions START
+    [DataField]
+    public bool AlwaysGrow;
+    // DeltaV - Colossus additions END
 }
 
 /// <summary>
@@ -282,7 +313,7 @@ public readonly record struct AnomalySupercriticalEvent(EntityUid Anomaly, float
 /// <param name="Anomaly">The anomaly being shut down.</param>
 /// <param name="Supercritical">Whether or not the anomaly shut down passively or via a supercritical event.</param>
 [ByRefEvent]
-public readonly record struct AnomalyShutdownEvent(EntityUid Anomaly, bool Supercritical);
+public readonly record struct AnomalyShutdownEvent(EntityUid Anomaly, bool Supercritical, bool Forced); // DeltaV - Add Forced
 
 /// <summary>
 /// Event broadcast when an anomaly's severity is changed.
@@ -310,3 +341,10 @@ public readonly record struct AnomalyHealthChangedEvent(EntityUid Anomaly, float
 /// </summary>
 [ByRefEvent]
 public readonly record struct AnomalyBehaviorChangedEvent(EntityUid Anomaly, ProtoId<AnomalyBehaviorPrototype>? Old, ProtoId<AnomalyBehaviorPrototype>? New);
+
+/// <summary>
+/// Event of anomaly being affected by exotic particle.
+/// Is raised when particle collides with artifact.
+/// </summary>
+[ByRefEvent]
+public record struct AnomalyAffectedByParticleEvent(EntityUid Anomaly, EntityUid Particle);

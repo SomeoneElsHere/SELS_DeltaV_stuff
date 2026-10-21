@@ -4,31 +4,30 @@
   description: job-description-mantis
   playTimeTracker: JobForensicMantis
   requirements:
-    - !type:OverallPlaytimeRequirement
-      time: 18000
-    - !type:DepartmentTimeRequirement
-      department: Epistemics # DeltaV - Epistemics Department replacing Science
-      time: 3600
+    - !type:RoleTimeRequirement
+      role: JobChaplain
+      time: 18000 # 5 hours
+    - !type:RoleTimeRequirement
+      role: JobScientist
+      time: 18000 # 5 hours
   startingGear: ForensicMantisGear
   icon: "JobIconForensicMantis"
   supervisors: job-supervisors-rd
-  antagAdvantage: 4 # DeltaV - Protolathe, Psionics, Has an objective item, anomaly stuff, glimmer factor
+  antagAdvantage: 2 # DeltaV - Psionics, Has an objective item
   canBeAntag: true # DeltaV - Mantis is no longer a Detective
-  # whitelistRequired: true
   access:
   - Research
   - Maintenance
-  - Mantis # DeltaV - Psionic Mantis, see Resources/Prototypes/DeltaV/Access/epistemics.yml
+  - Mantis # DeltaV - Psionic Mantis, see Resources/Prototypes/_DV/Access/epistemics.yml
   special:
   - !type:AddComponentSpecial
     components:
-    - type: Psionic
-    - type: MetapsionicPower
+    - type: MetapsionicPulsePower
 
 - type: startingGear
   id: ForensicMantisGear
   equipment:
-    id: ForensicMantisPDA
+    id: PsionicMantisPDA
     eyes: ClothingEyesGlassesSunglasses
     ears: ClothingHeadsetScience # DeltaV - Mantis is part of Epistemics
     belt: ClothingBeltMantis
@@ -38,3 +37,18 @@
     - PillMindbreakerToxin
     - BoxFolderGrey
     - RubberStampMantis
+    - ClaridisolSynth
+
+- type: chameleonOutfit
+  id: ForensicMantisChameleonOutfit
+  job: ForensicMantis
+  equipment:
+    id: PsionicMantisPDA
+    eyes: ClothingEyesGlassesSunglasses
+    ears: ClothingHeadsetScience
+    belt: ClothingBeltMantis
+    head: ClothingHeadHatFezMantis
+    jumpsuit: ClothingUniformJumpsuitMantis
+    outerClothing: ClothingOuterCoatMantis
+    shoes: ClothingShoesBootsMantis
+    gloves: ClothingHandsGlovesColorWhite

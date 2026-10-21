@@ -3,14 +3,10 @@
   name: job-name-chaplain
   description: job-description-chaplain
   playTimeTracker: JobChaplain
-  antagAdvantage: 4 # DeltaV - Protolathe, Increased Psionics, Gib machine, anomaly access, glimmer factor
-  requirements:
-    - !type:DepartmentTimeRequirement
-      department: Epistemics # DeltaV - Epistemics Department replacing Science
-      time: 14400 #DeltaV 4 hours
+  antagAdvantage: 2 # DeltaV - Increased Psionics, Gib machine
   startingGear: ChaplainGear
   icon: "JobIconChaplain"
-  supervisors: job-supervisors-rd
+  supervisors: job-supervisors-rd # DeltaV - Change supervisor to mystagogue
   access:
   - Chapel
   - Research # DeltaV - Move Chaplain into Epistemics
@@ -19,10 +15,10 @@
   - !type:AddComponentSpecial
     components:
     - type: BibleUser #Lets them heal with bibles
-  - !type:AddComponentSpecial
-    components:
-    - type: PsionicBonusChance #Nyano - Summary: makes it more likely to become psionic.
-      multiplier: 3
+    - type: Condemned
+      soulOwnedNotDevil: true # This just means they won't suffer the effects of being condemned, while still not being able to sell their soul. - Goobstation
+  - !type:ModifyPsionicChanceSpecial # DeltaV - Chaplains are much more likely to be psionic.
+    jobBonusChance: 0.15 # Additional 15% chance.
 
 - type: startingGear
   id: ChaplainGear
@@ -32,5 +28,16 @@
     ears: ClothingHeadsetScience # DeltaV - Move Chaplain into Epistemics
   storage:
     back:
-    - Bible
     - RubberStampChaplain
+
+- type: chameleonOutfit
+  id: ChaplainChameleonOutfit
+  job: Chaplain
+  equipment:
+    head: ClothingHeadHatPlaguedoctor
+    eyes: ClothingEyesGlasses
+    mask: ClothingMaskPlague
+    neck: ClothingNeckStoleChaplain
+    outerClothing: ClothingOuterPlagueSuit
+    gloves: ClothingHandsGlovesColorBlack
+

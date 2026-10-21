@@ -1,0 +1,43 @@
+# Jumpsuit
+- type: loadout
+  id: ClothingUniformJumpsuitCargoTechOveralls
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitCargoTechOveralls
+
+- type: loadout
+  id: ClothingUniformJumpsuitCargoTechPants
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitCargoTechPants
+
+- type: loadout
+  id: ClothingUniformJumpskirtCargoTechRomper
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtCargoTechRomper
+
+# Head
+- type: loadout
+  id: CargoTechnicianBeret
+  equipment:
+    head: ClothingHeadHatBeretLogi
+
+# PDA
+- type: loadout
+  id: CargoPDA
+  equipment:
+    id: CargoPDA
+
+- type: loadout
+  id: DeckWorkerPDA
+  equipment:
+    id: DeckWorkerPDA
+
+- type: loadout
+  id: InventoryAssociatePDA
+  equipment:
+    id: InventoryAssociatePDA
+
+# OuterClothing
+- type: loadout
+  id: BomberLogistic
+  equipment:
+    outerClothing: ClothingOuterCoatBomberLogistic

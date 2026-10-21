@@ -4,56 +4,65 @@
   description: job-description-hos
   playTimeTracker: JobHeadOfSecurity
   requirements:
-    - !type:DepartmentTimeRequirement
-      department: Security
-      time: 72000 # DeltaV - 20 hours
     - !type:RoleTimeRequirement
       role: JobWarden
-      time: 36000 #DeltaV 10 hrs
-    - !type:DepartmentTimeRequirement # DeltaV - Command dept time requirement
-      department: Command
-      time: 36000 # 10 hours
-    - !type:OverallPlaytimeRequirement
-      time: 90000 # DeltaV - 25 hours, was 40
+      time: 1h
+    - !type:RoleTimeRequirement
+      role: JobDetective
+      time: 1h # knowing how to use the tools is important
+    - !type:RoleTimeRequirement
+      role: JobSecurityOfficer
+      time: 5h
+    - !type:DepartmentTimeRequirement
+      department: Security
+      time: 10h
   weight: 10
   startingGear: HoSGear
   icon: "JobIconHeadOfSecurity"
-  requireAdminNotify: true
+  requireAdminNotify: true # DeltaV
+  joinNotifyCrew: true # DeltaV
   supervisors: job-supervisors-captain
   canBeAntag: false
   whitelisted: true # DeltaV
   access:
   - HeadOfSecurity
   - Command
-  #- Brig  # Delta V: Removed
+  #- Brig # DeltaV - Removed brig access
   - Security
   - Armory
   - Maintenance
-  #- Service # Delta V: Access adjustments
   - External
   - Detective
   - Corpsman # DeltaV - added Corpsman access
   - Cryogenics
+  - GenpopEnter
+  - GenpopLeave
   special:
   - !type:AddImplantSpecial
     implants: [ MindShieldImplant ]
   - !type:AddComponentSpecial
     components:
       - type: CommandStaff
-  - !type:AddComponentSpecial
-    components:
-    - type: PsionicBonusChance #Nyano - Summary: makes it more likely to become psionic.
-      flatBonus: 0.025
+  - !type:ModifyPsionicChanceSpecial # DeltaV - Command Roles are more likely to be psionic.
+    jobBonusChance: 0.05 # Additional 5% chance.
 
 - type: startingGear
   id: HoSGear
   equipment:
-    eyes: ClothingEyesGlassesSecurity
+    #eyes: ClothingEyesGlassesSecurity # DeltaV - loadouts
     id: HoSPDA
     gloves: ClothingHandsGlovesCombat
     ears: ClothingHeadsetAltSecurity
-    pocket1: WeaponPistolMk58Nonlethal
+    #pocket1: WeaponPistolMk58 # DeltaV - loadouts
   storage:
     back:
     - Flash
-    - MagazinePistol
+    #- MagazinePistol # DeltaV - loadouts
+
+- type: chameleonOutfit
+  id: HeadOfSecurityChameleonOutfit
+  job: HeadOfSecurity
+  hasMindShield: true
+  equipment:
+    mask: ClothingMaskGasSecurity
+    neck: ClothingNeckCloakHos

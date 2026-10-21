@@ -8,7 +8,7 @@
     noRot: true
     drawdepth: Mobs
     offset: "0.0,0.5"
-    sprite: DeltaV/Structures/Decoration/statues.rsi
+    sprite: _DV/Structures/Decoration/statues.rsi
     layers:
       - state: sophie
       - map: ["enum.SolutionContainerLayers.Fill"]
@@ -24,7 +24,6 @@
     channels:
     - Common
     - Science
-  - type: PotentialPsionic #this makes her easier to access for glimmer events, dw about it
   - type: Psionic
   - type: Grammar
     attributes:

@@ -15,7 +15,7 @@ public sealed partial class NukeopsRuleComponent : Component
     /// What will happen if all of the nuclear operatives will die. Used by LoneOpsSpawn event.
     /// </summary>
     [DataField]
-    public RoundEndBehavior RoundEndBehavior = RoundEndBehavior.ShuttleCall;
+    public RoundEndBehavior RoundEndBehavior = RoundEndBehavior.BecomeSurvival; // DeltaV - Change from ShuttlCall To BecomeSurvival
 
     /// <summary>
     /// Text for shuttle call if RoundEndBehavior is ShuttleCall.
@@ -72,10 +72,16 @@ public sealed partial class NukeopsRuleComponent : Component
     public TimeSpan WarNukieArriveDelay = TimeSpan.FromMinutes(15);
 
     /// <summary>
+    ///     Time crew can't call emergency shuttle after war declaration.
+    /// </summary>
+    [DataField]
+    public TimeSpan WarEvacShuttleDisabled = TimeSpan.FromMinutes(25);
+
+    /// <summary>
     ///     Minimal operatives count for war declaration
     /// </summary>
     [DataField]
-    public int WarDeclarationMinOps = 4;
+    public int WarDeclarationMinOps = 3; // DeltaV - was 4
 
     [DataField]
     public WinType WinType = WinType.Neutral;
@@ -135,5 +141,6 @@ public enum WinCondition : byte
     NukiesAbandoned,
     AllNukiesDead,
     SomeNukiesAlive,
-    AllNukiesAlive
+    AllNukiesAlive,
+    NukiesKidnappedHeads, // DeltaV - Hostage ops
 }

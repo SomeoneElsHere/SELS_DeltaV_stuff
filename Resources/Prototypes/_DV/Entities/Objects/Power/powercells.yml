@@ -1,0 +1,41 @@
+- type: entity
+  parent: BaseItem
+  id: GamblagatorCapacitor
+  name: gamblagator capacitor
+  description: A capacitor made with the positive charge of bluespace crystals, designed to power the Gamblagator rifle. Theoretically possible to recharge but a suitable recharger has not yet been developed.
+  components:
+  - type: Tag
+    tags:
+    - GamblagatorCartridge
+  - type: BatteryAmmoProvider
+    proto: GamblagatorLaser
+    fireCost: 1000
+  - type: Battery
+    maxCharge: 2000 # Shenanigan Prevention
+    startingCharge: 2000
+  - type: Item
+    storedRotation: -90
+  - type: PowerCell
+  - type: Riggable
+  - type: Sprite
+    sprite: _DV/Objects/Power/gamblagator_capacitors.rsi
+    state: capacitor
+
+- type: entity
+  parent: PowerCellHigh
+  id: PowerCellHighXenoborg
+  name: xenoborg power cell
+  description: A rechargeable power cell with many differences from our own designs. It seems to be somewhat resistant to electromagnetic pulses.
+  suffix: Full
+  components:
+  - type: Sprite
+    sprite: _DV/Objects/Power/power_cells.rsi
+    layers:
+    - map: [ "enum.PowerCellVisualLayers.Base" ]
+      state: xenoborg
+    - map: [ "enum.PowerCellVisualLayers.Unshaded" ]
+      state: o2
+      shader: unshaded
+  - type: EmpResistance # EMPs only remove 40% of charge
+    strengthMultiplier: 0.00864 # EMPs remove 50000j. High Caps hold 1080j. 40% of 1080 is 432. 40% of a high cap will be 1/(50000/432)=0.00864% of 50000
+    durationMultiplier: 0.4 # Disables only have 40% duration, around 4 seconds normally.

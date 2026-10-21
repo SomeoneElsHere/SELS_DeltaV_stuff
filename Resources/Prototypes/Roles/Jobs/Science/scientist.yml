@@ -3,19 +3,23 @@
   name: job-name-scientist
   description: job-description-scientist
   playTimeTracker: JobScientist
-  antagAdvantage: 2 # DeltaV - Protolathe, anomaly stuff, glimmer factor.   
   requirements:
     - !type:DepartmentTimeRequirement
-      department: Epistemics # DeltaV - Epistemics Department replacing Science
-      time: 14400 #4 hrs
+      department: Epistemics # DeltaV
+      time: 2.5h
   startingGear: ScientistGear
   icon: "JobIconScientist"
   supervisors: job-supervisors-rd
   access:
   - Research
   - Maintenance
-  extendedAccess: # DeltaV: Scientists get robotics access on lowpop
+  # Begin DeltaV Additions
+  extendedAccess:
   - Robotics
+  special:
+  - !type:ModifyPsionicChanceSpecial # Scientists are much more likely to be psionic.
+    jobBonusChance: 0.10 # Additional 10% chance.
+  # End DeltaV Additions
 
 - type: startingGear
   id: ScientistGear
@@ -24,3 +28,14 @@
   #storage:
     #back:
     #- Stuff
+
+- type: chameleonOutfit
+  id: ScientistChameleonOutfit
+  job: Scientist
+  equipment:
+    head: ClothingHeadBandSkull
+    eyes: ClothingEyesGlassesCheapSunglasses
+    mask: ClothingMaskGas
+    neck: ClothingNeckTieSci
+    outerClothing: ClothingOuterCoatRnd
+    gloves: ClothingHandsGlovesLatex

@@ -1,0 +1,85 @@
+## Static
+
+- type: latheRecipePack
+  id: BorgModulesSyndicateStatic
+  recipes:
+  - BorgModuleSyndicateWeapon
+  - BorgModuleRadioJammerRecharging
+  - BorgModuleMartyr
+  - BorgModuleCHIMP
+  - BorgModuleSyndicateRadio
+  - BorgModuleCrewMonitor
+  - SyndicateNeuroling
+  - BorgModuleOperative
+  - BorgModuleChameleonProjector
+  - BorgModuleBuccaneer
+  - BorgModuleSleeper
+  - IdChipRoboNeuroticist
+  - PowerCellMedium
+  - PowerCellHigh
+
+- type: latheRecipePack
+  id: BorgModulesResearched # For SRN, else they can NEVER get the advanced modules
+  recipes:
+  - BorgModuleSecurityChase
+  - BorgModuleSecurityEscalate
+  - BorgModuleSecurityBastion
+  - BorgModuleFauna
+  - BorgModuleAdvancedCleaning
+  - BorgModuleAdvancedTool
+  - BorgModuleAdvancedTopical
+  - BorgModuleAdvancedChemicalDV
+  - BorgModuleAdvancedMining
+
+- type: latheRecipePack
+  id: BorgModulesSecurityDeltaVStatic
+  recipes:
+  - BorgModuleSecurityDetective
+
+- type: latheRecipePack
+  id: BorgDVModulesStatic
+  recipes:
+  - BorgModuleDecoration
+  - BorgModuleFishing
+
+# Service Modules
+
+- type: latheRecipePack
+  id: BorgModulesServiceStaticDV
+  recipes:
+  - BorgModuleBureaucracy
+  - BorgModuleBoxing
+  - BorgModuleReporter
+  - BorgModuleMusique
+  - BorgModuleClowning
+
+# If you add anything to this, know that the SyndicateExosuitFabricator does not
+# get this pack due to IdChipBorgAA not being available to SRNs. Probably should
+# seperate the chip out if we ever add anything to this static pack.
+- type: latheRecipePack
+  id: BorgIdentificationStaticDeltaV
+  recipes:
+  - IdChipBorgAA
+
+## Dynamic
+
+- type: latheRecipePack
+  id: RoboticsDeltaV
+  recipes:
+  - ClothingEyesHudDiagnostic
+
+- type: latheRecipePack
+  id: BorgModulesSecurityDeltaV
+  recipes:
+  - BorgModuleSecurityChase
+  - BorgModuleSecurityEscalate
+  - BorgModuleSecurityBastion
+  - BorgModuleFauna
+
+- type: latheRecipePack
+  id: BorgModulesServiceDynamicDV
+  recipes:
+  - BorgModuleAdvancedBotany
+  - BorgModuleAdvancedChef
+  - BorgModuleAdvancedBartender
+  - BorgModuleDJ

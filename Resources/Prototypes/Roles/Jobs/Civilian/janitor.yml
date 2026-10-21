@@ -19,7 +19,7 @@
   id: JanitorGear
   equipment:
     shoes: ClothingShoesGaloshes
-    id: JanitorPDA
+    #id: JanitorPDA # DeltaV - Choose a PDA from the loadouts
     ears: ClothingHeadsetService
     belt: ClothingBeltJanitorFilled
   #storage:
@@ -35,6 +35,14 @@
     head: ClothingHeadHatCatEars
     ears: ClothingHeadsetService
     belt: ClothingBeltJanitorFilled
-  storage:
-    back:
-    - BoxSurvival
+
+- type: chameleonOutfit
+  id: JanitorChameleonOutfit
+  job: Janitor
+  equipment:
+    head: ClothingHeadHatPurplesoft
+    eyes: ClothingEyesGlassesCheapSunglasses
+    mask: ClothingMaskGas
+    neck: ClothingNeckScarfStripedPurple
+    outerClothing: ClothingOuterWinterJani
+    gloves: ClothingHandsGlovesJanitor

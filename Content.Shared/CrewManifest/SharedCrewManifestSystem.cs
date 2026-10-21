@@ -1,5 +1,4 @@
 using Content.Shared.Eui;
-using NetSerializer;
 using Robust.Shared.Serialization;
 
 namespace Content.Shared.CrewManifest;
@@ -48,15 +47,18 @@ public sealed class CrewManifestEntry
 {
     public string Name { get; }
 
+    public string Gender { get; } // Delta-V: Added gender to crew manifest
+
     public string JobTitle { get; }
 
     public string JobIcon { get; }
 
     public string JobPrototype { get; }
 
-    public CrewManifestEntry(string name, string jobTitle, string jobIcon, string jobPrototype)
+    public CrewManifestEntry(string name, string gender, string jobTitle, string jobIcon, string jobPrototype)
     {
         Name = name;
+        Gender = gender; // Delta-V: Added gender to crew manifest
         JobTitle = jobTitle;
         JobIcon = jobIcon;
         JobPrototype = jobPrototype;

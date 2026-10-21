@@ -2,26 +2,16 @@
 - type: loadoutEffectGroup
   id: SeniorOfficer
   effects:
- #   - !type:JobRequirementLoadoutEffect # DV - Remove Specific Role Timers
- #   requirement:
- #     !type:RoleTimeRequirement
- #     role: JobWarden
- #     time: 21600 #6 hrs
+  # - !type:JobRequirementLoadoutEffect # DV - Remove Specific Role Timers
+  #   requirement:
+  #     !type:RoleTimeRequirement
+  #     role: JobWarden
+  #     time: 6h
   - !type:JobRequirementLoadoutEffect
     requirement:
       !type:DepartmentTimeRequirement
       department: Security
-      time: 216000 # 60 hrs
-
-#Security Star
-- type: loadoutEffectGroup
-  id: SecurityStarWorthy
-  effects:
-    - !type:JobRequirementLoadoutEffect
-      requirement:
-        !type:DepartmentTimeRequirement
-        department: Security
-        time: 360000 #100 hrs
+      time: 60h
 
 # Head
 - type: loadout
@@ -60,16 +50,6 @@
   equipment:
     jumpsuit: ClothingUniformJumpskirtSecGrey
 
-- type: loadout # DeltaV
-  id: SecurityJumpsuitBlue
-  equipment:
-    jumpsuit: ClothingUniformJumpsuitSecBlue
-
-- type: loadout # DeltaV
-  id: SecurityJumpskirtBlue
-  equipment:
-    jumpsuit: ClothingUniformJumpskirtSecBlue
-
 - type: loadout
   id: SeniorOfficerJumpsuit
   effects:
@@ -85,22 +65,6 @@
     proto: SeniorOfficer
   equipment:
     jumpsuit: ClothingUniformJumpskirtSeniorOfficer
-
-- type: loadout # DeltaV
-  id: SeniorSecOfficerJumpsuit
-  effects:
-  - !type:GroupLoadoutEffect
-    proto: SeniorOfficer
-  equipment:
-    jumpsuit: ClothingUniformJumpsuitSecSenior
-
-- type: loadout # DeltaV
-  id: SeniorSecOfficerJumpskirt
-  effects:
-  - !type:GroupLoadoutEffect
-    proto: SeniorOfficer
-  equipment:
-    jumpsuit: ClothingUniformJumpskirtSecSenior
 
 # Back
 - type: loadout
@@ -122,28 +86,18 @@
 - type: loadout
   id: SecurityBelt
   equipment:
-    belt: ClothingBeltSecurityFilled
+    belt: ClothingBeltSecurityBeltCustom # DeltaV - loadouts
 
 - type: loadout
   id: SecurityWebbing
   equipment:
-    belt: ClothingBeltSecurityWebbingFilled
+    belt: ClothingBeltSecurityWebbingCustom # DeltaV - loadouts
 
 # Outerclothing
 - type: loadout
   id: ArmorVest
   equipment:
     outerClothing: ClothingOuterArmorBasic
-
-- type: loadout # DeltaV
-  id: PlateCarrier
-  equipment:
-    outerClothing: ClothingOuterArmorPlateCarrier
-
-- type: loadout # DeltaV
-  id: DuraVest
-  equipment:
-    outerClothing: ClothingOuterArmorDuraVest
 
 - type: loadout
   id: ArmorVestSlim
@@ -154,16 +108,6 @@
   id: SecurityOfficerWintercoat
   equipment:
     outerClothing: ClothingOuterWinterSec
-
-- type: loadout
-  id: StasecSweater
-  equipment:
-    outerClothing: ClothingOuterStasecSweater
-
-- type: loadout # DeltaV - security winter coat
-  id: StasecWinterCoat
-  equipment:
-    outerClothing: ClothingOuterCoatStasec
 
 # Shoes
 - type: loadout
@@ -194,13 +138,3 @@
     proto: SeniorOfficer
   equipment:
     id: SeniorOfficerPDA
-
-# Misc
-- type: loadout
-  id: SecStar
-  effects:
-  - !type:GroupLoadoutEffect
-    proto: SecurityStarWorthy
-  storage:
-    back:
-    - Dinkystar

@@ -5,22 +5,21 @@
   playTimeTracker: JobSecurityCadet
   requirements:
     - !type:OverallPlaytimeRequirement
-      time: 21600 # DeltaV - 6 hours
-#    - !type:DepartmentTimeRequirement # DeltaV - Removes time limit
-#      department: Security
-#      time: 54000 #15 hrs
-#      inverted: true # stop playing intern if you're good at security!
+      time: 10h
+    - !type:DepartmentTimeRequirement
+      department: Security
+      time: 5h
+      inverted: true # stop playing intern if you're good at security!
   startingGear: SecurityCadetGear
   icon: "JobIconSecurityCadet"
   supervisors: job-supervisors-security
   canBeAntag: false
   access:
   - Security
-  #- Brig # Delta V: Removed
+  #- Brig # DeltaV - Removed brig access
   - Maintenance
-  #- Service # Delta V: Access adjustments
   - External
-  #- Cryogenics # Delta V: Access adjustments
+  #- Cryogenics # DeltaV - No looting cryo for cadets
   special:
   - !type:AddImplantSpecial
     implants: [ MindShieldImplant ]
@@ -28,14 +27,27 @@
 - type: startingGear
   id: SecurityCadetGear
   equipment:
-    shoes: ClothingShoesBootsCombatFilled
+    shoes: ClothingShoesBootsJackFilled
+    neck: ClothingNeckNoviceMark # imp
     outerClothing: ClothingOuterArmorDuraVest # DeltaV - ClothingOuterArmorBasic replaced in favour of stab vest. Sucks to suck, cadets
     id: SecurityCadetPDA
     ears: ClothingHeadsetSecurity
     belt: ClothingBeltSecurityFilled
-#    pocket1: WeaponPistolMk58Nonlethal # DeltaV - Security Cadet doesn't spawn with a gun
+    pocket1: WeaponDisabler # DeltaV - loadouts, Security Cadet doesn't spawn with a gun
     pocket2: BookSecurity
   storage:
     back:
     - Flash
-#    - MagazinePistol # DeltaV - no
+    #- MagazinePistol # DeltaV - no
+
+- type: chameleonOutfit
+  id: SecurityCadetChameleonOutfit
+  job: SecurityCadet
+  hasMindShield: true
+  equipment:
+    head: ClothingHeadHelmetBasic
+    eyes: ClothingEyesHudSecurity
+    mask: ClothingMaskGasSecurity
+    neck: ClothingNeckScarfStripedRed
+    belt: ClothingBeltSecurity
+    gloves: ClothingHandsGlovesColorBlack

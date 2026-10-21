@@ -2,22 +2,37 @@
 
 - type: randomHumanoidSettings
   id: EventHumanoid
+  speciesBlacklist: [Allulalo] # Delta V - Allulalos are very limiting and it can suck to be randomized into one
   components:
     - type: RandomHumanoidAppearance
       randomizeName: false
     - type: GhostTakeoverAvailable
+    - type: IdBind
 
 - type: randomHumanoidSettings
   id: EventHumanoidMindShielded
   parent: EventHumanoid
   components:
-    - type: MindShield
+    - type: AutoImplant
+      implants:
+      - MindShieldImplant
     - type: AntagImmune
+
+- type: randomHumanoidSettings
+  id: EventHumanoidCentcomm
+  parent: EventHumanoidMindShielded
+  randomizeName: false
+  components:
+  - type: AutoImplant
+    implants:
+    - CentCommImplant # DeltaV - Change mindshield implant to centcomm implant
+    - DeathRattleImplantCentcomm
 
 ## Death Squad
 
 - type: entity
   id: RandomHumanoidSpawnerDeathSquad
+  categories: [ HideSpawnMenu ] # DeltaV - Deathsquad is not real
   name: Death Squad Agent
   suffix: ERTRole, Death Squad
   components:
@@ -26,15 +41,15 @@
       state: icon
     - type: RandomMetadata
       nameSegments:
-        - NamesFirstMilitaryLeader
-        - NamesLastMilitary
+        - NamesMilitaryFirstLeader
+        - NamesMilitaryLast
+      nameFormat: name-format-ert
     - type: RandomHumanoidSpawner
       settings: DeathSquad
 
 - type: randomHumanoidSettings
   id: DeathSquad
-  parent: EventHumanoidMindShielded
-  randomizeName: false
+  parent: EventHumanoidCentcomm
   components:
     - type: GhostRole
       name: ghost-role-information-Death-Squad-name
@@ -42,36 +57,36 @@
       rules: ghost-role-information-Death-Squad-rules
       raffle:
         settings: short
+      mindRoles:
+      - MindRoleGhostRoleFamiliar
+      job: DeathSquad
     - type: Loadout
       prototypes: [ DeathSquadGear ]
       roleLoadout: [ RoleSurvivalEVA ]
     - type: RandomMetadata
       nameSegments:
-        - NamesFirstMilitaryLeader
-        - NamesLastMilitary
+        - NamesMilitaryFirstLeader
+        - NamesMilitaryLast
+      nameFormat: name-format-ert
 
 
 ## ERT Leader
 
 - type: entity
   id: RandomHumanoidSpawnerERTLeader
+  categories: [ HideSpawnMenu ] # DeltaV - We have our own spawners
   name: ERT leader
   suffix: ERTRole, Basic
   components:
     - type: Sprite
       sprite: Markers/jobs.rsi
       state: ertleader
-    - type: RandomMetadata
-      nameSegments:
-      - NamesFirstMilitaryLeader
-      - NamesLastMilitary
     - type: RandomHumanoidSpawner
       settings: ERTLeader
 
 - type: randomHumanoidSettings
   id: ERTLeader
-  parent: EventHumanoidMindShielded
-  randomizeName: false
+  parent: EventHumanoidCentcomm
   components:
     - type: GhostRole
       name: ghost-role-information-ert-leader-name
@@ -82,17 +97,18 @@
       job: ERTLeader
     - type: Loadout
       prototypes: [ ERTLeaderGear ]
-      roleLoadout: [ RoleSurvivalExtended ]
+      roleLoadout: [ RoleSurvivalMilitaryDouble ]
     - type: RandomMetadata
       nameSegments:
-      - NamesFirstMilitaryLeader
-      - NamesLastMilitary
+      - NamesMilitaryLast
+      nameFormat: name-format-ert-leader
 
 - type: entity
   id: RandomHumanoidSpawnerERTLeaderEVA
+  categories: [ HideSpawnMenu ] # DeltaV - We have our own spawners
   parent: RandomHumanoidSpawnerERTLeader
   name: ERT leader
-  suffix: ERTRole, Armored EVA
+  suffix: ERTRole, EVA
   components:
     - type: Sprite
       sprite: Markers/jobs.rsi
@@ -104,55 +120,39 @@
   id: ERTLeaderEVA
   parent: ERTLeader
   components:
-    - type: GhostRole
-      name: ghost-role-information-ert-leader-name
-      description: ghost-role-information-ert-leader-description
-      rules: ghost-role-information-nonantagonist-rules
-      raffle:
-        settings: short
-      job: ERTLeader
     - type: Loadout
       prototypes: [ ERTLeaderGearEVA ]
-      roleLoadout: [ RoleSurvivalEVA ]
+      roleLoadout: [ RoleSurvivalMilitaryDouble ]
 
 - type: entity
-  id: RandomHumanoidSpawnerERTLeaderEVALecter
+  id: RandomHumanoidSpawnerERTLeaderArmed
+  categories: [ HideSpawnMenu ] # DeltaV - We have our own spawners
   parent: RandomHumanoidSpawnerERTLeaderEVA
-  suffix: ERTRole, Lecter, EVA
+  suffix: ERTRole, Armed, EVA
   components:
     - type: RandomHumanoidSpawner
-      settings: ERTLeaderEVALecter
+      settings: ERTLeaderArmed
 
 - type: randomHumanoidSettings
-  id: ERTLeaderEVALecter
+  id: ERTLeaderArmed
   parent: ERTLeaderEVA
   components:
-    - type: GhostRole
-      name: ghost-role-information-ert-leader-name
-      description: ghost-role-information-ert-leader-description
-      rules: ghost-role-information-nonantagonist-rules
-      raffle:
-        settings: short
-      job: ERTLeader
     - type: Loadout
-      prototypes: [ ERTLeaderGearEVALecter ]
-      roleLoadout: [ RoleSurvivalEVA ]
+      prototypes: [ ERTLeaderGearArmed ]
+      roleLoadout: [ RoleSurvivalMilitaryDouble ]
 
 ## ERT Chaplain
 
 - type: entity
   id: RandomHumanoidSpawnerERTChaplain
+  categories: [ HideSpawnMenu ] # DeltaV - We have our own spawners
   parent: RandomHumanoidSpawnerERTLeader
   name: ERT chaplain
   suffix: ERTRole, Basic
   components:
     - type: Sprite
       sprite: Markers/jobs.rsi
-      state: chaplain #needs an ERT variant once a good suit it made.
-    - type: RandomMetadata
-      nameSegments:
-      - NamesFirstMilitary
-      - NamesLastMilitary
+      state: ertchaplain
     - type: RandomHumanoidSpawner
       settings: ERTChaplain
 
@@ -170,21 +170,22 @@
       job: ERTChaplain
     - type: RandomMetadata
       nameSegments:
-      - NamesFirstMilitary
-      - NamesLastMilitary
+      - NamesMilitaryLast
+      nameFormat: name-format-ert-specialist
     - type: Loadout
       prototypes: [ ERTChaplainGear ]
-      roleLoadout: [ RoleSurvivalExtended ]
+      roleLoadout: [ RoleSurvivalMilitaryDouble ]
 
 - type: entity
   id: RandomHumanoidSpawnerERTChaplainEVA
+  categories: [ HideSpawnMenu ] # DeltaV - We have our own spawners
   parent: RandomHumanoidSpawnerERTChaplain
   name: ERT chaplain
-  suffix: ERTRole, Enviro EVA
+  suffix: ERTRole, EVA
   components:
     - type: Sprite
       sprite: Markers/jobs.rsi
-      state: chaplain #needs an ERT variant once a good suit it made.
+      state: ertchaplaineva
     - type: RandomHumanoidSpawner
       settings: ERTChaplainEVA
 
@@ -192,22 +193,15 @@
   id: ERTChaplainEVA
   parent: ERTChaplain
   components:
-    - type: GhostRole
-      name: ghost-role-information-ert-chaplain-name
-      description: ghost-role-information-ert-chaplain-description
-      rules: ghost-role-information-nonantagonist-rules
-      raffle:
-        settings: short
-      job: ERTChaplain
     - type: Loadout
       prototypes: [ ERTChaplainGearEVA ]
-      roleLoadout: [ RoleSurvivalEVA ]
-    - type: BibleUser
+      roleLoadout: [ RoleSurvivalMilitaryDouble ]
 
 ## ERT Janitor
 
 - type: entity
   id: RandomHumanoidSpawnerERTJanitor
+  categories: [ HideSpawnMenu ] # DeltaV - We have our own spawners
   parent: RandomHumanoidSpawnerERTLeader
   name: ERT janitor
   suffix: ERTRole, Basic
@@ -215,10 +209,6 @@
     - type: Sprite
       sprite: Markers/jobs.rsi
       state: ertjanitor
-    - type: RandomMetadata
-      nameSegments:
-      - NamesFirstMilitary
-      - NamesLastMilitary
     - type: RandomHumanoidSpawner
       settings: ERTJanitor
 
@@ -235,17 +225,17 @@
       job: ERTJanitor
     - type: RandomMetadata
       nameSegments:
-      - NamesFirstMilitary
-      - NamesLastMilitary
+      - NamesMilitaryLast
+      nameFormat: name-format-ert-specialist
     - type: Loadout
       prototypes: [ ERTJanitorGear ]
-      roleLoadout: [ RoleSurvivalExtended ]
+      roleLoadout: [ RoleSurvivalMilitaryDouble ]
 
 - type: entity
   id: RandomHumanoidSpawnerERTJanitorEVA
+  categories: [ HideSpawnMenu ] # DeltaV - We have our own spawners
   parent: RandomHumanoidSpawnerERTJanitor
-  name: ERT janitor
-  suffix: ERTRole, Enviro EVA
+  suffix: ERTRole, EVA
   components:
     - type: Sprite
       sprite: Markers/jobs.rsi
@@ -257,21 +247,15 @@
   id: ERTJanitorEVA
   parent: ERTJanitor
   components:
-    - type: GhostRole
-      name: ghost-role-information-ert-janitor-name
-      description: ghost-role-information-ert-janitor-description
-      rules: ghost-role-information-nonantagonist-rules
-      raffle:
-        settings: short
-      job: ERTJanitor
     - type: Loadout
       prototypes: [ ERTJanitorGearEVA ]
-      roleLoadout: [ RoleSurvivalEVA ]
+      roleLoadout: [ RoleSurvivalMilitaryDouble ]
 
 ## ERT Engineer
 
 - type: entity
   id: RandomHumanoidSpawnerERTEngineer
+  categories: [ HideSpawnMenu ] # DeltaV - We have our own spawners
   parent: RandomHumanoidSpawnerERTLeader
   name: ERT engineer
   suffix: ERTRole, Basic
@@ -279,10 +263,6 @@
     - type: Sprite
       sprite: Markers/jobs.rsi
       state: ertengineer
-    - type: RandomMetadata
-      nameSegments:
-      - NamesFirstMilitary
-      - NamesLastMilitary
     - type: RandomHumanoidSpawner
       settings: ERTEngineer
 
@@ -299,17 +279,17 @@
       job: ERTEngineer
     - type: RandomMetadata
       nameSegments:
-      - NamesFirstMilitary
-      - NamesLastMilitary
+      - NamesMilitaryLast
+      nameFormat: name-format-ert-specialist
     - type: Loadout
       prototypes: [ ERTEngineerGear ]
-      roleLoadout: [ RoleSurvivalExtended ]
+      roleLoadout: [ RoleSurvivalMilitaryDouble ]
 
 - type: entity
   id: RandomHumanoidSpawnerERTEngineerEVA
+  categories: [ HideSpawnMenu ] # DeltaV - We have our own spawners
   parent: RandomHumanoidSpawnerERTEngineer
-  name: ERT engineer
-  suffix: ERTRole, Enviro EVA
+  suffix: ERTRole, EVA
   components:
     - type: Sprite
       sprite: Markers/jobs.rsi
@@ -321,21 +301,36 @@
   id: ERTEngineerEVA
   parent: ERTEngineer
   components:
-    - type: GhostRole
-      name: ghost-role-information-ert-engineer-name
-      description: ghost-role-information-ert-engineer-description
-      rules: ghost-role-information-nonantagonist-rules
-      raffle:
-        settings: short
-      job: ERTEngineer
     - type: Loadout
       prototypes: [ ERTEngineerGearEVA ]
-      roleLoadout: [ RoleSurvivalEVA ]
+      roleLoadout: [ RoleSurvivalMilitaryDouble ]
+
+- type: entity
+  parent: RandomHumanoidSpawnerERTEngineerEVA
+  id: RandomHumanoidSpawnerERTEngineerArmed
+  categories: [ HideSpawnMenu ] # DeltaV - We have our own spawners
+  suffix: ERTRole, Armed, EVA
+  components:
+  - type: RandomHumanoidSpawner
+    settings: ERTEngineerArmed
+
+- type: randomHumanoidSettings
+  id: ERTEngineerArmed
+  parent: ERTEngineer
+  components:
+  - type: RandomMetadata
+    nameSegments:
+    - NamesMilitaryLast
+    nameFormat: name-format-ert-pointman
+  - type: Loadout
+    prototypes: [ ERTEngineerGearArmed ]
+    roleLoadout: [ RoleSurvivalMilitaryDouble ]
 
 ## ERT Security
 
 - type: entity
   id: RandomHumanoidSpawnerERTSecurity
+  categories: [ HideSpawnMenu ] # DeltaV - We have our own spawners
   parent: RandomHumanoidSpawnerERTLeader
   name: ERT security
   suffix: ERTRole, Basic
@@ -343,10 +338,6 @@
     - type: Sprite
       sprite: Markers/jobs.rsi
       state: ertsecurity
-    - type: RandomMetadata
-      nameSegments:
-      - NamesFirstMilitary
-      - NamesLastMilitary
     - type: RandomHumanoidSpawner
       settings: ERTSecurity
 
@@ -363,17 +354,18 @@
       job: ERTSecurity
     - type: RandomMetadata
       nameSegments:
-      - NamesFirstMilitary
-      - NamesLastMilitary
+      - NamesMilitaryLast
+      nameFormat: name-format-ert-officer
     - type: Loadout
       prototypes: [ ERTSecurityGear ]
-      roleLoadout: [ RoleSurvivalExtended ]
+      roleLoadout: [ RoleSurvivalMilitaryDouble ]
 
 - type: entity
   id: RandomHumanoidSpawnerERTSecurityEVA
+  categories: [ HideSpawnMenu ] # DeltaV - We have our own spawners
   parent: RandomHumanoidSpawnerERTSecurity
   name: ERT security
-  suffix: ERTRole, Armored EVA
+  suffix: ERTRole, EVA
   components:
     - type: Sprite
       sprite: Markers/jobs.rsi
@@ -394,35 +386,101 @@
       job: ERTSecurity
     - type: Loadout
       prototypes: [ ERTSecurityGearEVA ]
-      roleLoadout: [ RoleSurvivalEVA ]
+      roleLoadout: [ RoleSurvivalMilitaryDouble ]
 
 - type: entity
-  id: RandomHumanoidSpawnerERTSecurityEVALecter
+  id: RandomHumanoidSpawnerERTSecurityArmedRifle
   parent: RandomHumanoidSpawnerERTSecurityEVA
-  suffix: ERTRole, Lecter, EVA
+  categories: [ HideSpawnMenu ] # DeltaV - We have our own spawners
+  name: ERT security rifleman
+  suffix: ERTRole, Armed, EVA
   components:
-    - type: RandomHumanoidSpawner
-      settings: ERTSecurityEVALecter
+  - type: RandomHumanoidSpawner
+    settings: ERTSecurityArmedRifle
 
 - type: randomHumanoidSettings
-  id: ERTSecurityEVALecter
+  id: ERTSecurityArmedRifle
   parent: ERTSecurityEVA
   components:
-    - type: GhostRole
-      name: ghost-role-information-ert-security-name
-      description: ghost-role-information-ert-security-description
-      rules: ghost-role-information-nonantagonist-rules
-      raffle:
-        settings: short
-      job: ERTSecurity
-    - type: Loadout
-      prototypes: [ ERTSecurityGearEVALecter ]
-      roleLoadout: [ RoleSurvivalEVA ]
+  - type: RandomMetadata
+    nameSegments:
+    - NamesMilitaryLast
+    nameFormat: name-format-ert-rifle
+  - type: Loadout
+    prototypes: [ ERTSecurityGearArmedRifle ]
+    roleLoadout: [ RoleSurvivalMilitaryDouble ]
+
+- type: entity
+  parent: RandomHumanoidSpawnerERTSecurityEVA
+  id: RandomHumanoidSpawnerERTSecurityArmedGrenade
+  categories: [ HideSpawnMenu ] # DeltaV - We have our own spawners
+  name: ERT security grenadier
+  suffix: ERTRole, Armed, EVA
+  components:
+  - type: RandomHumanoidSpawner
+    settings: ERTSecurityArmedGrenade
+
+- type: randomHumanoidSettings
+  parent: ERTSecurityEVA
+  id: ERTSecurityArmedGrenade
+  components:
+  - type: RandomMetadata
+    nameSegments:
+    - NamesMilitaryLast
+    nameFormat: name-format-ert-grenade
+  - type: Loadout
+    prototypes: [ ERTSecurityGearArmedGrenade ]
+    roleLoadout: [ RoleSurvivalMilitaryDouble ]
+
+- type: entity
+  parent: RandomHumanoidSpawnerERTSecurityEVA
+  id: RandomHumanoidSpawnerERTSecurityArmedVanguard
+  categories: [ HideSpawnMenu ] # DeltaV - We have our own spawners
+  name: ERT security vanguard
+  suffix: ERTRole, Armed, EVA
+  components:
+  - type: RandomHumanoidSpawner
+    settings: ERTSecurityArmedVanguard
+
+- type: randomHumanoidSettings
+  parent: ERTSecurityEVA
+  id: ERTSecurityArmedVanguard
+  components:
+  - type: RandomMetadata
+    nameSegments:
+    - NamesMilitaryLast
+    nameFormat: name-format-ert-vanguard
+  - type: Loadout
+    prototypes: [ ERTSecurityGearArmedVanguard ]
+    roleLoadout: [ RoleSurvivalMilitaryDouble ]
+
+- type: entity
+  parent: RandomHumanoidSpawnerERTSecurityEVA
+  id: RandomHumanoidSpawnerERTSecurityArmedShotgun
+  categories: [ HideSpawnMenu ] # DeltaV - We have our own spawners
+  name: ERT security breacher
+  suffix: ERTRole, Armed, EVA
+  components:
+  - type: RandomHumanoidSpawner
+    settings: ERTSecurityArmedShotgun
+
+- type: randomHumanoidSettings
+  parent: ERTSecurityEVA
+  id: ERTSecurityArmedShotgun
+  components:
+  - type: RandomMetadata
+    nameSegments:
+    - NamesMilitaryLast
+    nameFormat: name-format-ert-pointman
+  - type: Loadout
+    prototypes: [ ERTSecurityGearArmedShotgun ]
+    roleLoadout: [ RoleSurvivalMilitaryDouble ]
 
 ## ERT Medic
 
 - type: entity
   id: RandomHumanoidSpawnerERTMedical
+  categories: [ HideSpawnMenu ] # DeltaV - We have our own spawners
   parent: RandomHumanoidSpawnerERTLeader
   name: ERT medic
   suffix: ERTRole, Basic
@@ -430,10 +488,6 @@
     - type: Sprite
       sprite: Markers/jobs.rsi
       state: ertmedical
-    - type: RandomMetadata
-      nameSegments:
-      - NamesFirstMilitary
-      - NamesLastMilitary
     - type: RandomHumanoidSpawner
       settings: ERTMedical
 
@@ -450,17 +504,17 @@
       job: ERTMedical
     - type: RandomMetadata
       nameSegments:
-      - NamesFirstMilitary
-      - NamesLastMilitary
+      - NamesMilitaryLast
+      nameFormat: name-format-ert-doctor
     - type: Loadout
       prototypes: [ ERTMedicalGear ]
-      roleLoadout: [ RoleSurvivalExtended ]
+      roleLoadout: [ RoleSurvivalMilitaryDouble ]
 
 - type: entity
   id: RandomHumanoidSpawnerERTMedicalEVA
+  categories: [ HideSpawnMenu ] # DeltaV - We have our own spawners
   parent: RandomHumanoidSpawnerERTMedical
-  name: ERT medic
-  suffix: ERTRole, Armored EVA
+  suffix: ERTRole, EVA
   components:
     - type: Sprite
       sprite: Markers/jobs.rsi
@@ -472,16 +526,30 @@
   id: ERTMedicalEVA
   parent: ERTMedical
   components:
-    - type: GhostRole
-      name: ghost-role-information-ert-medical-name
-      description: ghost-role-information-ert-medical-description
-      rules: ghost-role-information-nonantagonist-rules
-      raffle:
-        settings: short
-      job: ERTMedical
     - type: Loadout
       prototypes: [ ERTMedicalGearEVA ]
-      roleLoadout: [ RoleSurvivalEVA ]
+      roleLoadout: [ RoleSurvivalMilitaryDouble ]
+
+- type: entity
+  parent: RandomHumanoidSpawnerERTMedicalEVA
+  id: RandomHumanoidSpawnerERTMedicalArmed
+  categories: [ HideSpawnMenu ] # DeltaV - We have our own spawners
+  suffix: ERTRole, Armed, EVA
+  components:
+  - type: RandomHumanoidSpawner
+    settings: ERTMedicalArmed
+
+- type: randomHumanoidSettings
+  parent: ERTMedicalEVA
+  id: ERTMedicalArmed
+  components:
+  - type: RandomMetadata
+    nameSegments:
+    - NamesMilitaryLast
+    nameFormat: name-format-ert-corpsman
+  - type: Loadout
+    prototypes: [ ERTMedicalGearArmed ]
+    roleLoadout: [ RoleSurvivalMilitaryDouble ]
 
 ## CBURN
 
@@ -494,11 +562,11 @@
       sprite: Markers/jobs.rsi
       state: cburn
     - type: RandomHumanoidSpawner
-      settings: CBURNAgent
+      settings: CBURNAgentDeltaV # DeltaV - was CBURNAgent
 
 - type: randomHumanoidSettings
   id: CBURNAgent
-  parent: EventHumanoidMindShielded
+  parent: EventHumanoidCentcomm
   components:
     - type: Loadout
       prototypes: [CBURNGear]
@@ -509,10 +577,12 @@
       rules: ghost-role-information-nonantagonist-rules
       raffle:
         settings: short
+      job: CBURN
     - type: RandomMetadata
       nameSegments:
-      - NamesFirstMilitary
-      - NamesLastMilitary
+      - NamesMilitaryFirst
+      - NamesMilitaryLast
+      nameFormat: name-format-ert
 
 ## Central Command
 
@@ -528,7 +598,7 @@
 
 - type: randomHumanoidSettings
   id: CentcomOfficial
-  parent: EventHumanoidMindShielded
+  parent: EventHumanoidCentcomm
   components:
     - type: GhostRole
       name: ghost-role-information-centcom-official-name
@@ -536,8 +606,9 @@
       rules: ghost-role-information-nonantagonist-rules
       raffle:
         settings: default
+      job: CentralCommandOfficial
     - type: Loadout
-      prototypes: [ CentcomGear ]
+      prototypes: [ CentcommGear ]
       roleLoadout: [ RoleSurvivalStandard ]
 
 ## Syndicate
@@ -550,12 +621,13 @@
       sprite: Mobs/Species/Human/parts.rsi
       state: full
     - type: RandomMetadata
-      nameSegments: [ names_death_commando ]
+      nameSegments: [ NamesDeathCommando ]
     - type: RandomHumanoidSpawner
       settings: SyndicateAgent
 
 - type: randomHumanoidSettings
   id: SyndicateAgent
+  speciesBlacklist: [Allulalo] # Delta V - Allulalos are very limiting and it can suck to be randomized into one
   components:
     - type: RandomHumanoidAppearance
       randomizeName: false
@@ -575,13 +647,13 @@
 
 - type: randomHumanoidSettings
   id: NukeOp
+  speciesBlacklist: [Allulalo] # Delta V - Allulalos are very limiting and it can suck to be randomized into one
   components:
     - type: RandomHumanoidAppearance
       randomizeName: false
     - type: NukeOperative
-    - type: PsionicBonusChance #Nyano - Summary: makes more likely to be psionic. 
-      multiplier: 7
-      warn: false
+    - type: PotentialPsionic # DeltaV - Psionic Refactor
+      jobBonusChance: 0.05 # Additional 5% chance to roll a psionic power.
 
 - type: entity
   id: RandomHumanoidSpawnerCluwne
@@ -595,8 +667,9 @@
       settings: Cluwne
     - type: RandomMetadata
       nameSegments:
-      - names_first
-      - names_last
+      - NamesFirst
+      - NamesLast
+      nameFormat: name-format-standard
 
 - type: randomHumanoidSettings
   id: Cluwne

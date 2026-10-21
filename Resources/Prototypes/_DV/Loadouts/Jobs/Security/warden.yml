@@ -1,0 +1,42 @@
+# Jumpsuit
+- type: loadout
+  id: WardenJumpsuitGrey
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitWardenGrey
+
+- type: loadout
+  id: WardenJumpskirtGrey
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtWardenGrey
+
+- type: loadout
+  id: WardenJumpsuitWhite
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitWardenWhite
+
+- type: loadout
+  id: WardenJumpskirtWhite
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtWardenWhite
+
+- type: loadout
+  id: WardenTurtlesuit
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitWardenTurtle
+
+- type: loadout
+  id: WardenTurtleskirt
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtWardenTurtle
+
+# OuterClothing
+- type: loadout
+  id: StasecWinterCoatWarden
+  equipment:
+    outerClothing: ClothingOuterCoatStasecWarden
+
+# OuterClothing
+- type: loadout
+  id: WardenLongcoat
+  equipment:
+    outerClothing: ClothingLongcoatWarden

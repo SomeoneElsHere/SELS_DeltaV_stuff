@@ -50,6 +50,7 @@
   description: A direction sign, pointing out which way the Brig is.
   components:
   - type: Sprite
+    sprite: _DV/Structures/Wallmounts/signs.rsi # DeltaV - resprite security signs
     state: direction_brig
 
 - type: entity
@@ -104,7 +105,15 @@
   description: A direction sign, pointing out which way evac is.
   components:
   - type: Sprite
-    state: direction_evac
+    layers:
+    - state: direction_evac
+    - state: direction_evac_glow
+      shader: unshaded
+    - state: direction_evac_glow
+      shader: shaded
+      #This is a neat trick I found to sort of "hack" an emissive map into ss14. Basically, the direction_evac_glow texture has an alpha channel.
+      #Alpha doesn't work for unshaded, but for *shaded* it does, and by putting a shaded texture infront of the unshaded, we can dim the unshaded texture, effectively allowing brightness control.
+      #I am re-using this from my high-vis vest PR, where I go further into detail, https://github.com/space-wizards/space-station-14/pull/37869
 
 - type: entity
   parent: BaseSignDirectional
@@ -213,6 +222,7 @@
   description: A direction sign, pointing out which way Security is.
   components:
   - type: Sprite
+    sprite: _DV/Structures/Wallmounts/signs.rsi # DeltaV - resprite security signs
     state: direction_sec
 
 - type: entity
@@ -241,6 +251,15 @@
   components:
   - type: Sprite
     state: direction_wash
+
+- type: entity
+  parent: BaseSignDirectional
+  id: SignDirectionalEscapePod
+  name: escape pods sign
+  description: A direction sign, pointing out the way to an escape pod dock.
+  components:
+  - type: Sprite
+    state: direction_pods
 
 # Regular Signs
 
@@ -278,7 +297,17 @@
   description: A sign indicating the armory.
   components:
   - type: Sprite
+    sprite: _DV/Structures/Wallmounts/signs.rsi # DeltaV - resprite security signs
     state: armory
+
+- type: entity
+  parent: BaseSign
+  id: SignArrivals
+  name: arrivals sign
+  description: A sign indicating where the Arrivals shuttle will dock.
+  components:
+  - type: Sprite
+    state: arrivals
 
 - type: entity
   parent: BaseSign
@@ -287,6 +316,7 @@
   description: A sign indicating the tool storage room.
   components:
   - type: Sprite
+    sprite: _DV/Structures/Wallmounts/signs.rsi # DeltaV - general resprite, upstream's is just bad
     state: ass
 
 - type: entity
@@ -403,7 +433,8 @@
   description: A sign indicating the logistics area. # DeltaV - Logistics Department replacing Cargo
   components:
   - type: Sprite
-    state: cargo
+    sprite: _DV/Structures/Wallmounts/signs.rsi # DeltaV - Logistics Department replacing Cargo
+    state: logistics # DeltaV - Logistics Department replacing Cargo
 
 - type: entity
   parent: BaseSign
@@ -421,7 +452,7 @@
   description: A sign indicating the chapel.
   components:
   - type: Sprite
-    sprite: DeltaV/Structures/Wallmounts/signs.rsi # DeltaV: Epi-themed chapel sprite
+    sprite: _DV/Structures/Wallmounts/signs.rsi # DeltaV: Epi-themed chapel sprite
     state: chapel
 
 - type: entity
@@ -596,6 +627,7 @@
   description: A sign indicating an interrogation room.
   components:
   - type: Sprite
+    sprite: _DV/Structures/Wallmounts/signs.rsi # DeltaV - resprite security signs
     state: interrogation
 
 - type: entity
@@ -623,6 +655,7 @@
   description: A sign indicating the presence of the (typically absent) rule of law.
   components:
   - type: Sprite
+    sprite: _DV/Structures/Wallmounts/signs.rsi # DeltaV - resprite security signs
     state: law
 
 - type: entity
@@ -632,7 +665,8 @@
   description: A sign indicating the library.
   components:
   - type: Sprite
-    state: biblio
+    sprite: _DV/Structures/Wallmounts/signs.rsi # DeltaV - resprite library sign
+    state: library # DeltaV - resprite library sign
 
 - type: entity
   parent: BaseSign
@@ -681,11 +715,22 @@
 
 - type: entity
   parent: BaseSign
+  id: SignGenpop
+  name: genpop sign
+  description: A sign indicating the genpop prison.
+  components:
+  - type: Sprite
+    sprite: _DV/Structures/Wallmounts/signs.rsi # DeltaV - resprite security signs
+    state: genpop
+
+- type: entity
+  parent: BaseSign
   id: SignPrison
   name: prison sign
   description: A sign indicating the prison.
   components:
   - type: Sprite
+    sprite: _DV/Structures/Wallmounts/signs.rsi # DeltaV - resprite security signs
     state: prison
 
 - type: entity
@@ -740,7 +785,8 @@
   description: A sign indicating the epistemics area. # DeltaV - Epistemics Department replacing Science
   components:
   - type: Sprite
-    state: sci
+    sprite: _DV/Structures/Wallmounts/signs.rsi # DeltaV - Epistemics Department replacing Science
+    state: epistemics # DeltaV - Epistemics Department replacing Science
 
 - type: entity
   parent: BaseSign
@@ -1214,7 +1260,18 @@
   description: A sign depicting the security insignia.
   components:
   - type: Sprite
+    sprite: _DV/Structures/Wallmounts/signs.rsi # DeltaV - resprite security signs
     state: security
+
+- type: entity
+  parent: BaseSign
+  id: SignDetective
+  name: Detective sign
+  description: A sign depicting the detective's office.
+  components:
+  - type: Sprite
+    sprite: _DV/Structures/Wallmounts/signs.rsi # DeltaV - resprite detective signs
+    state: detective
 
 - type: entity
   parent: BaseSign

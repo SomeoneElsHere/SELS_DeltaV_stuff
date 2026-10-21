@@ -1,4 +1,5 @@
 ﻿using Content.Shared.Damage;
+using Content.Shared.Inventory;
 using Robust.Shared.GameStates;
 using Robust.Shared.Utility;
 
@@ -24,35 +25,20 @@ public sealed partial class ArmorComponent : Component
     public float PriceMultiplier = 1;
 
     /// <summary>
-    /// DeltaV: The incoming stamina projectile damage will get multiplied by this value.
+    /// If true, you can examine the armor to see the protection. If false, the verb won't appear.
     /// </summary>
     [DataField]
-    public float StaminaDamageCoefficient = 1;
+    public bool ShowArmorOnExamine = true;
 
+    // Start DeltaV - Give armor melee stamina resistance
     /// <summary>
-    /// DeltaV: The configured stamina melee damage coefficient. The actual value used
-    /// will be this or the blunt damage coefficient, whichever provides better protection.
+    /// DeltaV - Gets the effective stamina melee damage coefficient, based on the armor's blunt protection.
     /// </summary>
-    [DataField]
-    private float _staminaMeleeDamageCoefficient = 1;
+    [DataField("staminaMeleeDamageCoefficient")]
+    private float? _staminaMeleeDamageCoefficient;
 
-    /// <summary>
-    /// DeltaV: Gets or sets the effective stamina melee damage coefficient, using either the configured
-    /// value or the blunt damage coefficient, whichever provides better protection (lower value).
-    /// </summary>
-    [Access(typeof(SharedArmorSystem))]
-    public float StaminaMeleeDamageCoefficient
-    {
-        get
-        {
-            // Try to get the blunt damage coefficient from modifiers
-            var bluntCoefficient = Modifiers.Coefficients.GetValueOrDefault("Blunt", 1.0f);
-
-            // Return whichever provides better protection (lower coefficient)
-            return Math.Min(bluntCoefficient, _staminaMeleeDamageCoefficient);
-        }
-        set => _staminaMeleeDamageCoefficient = value;
-    }
+    public float StaminaMeleeDamageCoefficient => _staminaMeleeDamageCoefficient ?? Modifiers.Coefficients.GetValueOrDefault("Blunt", 1.0f);
+    // End DeltaV - Give armor melee stamina resistance
 }
 
 /// <summary>
@@ -61,3 +47,24 @@ public sealed partial class ArmorComponent : Component
 /// <param name="Msg"></param>
 [ByRefEvent]
 public record struct ArmorExamineEvent(FormattedMessage Msg);
+
+/// <summary>
+/// A Relayed inventory event, gets the total Armor for all Inventory slots defined by the Slotflags in TargetSlots
+/// </summary>
+public sealed class CoefficientQueryEvent : EntityEventArgs, IInventoryRelayEvent
+{
+    /// <summary>
+    /// All slots to relay to
+    /// </summary>
+    public SlotFlags TargetSlots { get; set; }
+
+    /// <summary>
+    /// The Total of all Coefficients.
+    /// </summary>
+    public DamageModifierSet DamageModifiers { get; set; } = new DamageModifierSet();
+
+    public CoefficientQueryEvent(SlotFlags slots)
+    {
+        TargetSlots = slots;
+    }
+}

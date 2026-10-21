@@ -3,14 +3,21 @@
   maps:
 # DeltaV
   - Arena
+  - Academy
+  - Anvil
   - Asterisk
+  - Byoin
   - Chibi
+  - Division
   - Edge
+  - Elegance
   - Glacier
-  - Hammurabi
+#  - Hammurabi - undergoing extensive maintenance
   - Lighthouse
-  - Micro
+#  - Micro - to be revisited later ~Colin
   - Pebble
   - Shoukou
-  - Tortuga
+  - Submarine
+  - Terra
   - TheHive
+  - Tortuga

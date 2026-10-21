@@ -1,0 +1,17 @@
+- type: species
+  id: Thaven
+  name: species-name-thaven
+  roundStart: true
+  prototype: MobThaven
+  defaultSkinTone: "#ffffff"
+  dollPrototype: AppearanceThaven
+  skinColoration: Hues
+  maleFirstNames: NamesThaven
+  femaleFirstNames: NamesThaven
+  naming: First
+  sexes:
+  - Male
+  - Female
+  - Unsexed
+  baseScale: "1, 1.05" # DeltaV - make sure Thaven are still scaled w/ CD records
+

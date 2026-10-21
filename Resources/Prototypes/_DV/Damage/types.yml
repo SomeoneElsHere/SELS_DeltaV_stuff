@@ -1,0 +1,5 @@
+- type: damageType
+  id: Soul
+  name: damage-type-soul
+  armorCoefficientPrice: 1
+  armorFlatPrice: 1

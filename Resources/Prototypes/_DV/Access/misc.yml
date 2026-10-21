@@ -1,0 +1,47 @@
+- type: accessLevel
+  id: DV-SpareSafe
+  name: id-card-access-level-emergency-command
+
+- type: accessGroup
+  id: AllAccessBorg
+  tags:
+    - Command
+    - Security
+    - Detective
+    - Corpsman
+    - Lawyer
+    - Engineering
+    - Medical
+    - Salvage
+    - Cargo
+    - Research
+    - Robotics # would be silly if they couldn't go to robo
+    - Service
+    - Maintenance
+    - External
+    - Janitor
+    - Theatre
+    - Bar
+    - Chemistry
+    - Kitchen
+    - Chapel
+    - Hydroponics
+    - Atmospherics
+    - Mail
+    - Mantis
+    - Paramedic
+    - Psychologist
+    - Boxer
+    - Clown
+    - Library
+    - Mime
+    - Musician
+    - Reporter
+    - Zookeeper
+    - Justice
+    - Prosecutor
+    - Clerk
+    - Surgery
+    - Marshal
+    - Brig
+    - Attorney

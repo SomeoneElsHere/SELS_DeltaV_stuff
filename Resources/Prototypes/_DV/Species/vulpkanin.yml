@@ -1,0 +1,11 @@
+- type: species
+  id: Vulpkanin
+  name: species-name-vulpkanin
+  roundStart: true
+  prototype: MobVulpkanin
+  defaultSkinTone: "#985629"
+  dollPrototype: AppearanceVulpkanin
+  skinColoration: Hues
+  maleFirstNames: NamesVulpkaninMale
+  femaleFirstNames: NamesVulpkaninFemale
+  lastNames: NamesVulpkaninLast

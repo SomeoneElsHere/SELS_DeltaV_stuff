@@ -1,12 +1,15 @@
-using Content.Server.Chat.Systems;
-using Content.Server.Emp;
-using Content.Server.Radio.Components;
+using Content.Shared.Cuffs; // DeltaV
+using Content.Shared.Cuffs.Components; // DeltaV
+using Content.Shared.Hands.Components; // DeltaV
+using Content.Shared.Chat;
 using Content.Shared.Inventory.Events;
+using Content.Shared.Popups; // DeltaV
 using Content.Shared.Radio;
 using Content.Shared.Radio.Components;
 using Content.Shared.Radio.EntitySystems;
 using Robust.Shared.Network;
 using Robust.Shared.Player;
+using Content.Shared._DV.Chat;
 
 namespace Content.Server.Radio.EntitySystems;
 
@@ -14,6 +17,8 @@ public sealed class HeadsetSystem : SharedHeadsetSystem
 {
     [Dependency] private readonly INetManager _netMan = default!;
     [Dependency] private readonly RadioSystem _radio = default!;
+    [Dependency] private readonly SharedCuffableSystem _cuffable = default!; // DeltaV
+    [Dependency] private readonly SharedPopupSystem _popup = default!; // DeltaV
 
     public override void Initialize()
     {
@@ -22,8 +27,7 @@ public sealed class HeadsetSystem : SharedHeadsetSystem
         SubscribeLocalEvent<HeadsetComponent, EncryptionChannelsChangedEvent>(OnKeysChanged);
 
         SubscribeLocalEvent<WearingHeadsetComponent, EntitySpokeEvent>(OnSpeak);
-
-        SubscribeLocalEvent<HeadsetComponent, EmpPulseEvent>(OnEmpPulse);
+        SubscribeLocalEvent<WearingHeadsetComponent, EntityAudiblyEmotedEvent>(OnAudibleEmote); // DeltaV
     }
 
     private void OnKeysChanged(EntityUid uid, HeadsetComponent component, EncryptionChannelsChangedEvent args)
@@ -46,13 +50,43 @@ public sealed class HeadsetSystem : SharedHeadsetSystem
             EnsureComp<ActiveRadioComponent>(uid).Channels = new(keyHolder.Channels);
     }
 
+    // DeltaV
+    // WARNING - Be very careful when modifying this method.
+    // The implementation right now has null forgiving operatiors in OnSpeak() and OnAudibleEmote() since this only returns true if channel is not null
+    private bool CheckRadioCapable(EntityUid uid, WearingHeadsetComponent headset, RadioChannelPrototype? channel)
+    {
+        if (channel != null
+            && TryComp(headset.Headset, out EncryptionKeyHolderComponent? keys)
+            && keys.Channels.Contains(channel.ID))
+        {
+            if (!TryComp<HandsComponent>(uid, out var hands) || hands.Count < 1 ||
+                TryComp<CuffableComponent>(uid, out var cuffable) && _cuffable.IsCuffed((uid, cuffable)))
+            {
+                _popup.PopupEntity(Loc.GetString("headset-cant-reach"), uid, uid, PopupType.SmallCaution);
+                return false;
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private void OnAudibleEmote(EntityUid uid, WearingHeadsetComponent component, EntityAudiblyEmotedEvent args)
+    {
+        if (CheckRadioCapable(uid, component, args.Channel))
+        {
+            _radio.SendRadioMessage(uid, args.Message, args.Channel!, component.Headset, emType: args.Type);
+            args.Channel = null;
+        }
+    }
+    // DeltaV - End
+
     private void OnSpeak(EntityUid uid, WearingHeadsetComponent component, EntitySpokeEvent args)
     {
-        if (args.Channel != null
-            && TryComp(component.Headset, out EncryptionKeyHolderComponent? keys)
-            && keys.Channels.Contains(args.Channel.ID))
+        if (CheckRadioCapable(uid, component, args.Channel)) // DeltaV - Put all the radio checks into the CheckRadioCapable() method.
         {
-            _radio.SendRadioMessage(uid, args.Message, args.Channel, component.Headset);
+            _radio.SendRadioMessage(uid, args.Message, args.Channel!, component.Headset); // DeltaV - Made the args.Channel null ignorant as CheckRadioCapable() guarantees it not null.
             args.Channel = null; // prevent duplicate messages from other listeners.
         }
     }
@@ -70,7 +104,6 @@ public sealed class HeadsetSystem : SharedHeadsetSystem
     protected override void OnGotUnequipped(EntityUid uid, HeadsetComponent component, GotUnequippedEvent args)
     {
         base.OnGotUnequipped(uid, component, args);
-        component.IsEquipped = false;
         RemComp<ActiveRadioComponent>(uid);
         RemComp<WearingHeadsetComponent>(args.Equipee);
     }
@@ -82,6 +115,9 @@ public sealed class HeadsetSystem : SharedHeadsetSystem
 
         if (component.Enabled == value)
             return;
+
+        component.Enabled = value;
+        Dirty(uid, component);
 
         if (!value)
         {
@@ -99,16 +135,19 @@ public sealed class HeadsetSystem : SharedHeadsetSystem
 
     private void OnHeadsetReceive(EntityUid uid, HeadsetComponent component, ref RadioReceiveEvent args)
     {
-        if (TryComp(Transform(uid).ParentUid, out ActorComponent? actor))
-            _netMan.ServerSendMessage(args.ChatMsg, actor.PlayerSession.Channel);
-    }
+        // TODO: change this when a code refactor is done
+        // this is currently done this way because receiving radio messages on an entity otherwise requires that entity
+        // to have an ActiveRadioComponent
 
-    private void OnEmpPulse(EntityUid uid, HeadsetComponent component, ref EmpPulseEvent args)
-    {
-        if (component.Enabled)
+        var parent = Transform(uid).ParentUid;
+
+        if (parent.IsValid())
         {
-            args.Affected = true;
-            args.Disabled = true;
+            var relayEvent = new HeadsetRadioReceiveRelayEvent(args);
+            RaiseLocalEvent(parent, ref relayEvent);
         }
+
+        if (TryComp(parent, out ActorComponent? actor))
+            _netMan.ServerSendMessage(args.ChatMsg, actor.PlayerSession.Channel);
     }
 }

@@ -1,0 +1,182 @@
+## Static
+
+- type: latheRecipePack
+  id: ClothingCargoDeltaV
+  recipes:
+  # Courier
+  - ClothingUniformCourier
+  - ClothingUniformSkirtCourier
+  # QM
+  - ClothingHeadHatBeretLogi
+  - ClothingUniformJumpskirtQMFormal
+  - ClothingLongcoatQM
+  # Salvage
+  - ClothingUniformJumpskirtSalvageSpecialist
+
+- type: latheRecipePack
+  id: ClothingCommandDeltaV
+  recipes:
+  # Captain
+  - ClothingHeadHatBeretCap
+  # HoP
+  - ClothingUniformJumpsuitHoPFormal
+  - ClothingUniformJumpskirtHoPFormal
+  - ClothingLongcoatHoP
+
+- type: latheRecipePack
+  id: ClothingEpistemics
+  recipes:
+  # Mystagogue
+  - ClothingHeadHatBeretMysta
+  - ClothingHeadHoodMysta
+  - ClothingLongcoatRD
+  # Psionic Mantis
+  - ClothingUniformJumpsuitMantis
+  - ClothingUniformSkirtMantis
+  # Scientist
+  - ClothingUniformJumpsuitScientistFormal
+  - ClothingUniformJumpskirtScientistFormal
+
+- type: latheRecipePack
+  id: ClothingMedicalDeltaV
+  recipes:
+  # CMO
+  - ClothingLongcoatCMO
+  - ClothingUniformCMOFormal
+  - ClothingUniformJumpskirtCMOFormal
+  - ClothingUniformCMOVest
+  - ClothingUniformJumpskirtCMOVest
+  - ClothingUniformCMOSummer
+  # Chemist
+  - ClothingUniformJumpsuitChemShirt
+  - ClothingUniformJumpskirtChemShirt
+  # Paramed
+  - ClothingUniformParamedicJumper
+  - ClothingUniformJumpskirtParamedicJumper
+  # General
+  - ClothingUniformMedicalApron
+  - ClothingUniformJumpskirtMedicalApron
+  - ClothingUniformMedicalOffset
+  - ClothingUniformJumpskirtMedicalOffset
+  - ClothingUniformMedicalVest
+  - ClothingUniformJumpskirtMedicalVest
+  # Hats
+  - ClothingHeadHatBeretMedical
+  - ClothingHeadHatBeretSeniorChemistry
+  - ClothingHeadHatBeretParamedic
+
+- type: latheRecipePack
+  id: ClothingJustice
+  recipes:
+  # CJ
+  - ClothingHeadHatCJToque
+  - ClothingUniformJumpsuitChiefJustice
+  - ClothingUniformJumpskirtChiefJustice
+  - ClothingUniformJumpsuitChiefJusticeFormal
+  - ClothingUniformJumpskirtCJFormal
+  - ClothingUniformJumpsuitChiefJusticeWhite
+  # Clerk
+  - ClothingUniformJumpsuitClerk
+  - ClothingUniformJumpskirtClerk
+  - ClothingOuterClerkVest
+  # Prosecutor
+  - ClothingUniformJumpsuitProsecutor
+  - ClothingUniformJumpskirtProsecutor
+
+- type: latheRecipePack
+  id: ClothingSecurityDeltaV
+  recipes:
+  # HoS
+  - ClothingUniformJumpsuitHoSWhite
+  - ClothingUniformJumpskirtHoSWhite
+  - ClothingUniformJumpsuitHoSGrey
+  - ClothingUniformJumpskirtHoSGrey
+  - ClothingUniformJumpsuitHoSTurtle
+  - ClothingUniformJumpskirtHoSTurtle
+  # Security Officer
+  - ClothingUniformJumpsuitSecWhite
+  - ClothingUniformJumpskirtSecWhite
+  - ClothingUniformJumpsuitSecGrey
+  - ClothingUniformJumpskirtSecGrey
+  - ClothingUniformJumpsuitSecSenior
+  - ClothingUniformJumpskirtSecSenior
+  # Warden
+  - ClothingUniformJumpsuitWardenWhite
+  - ClothingUniformJumpskirtWardenWhite
+  - ClothingUniformJumpsuitWardenGrey
+  - ClothingUniformJumpskirtWardenGrey
+  # Prison Guard
+  - ClothingUniformJumpsuitPrisonGuard
+  - ClothingUniformJumpskirtPrisonGuard
+  - ClothingHeadPrisonGuard
+  # Cadet
+  - ClothingUniformJumpsuitSecCadet
+  - ClothingUniformJumpskirtSecCadet
+  - ClothingHeadHatBeretCadet
+  - ClothingHeadHatBeretSecurityGrey
+
+- type: latheRecipePack
+  id: ClothingEngineeringDeltaV
+  recipes:
+  # CE
+  - ClothingLongcoatCE
+  # Atmos
+  - ClothingUniformJumpsuitAtmos
+  - ClothingUniformJumpskirtAtmos
+  - ClothingUniformJumpsuitAtmosCasual
+  - ClothingUniformJumpskirtAtmosCasual
+  - ClothingHeadHatBeretAtmospherics
+
+- type: latheRecipePack
+  id: ClothingServiceDeltaV
+  recipes:
+  # Botanist
+  - ClothingUniformOveralls
+  - ClothingUniformJumpskirtOveralls
+  # Bartender
+  - ClothingUniformSeniorBartender
+  - ClothingUniformSeniorBartenderSkirt
+  # Mime
+  - ClothingUniformJumpsuitMimeTurtleneckPants
+  - ClothingUniformJumpskirtMimeTurtleneckSkirt
+
+- type: latheRecipePack
+  id: WinterCoatsDeltaV
+  recipes:
+  # Coats
+  - ClothingOuterChiefJustice
+  - ClothingOuterStasecSweater
+  - ClothingOuterWinterLongMime
+  - ClothingOuterFurCoatMime
+
+- type: latheRecipePack
+  id: BeltsDeltaV
+  recipes:
+  - ClothingBeltPaperwork
+
+- type: latheRecipePack
+  id: ClothingCentcommDeltaV
+  recipes:
+  - ClothingHeadHatBeretCentcomm
+  - ClothingUniformJumpskirtCentcomAgent
+  - ClothingUniformJumpskirtCentcomOfficer
+  - ClothingUniformJumpskirtCentcomOfficial
+  - ClothingHeadHatBeretCentcomm
+
+- type: latheRecipePack
+  id: ClothingSyndieDeltaV
+  recipes:
+  - ClothingUniformInterdyneChemist
+  - UniformScrubsColorCybersun
+  - ClothingUniformCybersunAttorney
+  - ClothingHeadHatSurgcapCybersun
+  - ClothingOuterInterdyneChemistrySuit
+  - ClothingOuterCoatCybersunWindbreaker
+  - ClothingMaskInterdyneChemistry
+  - ClothingHeadHatSurgcapCybersun
+  - ClothingUniformCybersunHazard
+  - ClothingUniformCybersunCasual
+  - ClothingUniformCybersunRND
+  - ClothingOuterCybersunOvercoat
+  - ClothingOuterCoatLabCybersun
+  - ClothingBeltSyndicateUtility

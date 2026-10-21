@@ -1,0 +1,103 @@
+- type: entity
+  parent: BaseFlatpack
+  id: ChemMasterFlatpack
+  name: chemmaster 4000 flatpack
+  description: A flatpack used for constructing a ChemMaster 4000.
+  components:
+  - type: Flatpack
+    entity: ChemMaster
+
+- type: entity
+  parent: BaseFlatpack
+  id: CirculatorFlatpack
+  name: Circulator flatpack
+  description: A flatpack used for constructing a circulator of the thermoelectric generator.
+  components:
+  - type: Flatpack
+    entity: TegCirculator
+  - type: StaticPrice
+    price: 2000
+  - type: GuideHelp
+    guides:
+    - TEG
+    - Power
+
+- type: entity
+  parent: BaseFlatpack
+  id: TegFlatpack
+  name: TEG flatpack
+  description: A flatpack used for constructing a thermoelectric generator.
+  components:
+  - type: Flatpack
+    entity: TegCenter
+  - type: StaticPrice
+    price: 6000
+  - type: GuideHelp
+    guides:
+    - TEG
+    - Power
+
+- type: entity
+  parent: BaseFlatpack
+  id: OperatingTableFlatpack
+  name: operating table flatpack
+  description: A flatpack used for constructing an operating table.
+  components:
+  - type: Flatpack
+    entity: OperatingTable
+
+- type: entity
+  abstract: true
+  parent: BaseStructureDynamic
+  id: HeavyFlatpackBase
+  name: heavy flatpack
+  description: A large flatpack used to store a worryingly large machine.
+  components:
+  - type: Sprite
+    sprite: Objects/Devices/flatpack.rsi
+    layers:
+    - state: large
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.4,-0.4,0.4,0.29"
+        density: 100
+        mask:
+        - CrateMask
+        layer:
+        - MachineLayer
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: StructuralMetallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 75
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: InteractionOutline
+
+- type: entity
+  parent: HeavyFlatpackBase
+  id: NuclearReactorSmallFlatpack
+  name: small nuclear reactor flatpack
+  description: A flatpack used for constructing a small nuclear reactor. Parts sold separately.
+  components:
+  - type: Flatpack
+    entity: NuclearReactorSmall
+
+- type: entity
+  parent: HeavyFlatpackBase
+  id: GasTurbineSmallFlatpack
+  name: small gas turbine flatpack
+  description: A flatpack used for constructing a small gas turbine.
+  components:
+  - type: Flatpack
+    entity: TurbineSmall

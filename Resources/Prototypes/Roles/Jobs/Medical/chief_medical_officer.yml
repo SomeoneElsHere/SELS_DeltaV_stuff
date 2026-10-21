@@ -9,19 +9,18 @@
   requirements:
     - !type:RoleTimeRequirement
       role: JobChemist
-      time: 14400 #DeltaV 4 hrs
-#    - !type:RoleTimeRequirement # DeltaV - No Medical Doctor time requirement
-#      role: JobMedicalDoctor
-#      time: 21600 #6 hrs
+      time: 2.5h
+    - !type:RoleTimeRequirement
+      role: JobMedicalDoctor
+      time: 5h
     - !type:DepartmentTimeRequirement
       department: Medical
-      time: 43200 # DeltaV - 12 hours
-    - !type:OverallPlaytimeRequirement
-      time: 72000 # DeltaV - 20 hours, was 40
+      time: 10h
   weight: 10
   startingGear: CMOGear
   icon: "JobIconChiefMedicalOfficer"
-  requireAdminNotify: true
+  requireAdminNotify: true # DeltaV
+  joinNotifyCrew: true # DeltaV
   supervisors: job-supervisors-captain
   canBeAntag: false
   access:
@@ -30,20 +29,22 @@
   - Maintenance
   - Chemistry
   - ChiefMedicalOfficer
-  - Paramedic # DeltaV - Add Paramedic access
-  - External # DeltaV - Paramedics need this access
-  - Psychologist # DeltaV - Add Psychologist access
+  #- Brig # DeltaV - Removed brig access
   - Cryogenics
+  # Begin DeltaV Additions
+  - Paramedic
+  - External # Paramedics need this access, this is more for promoting
+  - Psychologist
+  - Surgery
+  # End DeltaV Additions
   special:
   - !type:AddImplantSpecial
     implants: [ MindShieldImplant ]
   - !type:AddComponentSpecial
     components:
       - type: CommandStaff
-  - !type:AddComponentSpecial
-    components:
-    - type: PsionicBonusChance #Nyano - Summary: makes it more likely to become psionic.
-      flatBonus: 0.025
+  - !type:ModifyPsionicChanceSpecial # DeltaV - Command Roles are more likely to be psionic.
+    jobBonusChance: 0.05 # Additional 5% chance.
 
 - type: startingGear
   id: CMOGear
@@ -54,3 +55,15 @@
   storage:
     back:
     - Flash
+
+- type: chameleonOutfit
+  id: ChiefMedicalOfficerChameleonOutfit
+  job: ChiefMedicalOfficer
+  hasMindShield: true
+  equipment:
+    head: ClothingHeadHatBeretCmo
+    eyes: ClothingEyesHudMedical
+    mask: ClothingMaskSterile
+    neck: ClothingCloakCmo
+    outerClothing: ClothingOuterCoatLabCmo
+    gloves: ClothingHandsGlovesNitrile

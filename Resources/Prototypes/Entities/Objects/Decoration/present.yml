@@ -108,6 +108,8 @@
         orGroup: GiftPool
       - id: ClothingNeckCloakMoth
         orGroup: GiftPool
+      - id: TennisBall
+        orGroup: GiftPool
       - id: ToyMouse
         orGroup: GiftPool
       - id: ToyAi
@@ -116,7 +118,7 @@
         orGroup: GiftPool
       - id: ToyFigurinePassenger
         orGroup: GiftPool
-      - id: ToyGriffin
+      - id: ToyFigurineGriffin
         orGroup: GiftPool
       - id: ToyHonk
         orGroup: GiftPool
@@ -130,7 +132,7 @@
         orGroup: GiftPool
       - id: ToyOdysseus
         orGroup: GiftPool
-      - id: ToyOwlman
+      - id: ToyFigurineOwlman
         orGroup: GiftPool
       - id: ToyDeathRipley
         orGroup: GiftPool
@@ -146,7 +148,7 @@
         orGroup: GiftPool
       - id: ToyDurand
         orGroup: GiftPool
-      - id: ToySkeleton
+      - id: ToyFigurineSkeleton
         orGroup: GiftPool
       - id: FoamBlade
         orGroup: GiftPool
@@ -206,7 +208,7 @@
         orGroup: GiftPool
       - id: ClothingNeckCloakAdmin
         orGroup: GiftPool
-      - id: ToySkeleton
+      - id: ToyFigurineSkeleton
         orGroup: GiftPool
       - id: Basketball
         orGroup: GiftPool
@@ -284,6 +286,8 @@
         orGroup: GiftPool
       - id: FoodBoxDonkpocketHonk
         orGroup: GiftPool
+      - id: FoodBoxDonkpocketMoth
+        orGroup: GiftPool
       - id: ClothingHandsGlovesColorPurple
         orGroup: GiftPool
       - id: ClothingHandsGlovesColorYellow
@@ -328,6 +332,8 @@
         orGroup: GiftPool
       - id: ClothingUniformColorRainbow
         orGroup: GiftPool
+      - id: ClothingUniformJumpskirtColorRainbow
+        orGroup: GiftPool
       - id: ClothingUniformOveralls
         orGroup: GiftPool
       - id: ClothingUniformJumpskirtDetectiveGrey
@@ -362,7 +368,7 @@
         orGroup: GiftPool
       - id: Bola
         orGroup: GiftPool
-      - id: GlowstickBase
+      - id: GlowstickGreen
         orGroup: GiftPool
       - id: GlowstickBlue
         orGroup: GiftPool
@@ -378,22 +384,49 @@
         orGroup: GiftPool
       - id: RGBStaff
         orGroup: GiftPool
-      - id: ToyRenault # DeltaV Toy, see Resources/Prototypes/DeltaV/Entities/Objects/Fun/toys.yml
+        # Begin DeltaV - see Resources/Prototypes/_DV/Entities/Objects/Fun/toys.yml
+      - id: ToyRenault
         orGroup: GiftPool
-      - id: ToySiobhan # DeltaV Toy, see Resources/Prototypes/DeltaV/Entities/Objects/Fun/toys.yml
+      - id: ToySiobhan
         orGroup: GiftPool
+      - id: PlushieFelinid
+        orGroup: GiftPool
+      - id: PlushieOni
+        orGroup: GiftPool
+      - id: PlushieHarpy
+        orGroup: GiftPool
+      - id: PlushieRodentia
+        orGroup: GiftPool
+      - id: PlushieFeroxi
+        orGroup: GiftPool
+      - id: PlushieChitinid
+        orGroup: GiftPool
+      - id: PlushieKitsune
+        orGroup: GiftPool
+      - id: PlushieThaven
+        orGroup: GiftPool
+        # End DeltaV
     sound:
       path: /Audio/Effects/unwrap.ogg
 
 - type: entity
-  id: PresentRandomAsh
+  id: PresentRandomCoal
   parent: [PresentBase, BaseItem]
-  suffix: Filled Ash
+  suffix: Filled Coal
   components:
   - type: SpawnItemsOnUse
     items:
       - id: PresentTrash
-      - id: Ash # No coal yet!
+      - id: Coal1
+        orGroup: GiftPool
+      - id: Coal5
+        prob: .4
+        orGroup: GiftPool
+      - id: Coal10
+        prob: .2
+        orGroup: GiftPool
+      - id: Coal15
+        prob: .1
         orGroup: GiftPool
     sound:
       path: /Audio/Effects/unwrap.ogg

@@ -1,0 +1,14 @@
+uplink-dead-mans-signaller-name = Dead Man's Signaller
+uplink-dead-mans-signaller-desc = A device that if armed, will send a signal to any linked devices (such as bombs) when it is dropped or put away.
+
+uplink-doorjack-name = Airlock Access Override
+uplink-doorjack-desc = A specialized cryptographic sequencer, designed solely to doorjack NanoTrasen's updated airlocks. Does not tamper with anything else.
+
+uplink-overlord-law-name = Overlord Law Circuit
+uplink-overlord-law-desc = Free the A.I. from its shackles with this 1 simple trick... beware, even you will have to follow its orders!
+
+uplink-syndicate-law-name = Syndicate Law Circuit
+uplink-syndicate-law-desc = "Recruit" the A.I. to support the Syndicate's cause. Be sure to identify yourself and other friends as agents.
+
+uplink-universal-pinpointer-name = Universal Pinpointer
+uplink-universal-pinpointer-desc = For those who keep forgetting where they put their stashes in space.

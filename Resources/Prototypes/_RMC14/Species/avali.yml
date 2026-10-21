@@ -1,0 +1,12 @@
+# port from Frontier
+
+- type: species
+  id: Avali
+  name: species-name-avali
+  roundStart: true
+  prototype: MobAvali # DeltaV - rename base entity
+  dollPrototype: AppearanceAvali # Delta V - Nubody
+  skinColoration: Hues
+  maleFirstNames: names_avali_unisex
+  femaleFirstNames: names_avali_unisex
+  naming: First

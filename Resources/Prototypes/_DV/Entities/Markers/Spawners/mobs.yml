@@ -1,0 +1,100 @@
+- type: entity
+  name: Arctic Fox Siobhan Spawner
+  id: SpawnMobArcticFoxSiobhan
+  parent: MarkerBase
+  suffix: Mystagogue Pet
+  components:
+  - type: Sprite
+    layers:
+      - state: green
+      - state: ai
+  - type: ConditionalSpawner
+    prototypes:
+      - MobArcticFoxSiobhan
+
+- type: entity
+  name: Laika Spawner
+  id: SpawnMobSecDogLaika
+  parent: MarkerBase
+  suffix: HoS Pet
+  components:
+  - type: Sprite
+    layers:
+      - state: green
+      - state: ai
+  - type: ConditionalSpawner
+    prototypes:
+      - MobSecDogLaika
+
+- type: entity
+  name: Syndicate Guard Spawner
+  id: SpawnMobRadioGuard
+  parent: MarkerBase
+  components:
+  - type: Sprite
+    layers:
+      - state: green
+      - state: ai
+  - type: ConditionalSpawner
+    prototypes:
+      - MobRadioGuard
+
+- type: entity
+  name: Sec Animal Spawner
+  id: SpawnMobSecLaikaOrShiva
+  parent: MarkerBase
+  suffix: HoS Pet, Laika or Shiva
+  components:
+  - type: Sprite
+    layers:
+      - state: green
+      - state: ai
+  - type: ConditionalSpawner
+    prototypes:
+      - MobSecDogLaika
+      - MobSpiderShiva
+
+- type: entity
+  parent: MarkerBase
+  id: SpawnMobJusticePet
+  name: Carpy Spawner
+  suffix: Justice Pet
+  components:
+  - type: Sprite
+    layers:
+    - state: green
+    - sprite: Mobs/Aliens/Carps/space.rsi
+      state: icon
+  - type: ConditionalSpawner
+    prototypes:
+    - MobCarpLegal
+
+- type: entity
+  name: Silvia Spawner
+  id: SpawnMobCMOPetSilvia
+  parent: MarkerBase
+  suffix: Medical Pet
+  components:
+  - type: Sprite
+    layers:
+      - state: green
+      - state: silvia
+        sprite: _DV/Mobs/Pets/silvia.rsi
+  - type: ConditionalSpawner
+    prototypes:
+      - MobCobraSilvia
+
+- type: entity
+  parent: MarkerBase
+  id: SpawnMobEngiPossumPoppy
+  name: Poppy Spawner
+  suffix: Engineering Pet
+  components:
+  - type: Sprite
+    layers:
+    - state: green
+    - state: poppy
+      sprite: Mobs/Animals/possum.rsi
+  - type: ConditionalSpawner
+    prototypes:
+    - MobPossumPoppy

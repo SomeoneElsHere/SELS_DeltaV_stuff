@@ -13,13 +13,9 @@
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
   metabolisms:
-    Drink:
-      effects:
-      - !type:SatiateThirst
-        factor: 3
-      - !type:AdjustReagent
-        reagent: Radium
-        amount: 0.01
+    Digestion:
+      metabolites:
+        Radium: 0.02
 
 - type: reagent
   id: PinkDrink
@@ -28,19 +24,13 @@
   desc: reagent-desc-pinkdrink
   physicalDesc: reagent-physical-desc-glowing
   flavor: pinkdrink
-  color: "#d04949"
+  color: "#d48592" #DeltaV - was #d04949
   metamorphicSprite:
-    sprite: Nyanotrasen/Objects/Consumable/Drinks/pinkdrink.rsi
+    sprite: _DV/Objects/Consumable/Drinks/pinkdrink.rsi # DeltaV replacement
     state: icon_empty
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
-
-  metabolisms:
-    Drink:
-      effects:
-      - !type:SatiateThirst
-        factor: 3
 
 - type: reagent
   id: BubbleTea
@@ -57,52 +47,7 @@
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
   metabolisms:
-    Drink:
-      effects:
-      - !type:SatiateThirst
-        factor: 3
-      - !type:AdjustReagent
-        reagent: Sugar
-        amount: 0.2
-      - !type:AdjustReagent
-        reagent: Nutriment
-        amount: 0.1
-
-- type: reagent
-  id: HolyWater
-  name: reagent-name-holywater
-  parent: BaseDrink
-  desc: reagent-name-holywater
-  physicalDesc: reagent-physical-desc-translucent
-  flavor: holy
-  color: "#75b1f0"
-  boilingPoint: 100.0
-  meltingPoint: 0.0
-  reactiveEffects:
-    Acidic:
-      methods: [ Touch ]
-      effects:
-      - !type:HealthChange
-        scaleByQuantity: true
-        ignoreResistances: false
-        damage:
-          types:
-            Holy: 0.5
-  metabolisms: #Could nullify debuffs of feeding.
-    Drink:
-      effects:
-      - !type:SatiateThirst
-        factor: 3
-    Medicine:
-      effects:
-      - !type:ModifyBloodLevel
-        amount: 0.1
-      - !type:HealthChange
-        damage:
-          groups:
-            Burn: -0.5
-          types:
-            Holy: 1
-  plantMetabolism: #Heals plants a little with the holy power within it.
-    - !type:PlantAdjustHealth
-      amount: 0.1
+    Digestion:
+      metabolites:
+        Sugar: 0.4
+        Nutriment: 0.2

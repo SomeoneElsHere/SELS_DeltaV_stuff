@@ -1,0 +1,123 @@
+using Content.Shared._DV.CosmicCult.Components;
+using Content.Shared._DV.CosmicCult.Prototypes;
+using Content.Shared.Actions;
+using Content.Shared.UserInterface;
+using Robust.Shared.Physics.Events;
+using Robust.Shared.Prototypes;
+using Robust.Shared.Spawners;
+using Robust.Shared.Timing;
+
+namespace Content.Shared._DV.CosmicCult;
+
+public abstract class SharedMonumentSystem : EntitySystem
+{
+    [Dependency] private readonly IComponentFactory _componentFactory = default!;
+    [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private readonly IPrototypeManager _prototype = default!;
+    [Dependency] private readonly SharedActionsSystem _actions = default!;
+    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
+    [Dependency] private readonly SharedCosmicCultSystem _cosmicCult = default!;
+    [Dependency] private readonly SharedUserInterfaceSystem _ui = default!;
+
+    public override void Initialize()
+    {
+        base.Initialize();
+        SubscribeLocalEvent<MonumentComponent, BoundUIOpenedEvent>(OnUIOpened);
+        SubscribeLocalEvent<MonumentComponent, InfluenceSelectedMessage>(OnInfluenceSelected);
+        SubscribeLocalEvent<MonumentOnDespawnComponent, TimedDespawnEvent>(OnTimedDespawn);
+        SubscribeLocalEvent<MonumentCollisionComponent, PreventCollideEvent>(OnPreventCollide);
+    }
+
+    private void OnTimedDespawn(Entity<MonumentOnDespawnComponent> ent, ref TimedDespawnEvent args)
+    {
+        if (!TryComp(ent, out TransformComponent? xform))
+            return;
+
+        var monument = Spawn(ent.Comp.Prototype, xform.Coordinates);
+        var evt = new CosmicCultAssociateRuleEvent(ent, monument);
+        RaiseLocalEvent(ref evt);
+    }
+
+    public override void Update(float frameTime)
+    {
+        base.Update(frameTime);
+        var query = EntityQueryEnumerator<MonumentTransformingComponent, AppearanceComponent>();
+        while (query.MoveNext(out var uid, out var comp, out var appearance))
+        {
+            if (_timing.CurTime < comp.EndTime)
+                continue;
+            _appearance.SetData(uid, MonumentVisuals.Transforming, false, appearance);
+            RemCompDeferred<MonumentTransformingComponent>(uid);
+        }
+    }
+
+    /// <summary>
+    /// Ensures that Cultists can't walk through The Monument and allows non-cultists to walk through the space.
+    /// </summary>
+    private void OnPreventCollide(EntityUid uid, MonumentCollisionComponent comp, ref PreventCollideEvent args)
+    {
+        if (!_cosmicCult.EntitySeesCult(args.OtherEntity) && !comp.HasCollision)
+            args.Cancelled = true;
+    }
+
+    private void OnUIOpened(Entity<MonumentComponent> ent, ref BoundUIOpenedEvent args)
+    {
+        if (!_ui.IsUiOpen(ent.Owner, MonumentKey.Key))
+            return;
+
+        if (ent.Comp.Enabled && _cosmicCult.EntityIsCultist(args.Actor))
+            _ui.SetUiState(ent.Owner, MonumentKey.Key, new MonumentBuiState(ent.Comp));
+        else
+            _ui.CloseUi(ent.Owner, MonumentKey.Key); //close the UI if the monument isn't available
+    }
+
+    #region UI listeners
+    private void OnInfluenceSelected(Entity<MonumentComponent> ent, ref InfluenceSelectedMessage args)
+    {
+        if (!_prototype.TryIndex(args.InfluenceProtoId, out var proto) || !TryComp<ActivatableUIComponent>(ent, out var uiComp) || !TryComp<CosmicCultComponent>(args.Actor, out var cultComp))
+            return;
+
+        if (cultComp.EntropyBudget < proto.Cost || cultComp.OwnedInfluences.Contains(proto))
+            return;
+
+        cultComp.OwnedInfluences.Add(proto);
+
+        if (proto.InfluenceType == "influence-type-active")
+        {
+            var actionEnt = _actions.AddAction(args.Actor, proto.Action);
+            cultComp.ActionEntities.Add(actionEnt);
+        }
+        else if (proto.InfluenceType == "influence-type-passive")
+        {
+            UnlockPassive(args.Actor, proto); //Not unlocking an action? call the helper function to add the influence's passive effects
+        }
+
+        cultComp.EntropyBudget -= proto.Cost;
+        Dirty(args.Actor, cultComp); //force an update to make sure that the client has the correct set of owned abilities
+
+        _ui.SetUiState(ent.Owner, MonumentKey.Key, new MonumentBuiState(ent.Comp));
+    }
+    #endregion
+
+    private void UnlockPassive(EntityUid cultist, InfluencePrototype proto)
+    {
+        if (proto.Add != null)
+        {
+            foreach (var reg in proto.Add.Values)
+            {
+                var compType = reg.Component.GetType();
+                if (HasComp(cultist, compType))
+                    continue;
+                AddComp(cultist, _componentFactory.GetComponent(compType));
+            }
+        }
+
+        if (proto.Remove != null)
+        {
+            foreach (var reg in proto.Remove.Values)
+            {
+                RemComp(cultist, reg.Component.GetType());
+            }
+        }
+    }
+}

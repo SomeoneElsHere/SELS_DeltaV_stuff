@@ -1,0 +1,59 @@
+# Shoots anything and lets doors close over it, letting it be used in AI cores "under" blast doors.
+- type: entity
+  parent: WeaponTurretAllHostile
+  id: WeaponTurretAI
+  name: AI defense turret
+  description: A ballistic turret that retracts into the floor. Deployable by the station AI to defend its core against urgent threats.
+  components:
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeCircle
+          radius: 0.45
+        density: 60
+        mask:
+        - SmallMobMask # same as mouse, lets it go under doors but not phase through walls
+        layer:
+        - SmallMobLayer
+
+- type: entity
+  parent: WeaponEnergyTurretStationBase
+  id: WeaponEnergyTurretCentralCommand
+  suffix: CentComm
+  components:
+  - type: AccessReader
+    access: [["CentralCommand"]]
+  - type: StationAiTurret
+  - type: TurretTargetSettings
+    exemptAccessLevels:
+    - CentralCommand
+    - ERT
+  - type: Machine
+    board: WeaponEnergyTurretCentralCommandTurretboard
+  - type: DeviceNetwork
+    receiveFrequencyId: TurretControl
+    transmitFrequencyId: Turret
+  - type: StationAiVision
+    range: 0
+
+# Energy Turrets
+- type: entity
+  parent: WeaponEnergyTurretStationBase
+  id: WeaponEnergyTurretXenoborg
+  suffix: Xenoborg
+  components:
+  - type: Sprite
+    sprite: _DV/Objects/Weapons/Guns/Turrets/xenoborg.rsi
+  - type: AccessReader
+    access: [["Xenoborg"]]
+  - type: TurretTargetSettings
+    exemptAccessLevels:
+    - Xenoborg
+  - type: Machine
+    board: WeaponEnergyTurretXenoborgMachineCircuitboard
+  - type: DeviceNetwork
+    deviceNetId: Wireless
+    receiveFrequencyId: Mothership
+    transmitFrequencyId: Mothership
+  - type: WirelessNetworkConnection
+    range: 150

@@ -1,0 +1,187 @@
+- type: entity
+  parent: DecalSpawnerBase
+  id: DecalSpawnerDirtBase
+  abstract: true
+  components:
+  - type: RandomDecalSpawner
+    decals:
+    - DirtLight
+    - DirtMedium
+    - DirtHeavy
+    maxDecalsPerTile: 4 # Delta V - Was 1
+    snapPosition: true
+    zIndex: 5
+    prob: 0.8
+    color: '#FFFFFF7F'
+    cleanable: true
+    tileBlacklist: # Everything here just looks bad if it gets regular dirt on it
+    # Delta V - Begin edits
+    #- FloorSteelMono
+    #- FloorSteelDiagonal
+    #- FloorSteelOffset
+    #- FloorSteelDiagonalMini
+    # Delta V - End edits
+    - FloorWood
+    - FloorWoodLarge
+    # Delta V - Begin edits
+    #- FloorWhiteMono
+    #- FloorWhiteDiagonal
+    #- FloorWhiteOffset
+    #- FloorWhiteDiagonalMini
+    #- FloorDarkMono
+    #- FloorDarkDiagonal
+    #- FloorDarkOffset
+    #- FloorDarkDiagonalMini
+    # Delta V - End edits
+    - FloorArcadeBlue
+    - FloorArcadeBlue2
+    - FloorArcadeRed
+    - FloorEighties
+    - FloorCarpetClown
+    - FloorCarpetOffice
+    - FloorBoxing
+    - FloorGym
+    # Delta V - Begin edits
+    #- FloorGlass
+    #- FloorRGlass
+    # Delta V - End edits
+    - FloorAstroGrass
+    - FloorMowedAstroGrass
+    - FloorJungleAstroGrass
+    - FloorAstroIce
+    - FloorAstroSnow
+    - FloorAstroAsteroidSand
+    - FloorFlesh
+    - FloorAsteroidSandUnvariantized
+    - FloorAsteroidIronsandUnvariantized
+    - FloorCave
+    - FloorAsteroidIronsand
+    - FloorAsteroidTile
+    - FloorAsteroidSandDug
+    - FloorAsteroidSand
+    - FloorDirt
+    - FloorGrassLight
+    - FloorGrassDark
+    - FloorGrassJungle
+    - FloorGrass
+    - FloorAsphalt
+    - FloorReinforced
+    - FloorLino
+    # Delta V - Begin Additions
+    - FloorMowedAstroSnow
+    - FloorAstroSnowDug
+    - FloorGrassDarkIndoors
+    - FloorGrassLightIndoors
+    - FloorMowedAstroSnowDug
+    - FloorSteelBurnt
+    # Delta V - End Additions
+    # N14 - Begin Additions
+    # Add N14 tiles after they are resprited.
+    # N14 - End Additions
+    deleteSpawnerAfterSpawn: true
+
+- type: entity
+  parent: DecalSpawnerDirtBase
+  id: DecalSpawnerDirtSingle
+  suffix: Dirt, 0 Radius
+  components:
+  - type: RandomDecalSpawner
+    radius: 0
+    prob: 1.0
+    maxDecals: 1
+
+- type: entity
+  parent: DecalSpawnerDirtBase
+  id: DecalSpawnerDirtNear
+  suffix: Dirt, 1.5 Radius
+  components:
+  - type: RandomDecalSpawner
+    radius: 1.5
+    maxDecals: 5
+
+- type: entity
+  parent: DecalSpawnerDirtBase
+  id: DecalSpawnerDirtWide
+  suffix: Dirt, 3 Radius
+  components:
+  - type: RandomDecalSpawner
+    radius: 3
+    maxDecals: 20
+    maxDecalsPerTile: 2
+
+- type: entity
+  parent: DecalSpawnerDirtBase
+  id: DecalSpawnerDirtMonospace
+  suffix: Dirt, Monospace, 1 Radius
+  components:
+  - type: RandomDecalSpawner
+    radius: 1
+    maxDecals: 5
+    decals:
+    - Dirt
+    - DirtHeavyMonotile
+    tileBlacklist:
+    # Delta V - Begin edits
+    #- FloorSteelDiagonal
+    #- FloorSteelOffset
+    #- FloorSteelDiagonalMini
+    #- FloorWhiteDiagonal
+    #- FloorWhiteOffset
+    #- FloorWhiteDiagonalMini
+    #- FloorDarkDiagonal
+    #- FloorDarkOffset
+    #- FloorDarkDiagonalMini
+    # Delta V - End edits
+    - FloorArcadeBlue
+    - FloorArcadeBlue2
+    - FloorArcadeRed
+    - FloorEighties
+    - FloorCarpetClown
+    - FloorCarpetOffice
+    - FloorBoxing
+    - FloorGym
+    - FloorAstroGrass
+    - FloorMowedAstroGrass
+    - FloorJungleAstroGrass
+    - FloorAstroIce
+    - FloorAstroSnow
+    - FloorAstroAsteroidSand
+    - FloorFlesh
+    - FloorAsteroidSandUnvariantized
+    - FloorAsteroidIronsandUnvariantized
+    - FloorCave
+    - FloorAsteroidIronsand
+    - FloorAsteroidTile
+    - FloorAsteroidSandDug
+    - FloorAsteroidSand
+    - FloorDirt
+    - FloorGrassLight
+    - FloorGrassDark
+    - FloorGrassJungle
+    - FloorGrass
+    - FloorAsphalt
+    - FloorReinforced
+    # Delta V - Begin Additions
+    - FloorMowedAstroSnow
+    - FloorAstroSnowDug
+    - FloorGrassDarkIndoors
+    - FloorGrassLightIndoors
+    - FloorMowedAstroSnowDug
+    - FloorSteelBurnt
+    # Delta V - End Additions
+    # N14 - Begin Additions
+    # Add N14 tiles after they are resprited.
+    # N14 - End Additions
+
+- type: entity
+  parent: DecalSpawnerDirtMonospace
+  id: DecalSpawnerBurns
+  suffix: Burns, 1 Radius
+  components:
+  - type: RandomDecalSpawner
+    decals:
+    - burnt1
+    - burnt2
+    - burnt3
+    - burnt4
+    radius: 1

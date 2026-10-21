@@ -1,10 +1,7 @@
-using Content.Server.Body.Components;
 using Content.Server.Medical.Components;
-using Content.Server.PowerCell;
-using Content.Server.Temperature.Components;
-using Content.Server.Traits.Assorted;
+using Content.Shared.Body.Components;
 using Content.Shared.Chemistry.EntitySystems;
-using Content.Shared.Damage;
+using Content.Shared.Damage.Components;
 using Content.Shared.DoAfter;
 using Content.Shared.IdentityManagement;
 using Content.Shared.Interaction;
@@ -14,14 +11,24 @@ using Content.Shared.Item.ItemToggle.Components;
 using Content.Shared.MedicalScanner;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Popups;
+using Content.Shared.PowerCell;
+using Content.Shared.Temperature.Components;
+using Content.Shared.Traits.Assorted;
 using Robust.Server.GameObjects;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Containers;
 using Robust.Shared.Timing;
+using Content.Server.Body.Systems;
+
+// Begin DeltaV
+using Content.Server._DV.MedicalRecords;
+using Content.Shared._DV.MedicalRecords;
+using Content.Shared.Chemistry.Components;
+// End DeltaV
 
 namespace Content.Server.Medical;
 
-public sealed class HealthAnalyzerSystem : EntitySystem
+public sealed partial class HealthAnalyzerSystem : EntitySystem // DeltaV - Made Partial
 {
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly PowerCellSystem _cell = default!;
@@ -32,6 +39,8 @@ public sealed class HealthAnalyzerSystem : EntitySystem
     [Dependency] private readonly UserInterfaceSystem _uiSystem = default!;
     [Dependency] private readonly TransformSystem _transformSystem = default!;
     [Dependency] private readonly SharedPopupSystem _popupSystem = default!;
+    [Dependency] private readonly MedicalRecordsSystem _medicalRecords = default!; // DeltaV - Medical Records
+    [Dependency] private readonly BloodstreamSystem _bloodstreamSystem = default!;
 
     public override void Initialize()
     {
@@ -40,6 +49,14 @@ public sealed class HealthAnalyzerSystem : EntitySystem
         SubscribeLocalEvent<HealthAnalyzerComponent, EntGotInsertedIntoContainerMessage>(OnInsertedIntoContainer);
         SubscribeLocalEvent<HealthAnalyzerComponent, ItemToggledEvent>(OnToggled);
         SubscribeLocalEvent<HealthAnalyzerComponent, DroppedEvent>(OnDropped);
+        // Begin DeltaV - Medical Records
+        Subs.BuiEvents<HealthAnalyzerComponent>(HealthAnalyzerUiKey.Key, subs =>
+        {
+            subs.Event<HealthAnalyzerTriageStatusMessage>(OnHealthAnalyzerTriageStatusSelected);
+            subs.Event<HealthAnalyzerTriageClaimMessage>(OnHealthAnalyzerTriageClaimSelected);
+        });
+        // End DeltaV - Medical Records
+        InitializeReportPrinting(); // DeltaV - MedTek Reports
     }
 
     public override void Update(float frameTime)
@@ -63,14 +80,16 @@ public sealed class HealthAnalyzerSystem : EntitySystem
             component.NextUpdate = _timing.CurTime + component.UpdateInterval;
 
             //Get distance between health analyzer and the scanned entity
+            //null is infinite range
             var patientCoordinates = Transform(patient).Coordinates;
-            if (!_transformSystem.InRange(patientCoordinates, transform.Coordinates, component.MaxScanRange))
+            if (component.MaxScanRange != null && !_transformSystem.InRange(patientCoordinates, transform.Coordinates, component.MaxScanRange.Value))
             {
                 //Range too far, disable updates
-                StopAnalyzingEntity((uid, component), patient);
+                PauseAnalyzingEntity((uid, component), patient);
                 continue;
             }
 
+            component.IsAnalyzerActive = true;
             UpdateScannedUser(uid, patient, true);
         }
     }
@@ -80,7 +99,7 @@ public sealed class HealthAnalyzerSystem : EntitySystem
     /// </summary>
     private void OnAfterInteract(Entity<HealthAnalyzerComponent> uid, ref AfterInteractEvent args)
     {
-        if (args.Target == null || !args.CanReach || !HasComp<MobStateComponent>(args.Target) || !_cell.HasDrawCharge(uid, user: args.User))
+        if (args.Target == null || !args.CanReach || !HasComp<MobStateComponent>(args.Target) || !_cell.HasDrawCharge(uid.Owner, user: args.User))
             return;
 
         _audio.PlayPvs(uid.Comp.ScanningBeginSound, uid);
@@ -100,7 +119,7 @@ public sealed class HealthAnalyzerSystem : EntitySystem
 
     private void OnDoAfter(Entity<HealthAnalyzerComponent> uid, ref HealthAnalyzerDoAfterEvent args)
     {
-        if (args.Handled || args.Cancelled || args.Target == null || !_cell.HasDrawCharge(uid, user: args.User))
+        if (args.Handled || args.Cancelled || args.Target == null || !_cell.HasDrawCharge(uid.Owner, user: args.User))
             return;
 
         if (!uid.Comp.Silent)
@@ -108,6 +127,7 @@ public sealed class HealthAnalyzerSystem : EntitySystem
 
         OpenUserInterface(args.User, uid);
         BeginAnalyzingEntity(uid, args.Target.Value);
+        uid.Comp.StationRecordKey = _medicalRecords.GetMedicalRecordsKey(args.Target.Value); // DeltaV - Medical Records
         args.Handled = true;
     }
 
@@ -151,7 +171,7 @@ public sealed class HealthAnalyzerSystem : EntitySystem
     /// </summary>
     /// <param name="healthAnalyzer">The health analyzer that should receive the updates</param>
     /// <param name="target">The entity to start analyzing</param>
-    private void BeginAnalyzingEntity(Entity<HealthAnalyzerComponent> healthAnalyzer, EntityUid target)
+    public void BeginAnalyzingEntity(Entity<HealthAnalyzerComponent> healthAnalyzer, EntityUid target) // Mono - make public
     {
         //Link the health analyzer to the scanned entity
         healthAnalyzer.Comp.ScannedEntity = target;
@@ -166,7 +186,7 @@ public sealed class HealthAnalyzerSystem : EntitySystem
     /// </summary>
     /// <param name="healthAnalyzer">The health analyzer that's receiving the updates</param>
     /// <param name="target">The entity to analyze</param>
-    private void StopAnalyzingEntity(Entity<HealthAnalyzerComponent> healthAnalyzer, EntityUid target)
+    public void StopAnalyzingEntity(Entity<HealthAnalyzerComponent> healthAnalyzer, EntityUid target) // Mono - make public
     {
         //Unlink the analyzer
         healthAnalyzer.Comp.ScannedEntity = null;
@@ -177,6 +197,38 @@ public sealed class HealthAnalyzerSystem : EntitySystem
     }
 
     /// <summary>
+    /// If the scanner is active, sends one last update and sets it to inactive.
+    /// </summary>
+    /// <param name="healthAnalyzer">The health analyzer that's receiving the updates</param>
+    /// <param name="target">The entity to analyze</param>
+    private void PauseAnalyzingEntity(Entity<HealthAnalyzerComponent> healthAnalyzer, EntityUid target)
+    {
+        if (!healthAnalyzer.Comp.IsAnalyzerActive)
+            return;
+
+        UpdateScannedUser(healthAnalyzer, target, false);
+        healthAnalyzer.Comp.IsAnalyzerActive = false;
+    }
+
+    // Begin DeltaV - Medical Records
+    private void OnHealthAnalyzerTriageStatusSelected(Entity<HealthAnalyzerComponent> healthAnalyzer, ref HealthAnalyzerTriageStatusMessage args)
+    {
+        if (healthAnalyzer.Comp.StationRecordKey is not {} key)
+            return;
+
+        _medicalRecords.SetPatientStatus(key, args.TriageStatus);
+    }
+
+    private void OnHealthAnalyzerTriageClaimSelected(Entity<HealthAnalyzerComponent> healthAnalyzer, ref HealthAnalyzerTriageClaimMessage args)
+    {
+        if (healthAnalyzer.Comp.StationRecordKey is not {} key)
+            return;
+
+        _medicalRecords.ClaimPatient(key, args.Actor);
+    }
+    // End DeltaV - Medical Records
+
+    /// <summary>
     /// Send an update for the target to the healthAnalyzer
     /// </summary>
     /// <param name="healthAnalyzer">The health analyzer</param>
@@ -184,39 +236,62 @@ public sealed class HealthAnalyzerSystem : EntitySystem
     /// <param name="scanMode">True makes the UI show ACTIVE, False makes the UI show INACTIVE</param>
     public void UpdateScannedUser(EntityUid healthAnalyzer, EntityUid target, bool scanMode)
     {
-        if (!_uiSystem.HasUi(healthAnalyzer, HealthAnalyzerUiKey.Key))
+        if (!_uiSystem.HasUi(healthAnalyzer, HealthAnalyzerUiKey.Key)
+            || !HasComp<DamageableComponent>(target))
             return;
 
-        if (!HasComp<DamageableComponent>(target))
-            return;
+        var uiState = GetHealthAnalyzerUiState(target);
+        uiState.ScanMode = scanMode;
 
+        _uiSystem.ServerSendUiMessage(
+            healthAnalyzer,
+            HealthAnalyzerUiKey.Key,
+            new HealthAnalyzerScannedUserMessage(uiState)
+        );
+    }
+
+    /// <summary>
+    /// Creates a HealthAnalyzerState based on the current state of an entity.
+    /// </summary>
+    /// <param name="target">The entity being scanned</param>
+    /// <returns></returns>
+    public HealthAnalyzerUiState GetHealthAnalyzerUiState(EntityUid? target)
+    {
+        if (!target.HasValue || !HasComp<DamageableComponent>(target))
+            return new HealthAnalyzerUiState();
+
+        var entity = target.Value;
         var bodyTemperature = float.NaN;
 
-        if (TryComp<TemperatureComponent>(target, out var temp))
+        if (TryComp<TemperatureComponent>(entity, out var temp))
             bodyTemperature = temp.CurrentTemperature;
 
         var bloodAmount = float.NaN;
         var bleeding = false;
         var unrevivable = false;
 
-        if (TryComp<BloodstreamComponent>(target, out var bloodstream) &&
-            _solutionContainerSystem.ResolveSolution(target, bloodstream.BloodSolutionName,
-                ref bloodstream.BloodSolution, out var bloodSolution))
+        Solution? bloodSolution = null; // DeltaV - Health Analyzer Plus
+
+        if (TryComp<BloodstreamComponent>(entity, out var bloodstream) &&
+            _solutionContainerSystem.ResolveSolution(entity, bloodstream.BloodSolutionName,
+                ref bloodstream.BloodSolution, out bloodSolution)) // DeltaV - Health Analyzer Plus
         {
-            bloodAmount = bloodSolution.FillFraction;
+            bloodAmount = _bloodstreamSystem.GetBloodLevel(entity);
             bleeding = bloodstream.BleedAmount > 0;
         }
 
-        if (HasComp<UnrevivableComponent>(target))
+        if (TryComp<UnrevivableComponent>(entity, out var unrevivableComp) && unrevivableComp.Analyzable)
             unrevivable = true;
 
-        _uiSystem.ServerSendUiMessage(healthAnalyzer, HealthAnalyzerUiKey.Key, new HealthAnalyzerScannedUserMessage(
-            GetNetEntity(target),
+        return new HealthAnalyzerUiState(
+            GetNetEntity(entity),
             bodyTemperature,
             bloodAmount,
-            scanMode,
+            null,
             bleeding,
-            unrevivable
-        ));
+            unrevivable,
+            bloodSolution, // DeltaV - Health Analyzer Plus
+            _medicalRecords.GetMedicalRecords(entity) // DeltaV - Medical Records
+        );
     }
 }

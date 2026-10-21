@@ -21,6 +21,12 @@ public sealed partial class BinComponent : Component
     public Container ItemContainer = default!;
 
     /// <summary>
+    /// ID of the container used to hold the items in the bin.
+    /// </summary>
+    [DataField]
+    public string ContainerId = "bin-container";
+
+    /// <summary>
     /// A list representing the order in which
     /// all the entities are stored in the bin.
     /// </summary>
@@ -49,5 +55,5 @@ public sealed partial class BinComponent : Component
     /// that can be stored in the bin.
     /// </summary>
     [DataField, AutoNetworkedField]
-    public int MaxItems = 20;
+    public int MaxItems = 24; // DeltaV - Max size to fit all the paper in a ream
 }

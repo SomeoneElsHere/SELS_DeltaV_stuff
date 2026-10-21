@@ -1,0 +1,121 @@
+- type: cargoProduct
+  id: ArmoryGrand
+  icon:
+    sprite: Nyanotrasen/Objects/Weapons/Guns/Snipers/grand_rifle.rsi
+    state: base
+  product: CrateArmoryGrand
+  cost: 5500
+  category: Armory
+  group: market
+
+- type: cargoProduct
+  id: ArmoryUniversal
+  icon:
+    sprite: Nyanotrasen/Objects/Weapons/Guns/Pistols/universal.rsi
+    state: icon
+  product: CrateArmoryUniversal
+  cost: 9500 # was 12500
+  category: Armory
+  group: market
+
+- type: cargoProduct
+  id: ArmoryShotgunAdjutant
+  icon:
+    sprite: _DV/Objects/Weapons/Guns/Shotguns/Adjutant.rsi
+    state: icon
+  product: CrateArmoryAdjutant
+  cost: 10000
+  category: Armory
+  group: market
+
+- type: cargoProduct
+  id: ArmoryEnergyGun
+  icon:
+    sprite: _DV/Objects/Weapons/Guns/Battery/energygun.rsi
+    state: icon
+  product: CrateArmoryEnergyGun
+  cost: 5500
+  category: Armory
+  group: market
+
+- type: cargoProduct
+  id: ArmoryEnergyGunMini
+  icon:
+    sprite: _DV/Objects/Weapons/Guns/Battery/mini_energygun.rsi
+    state: icon
+  product: CrateArmoryEnergyGunMini
+  cost: 3500
+  category: Armory
+  group: market
+
+- type: cargoProduct
+  id: ArmoryArmingSword
+  name: cargo-armory-arming-swords-name
+  description: cargo-armory-arming-swords-desc
+  icon:
+    sprite: _NF/Objects/Weapons/Melee/armingsword.rsi
+    state: icon
+  product: CrateArmoryArmingSword
+  cost: 2500
+  category: Armory
+  group: market
+
+- type: cargoProduct
+  id: WatchdogImplantCrate
+  icon:
+    sprite: Objects/Specific/Medical/implanter.rsi
+    state: implanter0
+  product: CrateWatchdogImplants
+  cost: 9000
+  category: Armory
+  group: market
+
+- type: cargoProduct
+  id: ArmoryNT3
+  icon:
+    sprite: _DV/Objects/Weapons/Guns/LMGs/NT-3.rsi
+    state: icon
+  product: CrateNT3
+  cost: 13000
+  category: Armory
+  group: market
+
+- type: cargoProduct
+  id: ArmoryRevolver
+  icon:
+    sprite: Objects/Weapons/Guns/Revolvers/inspector.rsi
+    state: icon
+  product: CrateRevolver
+  cost: 5200
+  category: Armory
+  group: market
+
+- type: cargoProduct
+  id: ArmoryCowboy
+  icon:
+    sprite: _DV/Objects/Weapons/Guns/Rifles/l93.rsi
+    state: icon
+  product: CrateArmoryCowboy
+  cost: 7600
+  category: Armory
+  group: market
+
+- type: cargoProduct
+  id: ArmoryUnstableCore
+  icon:
+    sprite: _DV/Objects/Misc/unstable_reactor_core.rsi
+    state: icon
+  product: CrateArmoryUnstableCore
+  cost: 10000
+  category: Armory
+  group: market
+
+- type: cargoProduct
+  id: CargoArmoryPatos
+  icon:
+    sprite: _DV/Objects/Weapons/Guns/SMGs/patos.rsi
+    state: icon
+  product: CrateCargoArmoryPatos
+  cost: 7500
+  category: Armory
+  group: market

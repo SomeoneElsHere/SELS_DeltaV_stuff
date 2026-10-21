@@ -1,13 +1,22 @@
+using Content.Shared._DV.Body.Components; // DeltaV
+using Content.Shared._DV.Body.Systems; // DeltaV
+using Content.Shared._ST.Interaction; // Stellar - interaction particles
+using Content.Shared._Floof.OfferItem; // Floof
 using Content.Shared.ActionBlocker;
 using Content.Shared.Administration.Logs;
 using Content.Shared.Alert;
 using Content.Shared.Buckle.Components;
+using Content.Shared.Cuffs;
 using Content.Shared.Cuffs.Components;
 using Content.Shared.Database;
 using Content.Shared.Hands;
+using Content.Shared.Hands.Components;
 using Content.Shared.Hands.EntitySystems;
+using Content.Shared.Humanoid; // DeltaV
+using Content.Shared.IdentityManagement;
 using Content.Shared.Input;
 using Content.Shared.Interaction;
+using Content.Shared.Inventory.VirtualItem;
 using Content.Shared.Item;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Systems;
@@ -27,6 +36,7 @@ using Robust.Shared.Physics.Events;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Player;
 using Robust.Shared.Timing;
+using Robust.Shared.Utility;
 
 namespace Content.Shared.Movement.Pulling.Systems;
 
@@ -46,6 +56,9 @@ public sealed class PullingSystem : EntitySystem
     [Dependency] private readonly SharedInteractionSystem _interaction = default!;
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
     [Dependency] private readonly HeldSpeedModifierSystem _clothingMoveSpeed = default!;
+    [Dependency] private readonly SharedPopupSystem _popup = default!;
+    [Dependency] private readonly SharedVirtualItemSystem _virtual = default!;
+    [Dependency] private readonly SmallCharacterSystem _smallCharacter = default!; // DeltaV
 
     public override void Initialize()
     {
@@ -61,8 +74,9 @@ public sealed class PullingSystem : EntitySystem
         SubscribeLocalEvent<PullableComponent, EntGotInsertedIntoContainerMessage>(OnPullableContainerInsert);
         SubscribeLocalEvent<PullableComponent, ModifyUncuffDurationEvent>(OnModifyUncuffDuration);
         SubscribeLocalEvent<PullableComponent, StopBeingPulledAlertEvent>(OnStopBeingPulledAlert);
+        SubscribeLocalEvent<PullableComponent, GetInteractingEntitiesEvent>(OnGetInteractingEntities);
 
-        SubscribeLocalEvent<PullerComponent, UpdateMobStateEvent>(OnStateChanged);
+        SubscribeLocalEvent<PullerComponent, MobStateChangedEvent>(OnStateChanged, after: [typeof(MobThresholdSystem)]);
         SubscribeLocalEvent<PullerComponent, AfterAutoHandleStateEvent>(OnAfterState);
         SubscribeLocalEvent<PullerComponent, EntGotInsertedIntoContainerMessage>(OnPullerContainerInsert);
         SubscribeLocalEvent<PullerComponent, EntityUnpausedEvent>(OnPullerUnpaused);
@@ -71,20 +85,73 @@ public sealed class PullingSystem : EntitySystem
         SubscribeLocalEvent<PullerComponent, DropHandItemsEvent>(OnDropHandItems);
         SubscribeLocalEvent<PullerComponent, StopPullingAlertEvent>(OnStopPullingAlert);
 
+        SubscribeLocalEvent<HandsComponent, PullStartedMessage>(HandlePullStarted);
+        SubscribeLocalEvent<HandsComponent, PullStoppedMessage>(HandlePullStopped);
+
         SubscribeLocalEvent<PullableComponent, StrappedEvent>(OnBuckled);
         SubscribeLocalEvent<PullableComponent, BuckledEvent>(OnGotBuckled);
+        SubscribeLocalEvent<ActivePullerComponent, TargetHandcuffedEvent>(OnTargetHandcuffed);
 
         CommandBinds.Builder
             .Bind(ContentKeyFunctions.ReleasePulledObject, InputCmdHandler.FromDelegate(OnReleasePulledObject, handle: false))
             .Register<PullingSystem>();
     }
 
-    private void OnStateChanged(EntityUid uid, PullerComponent component, ref UpdateMobStateEvent args)
+    private void OnTargetHandcuffed(Entity<ActivePullerComponent> ent, ref TargetHandcuffedEvent args)
+    {
+        if (!TryComp<PullerComponent>(ent, out var comp))
+            return;
+
+        if (comp.Pulling == null)
+            return;
+
+        if (CanPull(ent, comp.Pulling.Value, comp))
+            return;
+
+        if (!TryComp<PullableComponent>(comp.Pulling, out var pullableComp))
+            return;
+
+        TryStopPull(comp.Pulling.Value, pullableComp);
+    }
+
+    private void HandlePullStarted(EntityUid uid, HandsComponent component, PullStartedMessage args)
+    {
+        if (args.PullerUid != uid)
+            return;
+
+        if (TryComp(args.PullerUid, out PullerComponent? pullerComp) && !pullerComp.NeedsHands)
+            return;
+
+        if (!_virtual.TrySpawnVirtualItemInHand(args.PulledUid, uid, out var virt)) // Floofstation - store item
+        {
+            DebugTools.Assert("Unable to find available hand when starting pulling??");
+        }
+        EnsureComp<OfferableVirtualItemComponent>(virt.Value); // Floofstation - add a special component to allow offering it
+    }
+
+    private void HandlePullStopped(EntityUid uid, HandsComponent component, PullStoppedMessage args)
+    {
+        if (args.PullerUid != uid)
+            return;
+
+        // Try find hand that is doing this pull.
+        // and clear it.
+        foreach (var held in _handsSystem.EnumerateHeld((uid, component)))
+        {
+            if (!TryComp(held, out VirtualItemComponent? virtualItem) || virtualItem.BlockingEntity != args.PulledUid)
+                continue;
+
+            _handsSystem.TryDrop((args.PullerUid, component), held);
+            break;
+        }
+    }
+
+    private void OnStateChanged(EntityUid uid, PullerComponent component, ref MobStateChangedEvent args)
     {
         if (component.Pulling == null)
             return;
 
-        if (TryComp<PullableComponent>(component.Pulling, out var comp) && (args.State == MobState.Critical || args.State == MobState.Dead))
+        if (TryComp<PullableComponent>(component.Pulling, out var comp) && (args.NewMobState == MobState.Critical || args.NewMobState == MobState.Dead))
         {
             TryStopPull(component.Pulling.Value, comp);
         }
@@ -100,6 +167,12 @@ public sealed class PullingSystem : EntitySystem
     private void OnGotBuckled(Entity<PullableComponent> ent, ref BuckledEvent args)
     {
         StopPulling(ent, ent);
+    }
+
+    private void OnGetInteractingEntities(Entity<PullableComponent> ent, ref GetInteractingEntitiesEvent args)
+    {
+        if (ent.Comp.Puller != null)
+            args.InteractingEntities.Add(ent.Comp.Puller.Value);
     }
 
     private void OnAfterState(Entity<PullerComponent> ent, ref AfterAutoHandleStateEvent args)
@@ -186,7 +259,7 @@ public sealed class PullingSystem : EntitySystem
         if (component.Pulling != args.BlockingEntity)
             return;
 
-        if (EntityManager.TryGetComponent(args.BlockingEntity, out PullableComponent? comp))
+        if (TryComp(args.BlockingEntity, out PullableComponent? comp))
         {
             TryStopPull(args.BlockingEntity, comp);
         }
@@ -226,6 +299,14 @@ public sealed class PullingSystem : EntitySystem
 
     private void OnRefreshMovespeed(EntityUid uid, PullerComponent component, RefreshMovementSpeedModifiersEvent args)
     {
+        // BEGIN DeltaV - Slow if smaller puller
+        if (TryComp<SmallCharacterComponent>(uid, out var smol))
+        {
+            var sizePenalty = _smallCharacter.ApplyPullSpeedPenalty((uid, smol), component.Pulling);
+            args.ModifySpeed(sizePenalty, sizePenalty);
+        }
+        // END DeltaV
+
         if (TryComp<HeldSpeedModifierComponent>(component.Pulling, out var heldMoveSpeed) && component.Pulling.HasValue)
         {
             var (walkMod, sprintMod) =
@@ -326,7 +407,6 @@ public sealed class PullingSystem : EntitySystem
             RaiseLocalEvent(pullableUid, message);
         }
 
-
         _alertsSystem.ClearAlert(pullableUid, pullableComp.PulledAlert);
     }
 
@@ -338,6 +418,16 @@ public sealed class PullingSystem : EntitySystem
     public bool IsPulling(EntityUid puller, PullerComponent? component = null)
     {
         return Resolve(puller, ref component, false) && component.Pulling != null;
+    }
+
+    public EntityUid? GetPuller(EntityUid puller, PullableComponent? component = null)
+    {
+        return !Resolve(puller, ref component, false) ? null : component.Puller;
+    }
+
+    public EntityUid? GetPulling(EntityUid puller, PullerComponent? component = null)
+    {
+        return !Resolve(puller, ref component, false) ? null : component.Pulling;
     }
 
     private void OnReleasePulledObject(ICommonSession? session)
@@ -375,7 +465,7 @@ public sealed class PullingSystem : EntitySystem
             return false;
         }
 
-        if (!EntityManager.TryGetComponent<PhysicsComponent>(pullableUid, out var physics))
+        if (!TryComp<PhysicsComponent>(pullableUid, out var physics))
         {
             return false;
         }
@@ -470,7 +560,7 @@ public sealed class PullingSystem : EntitySystem
 
         // Pulling confirmed
 
-        _interaction.DoContactInteraction(pullableUid, pullerUid);
+        _interaction.DoContactInteraction(pullerUid, pullableUid,null, true, interactionParticleType: StellarInteractionParticleType.Pull); // Stellar - Interaction particles
 
         // Use net entity so it's consistent across client and server.
         pullableComp.PullJointId = $"pull-joint-{GetNetEntity(pullableUid)}";
@@ -514,6 +604,10 @@ public sealed class PullingSystem : EntitySystem
         Dirty(pullerUid, pullerComp);
         Dirty(pullableUid, pullableComp);
 
+        var pullingMessage =
+            Loc.GetString("getting-pulled-popup", ("puller", Identity.Entity(pullerUid, EntityManager)));
+        _popup.PopupEntity(pullingMessage, pullableUid, pullableUid);
+
         _adminLogger.Add(LogType.Action, LogImpact.Low,
             $"{ToPrettyString(pullerUid):user} started pulling {ToPrettyString(pullableUid):target}");
         return true;
@@ -526,11 +620,8 @@ public sealed class PullingSystem : EntitySystem
         if (pullerUidNull == null)
             return true;
 
-        if (user != null && !_blocker.CanInteract(user.Value, pullableUid))
-            return false;
-
         var msg = new AttemptStopPullingEvent(user);
-        RaiseLocalEvent(pullableUid, msg, true);
+        RaiseLocalEvent(pullableUid, ref msg, true);
 
         if (msg.Cancelled)
             return false;

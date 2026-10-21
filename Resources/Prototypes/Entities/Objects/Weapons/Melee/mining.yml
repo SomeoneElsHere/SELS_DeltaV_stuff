@@ -18,14 +18,13 @@
       params:
         volume: -3
     damage:
-      groups:
-        Brute: 5
+      types:
+        Piercing: 5
   - type: Wieldable
   - type: IncreaseDamageOnWield
     damage:
-      groups:
-        Brute: 10
       types:
+        Piercing: 10
         Structural: 30
   - type: Item
     size: Normal
@@ -35,6 +34,10 @@
     sprite: Objects/Weapons/Melee/pickaxe.rsi
     storedRotation: -45
   - type: UseDelay
+  - type: PhysicalComposition
+    materialComposition:
+      Steel: 100
+      Wood: 100
 
 - type: entity
   name: mining drill
@@ -58,9 +61,9 @@
       path: "/Audio/Items/drill_hit.ogg"
     attackRate: 4
     damage:
-      groups:
-        Brute: 3
       types:
+        Piercing: 1.5 # DeltaV: 3 brute changed to 1.5 piercing
+        Slash: 1.5 # DeltaV: 3 brute changed to 1.5 slash
         Structural: 15
   - type: ReverseEngineering # DeltaV
     difficulty: 2
@@ -84,11 +87,8 @@
       path: "/Audio/Items/drill_hit.ogg"
     attackRate: 4
     damage:
-      groups:
-        Brute: 6
       types:
         Structural: 30
-
 
 - type: entity
   abstract: true
@@ -98,11 +98,16 @@
   description: An early design of the proto-kinetic accelerator.
   components:
   - type: Sharp
+  - type: Execution
+    doAfterDuration: 4.0
   - type: UnpoweredFlashlight
   - type: PointLight
     color: "#ffeead"
     enabled: false
     radius: 4
+  - type: CosmicTransmutable # DeltaV
+    transmutesTo: ScytheCosmicCult
+    requiredGlyphType: CosmicGlyphBlades
 
 - type: entity
   parent: [BaseWeaponCrusher, BaseSecurityCargoContraband]
@@ -114,18 +119,33 @@
   - type: Sprite
     sprite: Objects/Weapons/Melee/crusher.rsi
     state: icon
+  - type: Item
+    size: Ginormous
+    sprite: Objects/Weapons/Melee/crusher-inhands.rsi
+  - type: Clothing
+    sprite: Objects/Weapons/Melee/crusher.rsi
+    quickEquip: false
+    slots:
+    - Back
+    - suitStorage
   - type: AmmoCounter
   - type: UseDelayOnShoot
   - type: UseDelay
     delay: 0.9
   - type: LeechOnMarker
     leech:
-      groups:
-        Brute: -10
+      types:
+        Blunt: -2
+        Slash: -2
+        Piercing: -2
   - type: Gun
     soundGunshot: /Audio/Weapons/plasma_cutter.ogg
     fireRate: 1
-    useKey: false
+    # Begin DeltaV Removals - Shooting is now done with MB1
+    # useKey: false
+    # End DeltaV Removals
+  - type: AltFireMelee # DeltaV
+    attackType: Heavy
   - type: RechargeBasicEntityAmmo
     rechargeCooldown: 0.5
     rechargeSound:
@@ -151,14 +171,11 @@
         Slash: 2.5
         Structural: 30
   - type: GunRequiresWield
-  - type: Item
-    size: Ginormous
-    sprite: Objects/Weapons/Melee/crusher-inhands.rsi
   - type: DisarmMalus
   - type: Prying
 
 - type: entity
-  parent: [ BaseWeaponCrusher, BaseSecurityCargoContraband]
+  parent: [ BaseKnife, BaseWeaponCrusher, BaseSecurityCargoContraband]
   id: WeaponCrusherDagger
   name: crusher dagger
   description: A scaled down version of a proto-kinetic crusher. Uses kinetic energy to vibrate the blade at high speeds.
@@ -172,10 +189,34 @@
     attackRate: 2
     damage:
       types:
-        Slash: 15
-  - type: Tag
-    tags:
-    - Knife
+        Slash: 12
+  - type: EmbeddableProjectile
+    sound: /Audio/Weapons/star_hit.ogg
+    offset: -0.15,0.0
+  - type: LandAtCursor
+  - type: DamageOtherOnHit
+    damage:
+      types:
+        Slash: 10
+  - type: DisarmMalus
+    malus: 0.225
+  - type: ThrowingAngle
+    angle: 225
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PolygonShape
+          radius: 0.01
+          vertices:
+          - -0.4,-0.2
+          - -0.2,-0.4
+          - 0.4,0.2
+          - 0.2,0.4
+        density: 20 # derived from base_item
+        mask:
+        - ItemMask
+        restitution: 0.3
+        friction: 0.2
 
 # Like a crusher... but better
 - type: entity
@@ -186,16 +227,24 @@
   components:
   - type: Sprite
     sprite: Objects/Weapons/Melee/crusher_glaive.rsi
-  - type: UseDelay
-    delay: 1.9
-  - type: LeechOnMarker
-    leech:
-      groups:
-        Brute: -21
-  - type: MeleeWeapon
-  - type: Tag
-    tags:
-      - Pickaxe
+    state: icon
   - type: Item
     size: Ginormous
     sprite: Objects/Weapons/Melee/crusher_glaive-inhands.rsi
+  - type: Clothing
+    sprite: Objects/Weapons/Melee/crusher_glaive.rsi
+    quickEquip: false
+    slots:
+    - Back
+    - suitStorage
+  - type: UseDelay
+    delay: 0.9 # DeltaV - Didn't match the firerate. This is just visuals.
+  - type: LeechOnMarker
+    leech:
+      types:
+        Blunt: -5
+        Piercing: -5
+        Slash: -5
+  - type: Tag
+    tags:
+      - Pickaxe

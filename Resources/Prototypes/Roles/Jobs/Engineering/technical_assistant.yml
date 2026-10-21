@@ -1,16 +1,16 @@
-- type: job
+﻿- type: job
   id: TechnicalAssistant
   name: job-name-technical-assistant
   description: job-description-technical-assistant
   playTimeTracker: JobTechnicalAssistant
   antagAdvantage: 3 # DeltaV - Reduced TC: External Access + Engineering
   requirements:
-  - !type:OverallPlaytimeRequirement # DeltaV
-      time: 7200 # 2 hours
-    # - !type:DepartmentTimeRequirement # DeltaV - Removes time limit
-    #   department: Engineering
-    #   time: 54000 #15 hrs
-    #   inverted: true # stop playing intern if you're good at engineering!
+    - !type:OverallPlaytimeRequirement
+      time: 1h
+    - !type:DepartmentTimeRequirement
+      department: Engineering
+      time: 5h
+      inverted: true # stop playing intern if you're good at engineering!
   startingGear: TechnicalAssistantGear
   icon: "JobIconTechnicalAssistant"
   supervisors: job-supervisors-engineering
@@ -25,9 +25,21 @@
   equipment:
     shoes: ClothingShoesBootsWork
     id: TechnicalAssistantPDA
+    neck: ClothingNeckNoviceMark # imp
     belt: ClothingBeltUtilityEngineering
     ears: ClothingHeadsetEngineering
     pocket2: BookEngineersHandbook
   #storage:
     #back:
     #- Stuff
+
+- type: chameleonOutfit
+  id: TechnicalAssistantChameleonOutfit
+  job: TechnicalAssistant
+  equipment:
+    head: ClothingHeadHatHardhatOrange
+    eyes: ClothingEyesGlassesMeson
+    mask: ClothingMaskBreath
+    neck: ClothingNeckScarfStripedOrange
+    outerClothing: ClothingOuterVestHazard
+    gloves: ClothingHandsGlovesColorYellow

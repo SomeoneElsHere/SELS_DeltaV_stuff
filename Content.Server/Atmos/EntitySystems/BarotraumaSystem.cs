@@ -1,9 +1,11 @@
 using System.Diagnostics.CodeAnalysis;
 using Content.Server.Administration.Logs;
 using Content.Server.Atmos.Components;
+using Content.Shared._Goobstation.Atmos;
 using Content.Shared.Alert;
 using Content.Shared.Atmos;
-using Content.Shared.Damage;
+using Content.Shared.Damage.Components;
+using Content.Shared.Damage.Systems;
 using Content.Shared.Database;
 using Content.Shared.FixedPoint;
 using Content.Shared.Inventory;
@@ -144,7 +146,7 @@ namespace Content.Server.Atmos.EntitySystems
         /// </summary>
         public float GetFeltLowPressure(EntityUid uid, BarotraumaComponent barotrauma, float environmentPressure)
         {
-            if (barotrauma.HasImmunity)
+            if (barotrauma.HasImmunity || HasComp<SpecialPressureImmunityComponent>(uid)) // Goobstation - Special Immunity
             {
                 return Atmospherics.OneAtmosphere;
             }
@@ -158,7 +160,7 @@ namespace Content.Server.Atmos.EntitySystems
         /// </summary>
         public float GetFeltHighPressure(EntityUid uid, BarotraumaComponent barotrauma, float environmentPressure)
         {
-            if (barotrauma.HasImmunity)
+            if (barotrauma.HasImmunity || HasComp<SpecialPressureImmunityComponent>(uid)) // Goobstation - Special Immunity
             {
                 return Atmospherics.OneAtmosphere;
             }
@@ -210,9 +212,10 @@ namespace Content.Server.Atmos.EntitySystems
             while (enumerator.MoveNext(out var uid, out var barotrauma, out var damageable))
             {
                 var totalDamage = FixedPoint2.Zero;
+                var damageSpecifier = _damageableSystem.GetAllDamage((uid, damageable));
                 foreach (var (barotraumaDamageType, _) in barotrauma.Damage.DamageDict)
                 {
-                    if (!damageable.Damage.DamageDict.TryGetValue(barotraumaDamageType, out var damage))
+                    if (!damageSpecifier.DamageDict.TryGetValue(barotraumaDamageType, out var damage))
                         continue;
                     totalDamage += damage;
                 }

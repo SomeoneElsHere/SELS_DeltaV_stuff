@@ -12,11 +12,11 @@
   recipeUnlocks:
   - MiningDrill
   - MineralScannerEmpty
-  - BorgModuleMining
-  - BorgModuleGrapplingGun
   - OreProcessorIndustrialMachineCircuitboard
   - SalvageExpeditionsComputerCircuitboard # DeltaV
   - ClothingMaskWeldingGas
+  - ClothingShoesBootsJump
+  - NFWeaponHoloflareGun # DeltaV
 
 - type: technology
   id: SpaceScanning
@@ -30,7 +30,6 @@
   recipeUnlocks:
   - RadarConsoleCircuitboard
   - HandHeldMassScanner
-  - BorgModuleGPS
 
 - type: technology
   id: AdvancedPowercells
@@ -44,6 +43,7 @@
   recipeUnlocks:
   - PowerCellHigh
   - TurboItemRechargerCircuitboard
+  - SMESAdvancedMachineCircuitboard
 
 - type: technology
   id: MechanicalCompression
@@ -67,9 +67,22 @@
   tier: 1
   cost: 10000
   recipeUnlocks:
-  - AutolatheHyperConvectionMachineCircuitboard
-  - ProtolatheHyperConvectionMachineCircuitboard
-  - CircuitImprinterHyperConvectionMachineCircuitboard
+  # Begin DeltaV Removals - replaced by upgrade kits + departmental techfabs
+  #- AutolatheHyperConvectionMachineCircuitboard
+  #- ProtolatheHyperConvectionMachineCircuitboard
+  #- CircuitImprinterHyperConvectionMachineCircuitboard
+  # End DeltaV Removals
+  # Begin DeltaV Additions
+  - LatheUpgradeKitHyper
+  - LatheUpgradeKitCryo
+  # End DeltaV Additions
+  # Begin Goobstation Additions
+  - UpgradeKitAutomation
+  - RoboticArmCircuitboard
+  - StorageBinCircuitboard
+  - InteractorCircuitboard
+  - ConstructorCircuitboard
+  # End Goobstation Additions
   - SheetifierMachineCircuitboard
 
 - type: technology
@@ -85,7 +98,6 @@
   - PortableGeneratorPacmanMachineCircuitboard
   - PortableGeneratorSuperPacmanMachineCircuitboard
   - PortableGeneratorJrPacmanMachineCircuitboard
-  - PowerComputerCircuitboard #the actual solar panel itself should be in here
   - SolarControlComputerCircuitboard
   - SolarTrackerElectronics
   - EmitterCircuitboard
@@ -102,6 +114,7 @@
   recipeUnlocks:
   - ThermomachineFreezerMachineCircuitBoard
   - GasRecyclerMachineCircuitboard
+  - AlertsComputerCircuitboard # DeltaV - Allows atmos computers to be researched
 
 - type: technology
   id: RipleyAPLU
@@ -152,6 +165,7 @@
   - HellfireFreezerMachineCircuitBoard
   - PortableScrubberMachineCircuitBoard
   - HolofanProjector
+  - FireExtinguisherBluespace # DeltaV
   technologyPrerequisites:
   - AtmosphericTech
 
@@ -169,7 +183,10 @@
     - PowerDrill
     - JawsOfLife
     - BorgModuleAdvancedTool
-    - BorgModuleRCD
+    - TrayGoggles # DeltaV
+    - ExperimentalNaniteApplicator # Monolith
+    #- Fulton # DeltaV - seperate tech Aerial Extraction
+    #- FultonBeacon # DeltaV - seperate tech Aerial Extraction
 
 - type: technology
   id: MassExcavation
@@ -184,6 +201,10 @@
     - OreBagOfHolding
     - MiningDrillDiamond
     - AdvancedMineralScannerEmpty
+    - BorgModuleAdvancedMining
+    - PKAUpgradeDamage
+    - PKAUpgradeRange
+    - PKAUpgradeFireRate
 
 # Tier 3
 
@@ -202,8 +223,8 @@
   - ClothingBackpackDuffelHolding
 
 - type: technology
-  id: PortableFission
-  name: research-technology-portable-fission
+  id: OptimizedMicrogalvanism
+  name: research-technology-optimized-microgalvanism
   icon:
     sprite: Objects/Power/power_cells.rsi
     state: microreactor
@@ -212,5 +233,6 @@
   cost: 10000
   recipeUnlocks:
   - PowerCellMicroreactor
+  - PowerCellHyper
   technologyPrerequisites:
   - AdvancedPowercells

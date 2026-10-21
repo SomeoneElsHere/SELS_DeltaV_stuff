@@ -1,63 +1,49 @@
+# For mantles
+#- type: loadoutEffectGroup # DeltaV - No time requirement
+#  id: MasterHoS
+#  effects:
+#  - !type:JobRequirementLoadoutEffect
+#    requirement:
+#      !type:RoleTimeRequirement
+#      role: JobHeadOfSecurity
+#      time: 20h
+
 # Jumpsuit
 - type: loadout
   id: HeadofSecurityJumpsuit
   equipment:
     jumpsuit: ClothingUniformJumpsuitHoS
+  groupBy: "jumpsuit"
 
 - type: loadout
   id: HeadofSecurityJumpskirt
   equipment:
     jumpsuit: ClothingUniformJumpskirtHoS
-
-- type: loadout # DeltaV
-  id: HeadofSecurityJumpsuitGrey
-  equipment:
-    jumpsuit: ClothingUniformJumpsuitHoSGrey
-
-- type: loadout # DeltaV
-  id: HeadofSecurityJumpskirtGrey
-  equipment:
-    jumpsuit: ClothingUniformJumpskirtHoSGrey
-
-- type: loadout # DeltaV
-  id: HeadofSecurityJumpsuitBlue
-  equipment:
-    jumpsuit: ClothingUniformJumpsuitHoSBlue
-
-- type: loadout # DeltaV
-  id: HeadofSecurityJumpskirtBlue
-  equipment:
-    jumpsuit: ClothingUniformJumpskirtHoSBlue
+  groupBy: "jumpskirt"
 
 - type: loadout
   id: HeadofSecurityTurtleneck
   equipment:
     jumpsuit: ClothingUniformJumpsuitHoSTurtle # DeltaV - replace ClothingUniformJumpsuitHoSAlt
+  groupBy: "jumpsuit"
 
 - type: loadout
   id: HeadofSecurityTurtleneckSkirt
   equipment:
     jumpsuit: ClothingUniformJumpskirtHoSTurtle # DeltaV - replace ClothingUniformJumpsuitHoSAlt
+  groupBy: "jumpskirt"
 
 - type: loadout
   id: HeadofSecurityFormalSuit
   equipment:
     jumpsuit: ClothingUniformJumpsuitHosFormal
+  groupBy: "jumpsuit"
 
 - type: loadout
   id: HeadofSecurityFormalSkirt
   equipment:
     jumpsuit: ClothingUniformJumpskirtHosFormal
-
-- type: loadout # DeltaV
-  id: HeadofSecurityParadeSuit
-  equipment:
-    jumpsuit: ClothingUniformJumpsuitHoSParadeMale
-
-- type: loadout # DeltaV
-  id: HeadofSecurityParadeSkirt
-  equipment:
-    jumpsuit: ClothingUniformJumpskirtHoSParadeMale
+  groupBy: "jumpskirt"
 
 # Head
 - type: loadout
@@ -89,16 +75,13 @@
 
 - type: loadout
   id: HeadofSecurityWinterCoat
+  #Begin DeltaV additions
+  effects:
+  - !type:JobRequirementLoadoutEffect
+    requirement:
+      !type:RoleTimeRequirement
+      role: JobHeadOfSecurity
+      time: 72000 # 20hr
+  #End DeltaV additions
   equipment:
     outerClothing: ClothingOuterWinterHoS
-
-- type: loadout # DeltaV - security winter coat
-  id: StasecWinterCoatHoS
-  equipment:
-    outerClothing: ClothingOuterCoatStasecHoS
-
-# Shoes - DeltaV
-- type: loadout # DeltaV
-  id: HeadOfSecurityWinterBoots
-  equipment:
-    shoes: ClothingShoesBootsWinterHeadOfSecurity

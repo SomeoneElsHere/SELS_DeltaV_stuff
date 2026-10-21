@@ -8,8 +8,10 @@
     snap:
     - Disposal
   components:
+  - type: Climbable
+    vaultable: false
   - type: Sprite
-    sprite: DeltaV/Structures/Piping/disposal.rsi # DeltaV - Use old sprites
+    sprite: _DV/Structures/Piping/disposal.rsi # DeltaV - Use old sprites
     layers:
     - state: condisposal
       map: [ "enum.DisposalUnitVisualLayers.Unanchored" ]
@@ -29,6 +31,17 @@
       map: [ "enum.DisposalUnitVisualLayers.OverlayEngaged" ]
   - type: Physics
     bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.45"
+        density: 55
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
   - type: Destructible
     thresholds:
     - trigger:
@@ -64,6 +77,20 @@
   - type: StaticPrice
     price: 70
   - type: PowerSwitch
+  - type: AutomationSlots # Goobstation
+    slots:
+    - !type:AutomatedContainer
+      input: AutomationSlotInput
+      output: AutomationSlotInput
+      containerId: disposals
+      maxItems: 30 # disposals doesn't have a limit this is just so you can't use it as an ME system
+    - !type:AutomatedPorts
+      sinks:
+      - Toggle
+      - DisposalFlush
+      - DisposalEject
+      sources:
+      - DisposalReady
 
 - type: entity
   id: DisposalUnit
@@ -71,7 +98,7 @@
   name: disposal unit
   components:
   - type: Sprite
-    sprite: DeltaV/Structures/Piping/disposal.rsi # DeltaV - Use old sprites
+    sprite: _DV/Structures/Piping/disposal.rsi # DeltaV - Use old sprites
     snapCardinals: true
   - type: Construction
     graph: DisposalMachine
@@ -79,11 +106,14 @@
   - type: DisposalUnit
   - type: ThrowInsertContainer
     containerId: disposals
+    probability: 0.67
   - type: UserInterface
     interfaces:
       enum.DisposalUnitUiKey.Key:
         type: DisposalUnitBoundUserInterface
-  - type: RatKingRummageable
+  - type: Rummageable
+    table: !type:NestedSelector
+      tableId: RatKingLoot
   - type: RequireProjectileTarget
 
 - type: entity
@@ -93,7 +123,7 @@
   description: A pneumatic mail delivery unit.
   components:
   - type: Sprite
-    sprite: DeltaV/Structures/Piping/disposal.rsi # DeltaV - Use old sprites
+    sprite: _DV/Structures/Piping/disposal.rsi # DeltaV - Use old sprites
     snapCardinals: true
     layers:
       - state: conmailing
@@ -116,10 +146,12 @@
     graph: DisposalMachine
     node: mailing_unit
   - type: DisposalUnit
-    autoEngageEnabled: false
     whitelist:
       components:
       - Item
+    blacklist:
+      components:
+      - EntityStorage
   - type: MailingUnit
   - type: DeviceNetwork
     deviceNetId: Wired
@@ -133,6 +165,6 @@
   - type: UserInterface
     interfaces:
       enum.MailingUnitUiKey.Key:
-        type: DisposalUnitBoundUserInterface
+        type: MailingUnitBoundUserInterface
       enum.ConfigurationUiKey.Key:
         type: ConfigurationBoundUserInterface

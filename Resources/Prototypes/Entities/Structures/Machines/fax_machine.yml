@@ -49,6 +49,8 @@
         components:
         - FaxableObject #used to be PaperComponent - brainfood1183
       blacklist:
+        components:
+        - CargoSlip
         tags:
         - PaperSlip # DeltaV - Prevent the faxing of paper slips.
   - type: GenericVisualizer
@@ -65,12 +67,24 @@
   - type: ContainerContainer
     containers:
       Paper: !type:ContainerSlot
-  - type: DeviceNetworkRequiresPower
+  - type: AutomationSlots # Goobstation
+    slots:
+    - !type:AutomatedItemSlot
+      input: AutomationSlotPaper
+      output: AutomationSlotPaper
+      slotId: Paper
+    - !type:AutomatedPorts
+      sinks:
+      - FaxCopy
+  # - type: DeviceNetworkRequiresPower # DeltaV - we want faxes to refresh on map init
   - type: DeviceNetwork
     deviceNetId: Wireless
-    receiveFrequencyId: Fax
-    transmitFrequencyId: Fax
+    receiveFrequencyId: NTNet # DeltaV
+    transmitFrequencyId: NTNet # DeltaV
   - type: RequireProjectileTarget
+  # Begin DeltaV
+  - type: PageSender
+  # End DeltaV
 
 # Special
 - type: entity
@@ -87,6 +101,10 @@
   - type: FaxMachine
     name: "Central Command"
     notifyAdmins: true
+  # Begin DeltaV
+  - type: PageSender
+    autoLinkDepartments: [CentralCommand]
+  # End DeltaV
 
 - type: entity
   parent: FaxMachineBase
@@ -104,6 +122,7 @@
     responsePings: false
     notifyAdmins: true
   - type: Emagged
+    emagType: Interaction
 
 - type: entity
   parent: FaxMachineBase
@@ -116,3 +135,7 @@
       receiveNukeCodes: true
     - type: StealTarget
       stealGroup: FaxMachineCaptain
+    # Begin DeltaV
+    - type: PageSender
+      autoLinkJobs: [Captain]
+    # End DeltaV

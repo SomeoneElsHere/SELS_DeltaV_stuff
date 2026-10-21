@@ -2,7 +2,7 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Radio;
 
-[Prototype("radioChannel")]
+[Prototype]
 public sealed partial class RadioChannelPrototype : IPrototype
 {
     /// <summary>
@@ -24,10 +24,10 @@ public sealed partial class RadioChannelPrototype : IPrototype
     public int Frequency { get; private set; } = 0;
 
     [DataField("color")]
-    public Color Color { get; private set; } = Color.Lime;
+    public Color Color { get; set; } = Color.Lime; // DeltaV - Client-side radio channel colors, no longer private set
 
     [IdDataField, ViewVariables]
-    public string ID { get; } = default!;
+    public string ID { get; private set; } = default!;
 
     /// <summary>
     /// If channel is long range it doesn't require telecommunication server

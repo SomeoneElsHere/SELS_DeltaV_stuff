@@ -1,11 +1,25 @@
 using Content.Shared.Damage;
+using Content.Shared.Damage.Prototypes;
+using Content.Shared.FixedPoint; // Goobstation
 using Robust.Shared.Audio;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server.Bible.Components
 {
     [RegisterComponent]
     public sealed partial class BibleComponent : Component
     {
+        /// <summary>
+        /// Default sound when bible hits somebody.
+        /// </summary>
+        private static readonly ProtoId<SoundCollectionPrototype> DefaultBibleHit = new("BibleHit");
+
+        /// <summary>
+        /// Sound to play when bible hits somebody.
+        /// </summary>
+        [DataField]
+        public SoundSpecifier BibleHitSound = new SoundCollectionSpecifier(DefaultBibleHit, AudioParams.Default.WithVolume(-4f));
+
         /// <summary>
         /// Damage that will be healed on a success
         /// </summary>
@@ -28,6 +42,18 @@ namespace Content.Server.Bible.Components
         public DamageSpecifier DamageOnUntrainedUse = default!;
 
         /// <summary>
+        /// How much damage to deal to the entity being smitten - Goob
+        /// </summary>
+        [DataField]
+        public DamageSpecifier SmiteDamage = new() { DamageDict = new Dictionary<ProtoId<DamageTypePrototype>, FixedPoint2>() { { "Holy", 25 } } }; // Ungodly
+
+        /// <summary>
+        /// How long to stun the entity being smitten - Goob
+        /// </summary>
+        [DataField]
+        public TimeSpan SmiteStunDuration = TimeSpan.FromSeconds(8);
+
+        /// <summary>
         /// Chance the bible will fail to heal someone with no helmet
         /// </summary>
         [DataField("failChance")]
@@ -41,5 +67,11 @@ namespace Content.Server.Bible.Components
 
         [DataField("locPrefix")]
         public string LocPrefix = "bible";
+
+        /// <summary>
+        /// A short light effect to display when successfully healing someone
+        /// </summary>
+        [DataField]
+        public EntProtoId? HealingLightEffect = "HolyLightEffect";
     }
 }

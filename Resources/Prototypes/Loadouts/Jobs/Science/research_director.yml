@@ -1,13 +1,18 @@
+# For mantles
+#- type: loadoutEffectGroup # DeltaV - No time requirement
+#  id: MasterRD
+#  effects:
+#  - !type:JobRequirementLoadoutEffect 
+#    requirement:
+#      !type:RoleTimeRequirement
+#      role: JobResearchDirector
+#      time: 20h
+
 # Head
 
 - type: loadout
   id: ResearchDirectorBeret
   startingGear: ScientificBeret
-
-- type: loadout # DeltaV
-  id: ResearchDirectorHood
-  equipment:
-    head: ClothingHeadHoodMysta
 
 # Neck
 
@@ -38,18 +43,7 @@
   equipment:
     outerClothing: ClothingOuterCoatRD
 
-- type: loadout # DeltaV
-  id: MystaLabCoat
-  equipment:
-    outerClothing: ClothingOuterCoatRndMysta
-
 - type: loadout
   id: ResearchDirectorWintercoat
   equipment:
     outerClothing: ClothingOuterWinterRD
-
-# Shoes - DeltaV
-- type: loadout # DeltaV
-  id: ResearchDirectorWinterBoots
-  equipment:
-    shoes: ClothingShoesBootsWinterMystagogue

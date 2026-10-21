@@ -1,6 +1,6 @@
 - type: entity
   name: mark 1 rifle
-  parent: BaseWeaponSniper
+  parent: [BaseWeaponSniper, BaseGunWieldable]
   id: WeaponSniperGrand
   description: A heavy and reliable self-loading rifle, utilising a modified version of a centuries-old design. Uses .30 rifle ammo.
   components:
@@ -17,7 +17,7 @@
       path: /Audio/Weapons/Guns/Gunshots/rifle2.ogg
   - type: BallisticAmmoProvider
 #    autoCycle: true
-    capacity: 5
+    capacity: 8
     proto: CartridgeLightRifle
     whitelist:
       tags:
@@ -25,7 +25,7 @@
 
 - type: entity
   name: ceremonial rifle
-  parent: BaseWeaponSniper
+  parent: [BaseWeaponSniper, BaseGunWieldable]
   id: WeaponSniperCeremonial
   description: A ceremonial variant of the Mark 1 Rifle, in tasteful blue and white. Uses .30 rifle ammo.
   components:
@@ -42,7 +42,7 @@
       path: /Audio/Weapons/Guns/Gunshots/rifle2.ogg
   - type: BallisticAmmoProvider
 #    autoCycle: true
-    capacity: 5
+    capacity: 8
     proto: CartridgeLightRifle
     whitelist:
       tags:

@@ -10,9 +10,15 @@
     ClothingShoesColorBlack: 3
     ClothingOuterVestHazard: 3
     ClothingShoesBootsWork: 3
+    ClothingHeadHatBeretEngineering: 3 # DeltaV - Remove Specific Role Timers
     ClothingHeadHatHardhatYellow: 3
     ClothingHeadHatHardhatOrange: 3
     ClothingHeadsetEngineering: 3
     ClothingOuterWinterEngi: 2
+    ClothingOuterCoatBomberEngineering: 2 # DeltaV - Department Bombers
     ClothingNeckScarfStripedOrange: 3
     ClothingShoesBootsWinterEngi: 2
+  contrabandInventory:
+    ClothingUniformCybersunHazard: 1 # DeltaV
+    ToyFigurineEngineer: 1
+    ToyFigurineChiefEngineer: 1

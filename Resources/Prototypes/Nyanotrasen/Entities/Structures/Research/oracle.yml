@@ -8,7 +8,7 @@
     noRot: true
     drawdepth: Mobs
     offset: "0.0,0.5"
-    sprite: DeltaV/Structures/Decoration/statues.rsi
+    sprite: _DV/Structures/Decoration/statues.rsi
     layers:
       - state: oracle-0
       - map: ["enum.SolutionContainerLayers.Fill"]
@@ -21,8 +21,12 @@
     solutions:
       fountain:
         maxVol: 200
-  - type: Drink
+  - type: Edible
+    edible: Drink
     solution: fountain
+    destroyOnEmpty: false
+    utensil: None
+  - type: DnaSubstanceTrace
   - type: DrawableSolution
     solution: fountain
   - type: DrainableSolution

@@ -5,15 +5,17 @@
   playTimeTracker: JobResearchDirector
   antagAdvantage: 6 # DeltaV - Reduced TC: Head of Staff
   requirements:
-    - !type:DepartmentTimeRequirement
-      department: Epistemics # DeltaV - Epistemics Department replacing Science
-      time: 54000 # DeltaV - 15 hours
-    - !type:OverallPlaytimeRequirement
-      time: 72000 # DeltaV - 20 hours, was 40
+  - !type:RoleTimeRequirement
+    role: JobScientist
+    time: 5h
+  - !type:DepartmentTimeRequirement
+    department: Epistemics # DeltaV
+    time: 10h
   weight: 10
   startingGear: ResearchDirectorGear
   icon: "JobIconResearchDirector"
-  requireAdminNotify: true
+  requireAdminNotify: true # DeltaV
+  joinNotifyCrew: true # DeltaV
   supervisors: job-supervisors-captain
   canBeAntag: false
   access:
@@ -21,29 +23,44 @@
   - Command
   - Maintenance
   - ResearchDirector
-  - Mantis # DeltaV - Psionic Mantis, see Resources/Prototypes/DeltaV/Access/epistemics.yml
-  - Chapel # DeltaV - Chaplain is in Epistemics
-  - Robotics # DeltaV - Robotics access
-  - External # DeltaV - AI satellite access
+  #- Brig # DeltaV - Removed brig access
   - Cryogenics
-  special: # Nyanotrasen - Mystagogue can use the Bible
-  - !type:AddComponentSpecial
-    components:
-    - type: BibleUser # Nyano - Lets them heal with bibles
-    - type: Psionic # Nyano - They start with telepathic chat
-    - type: DispelPower # Nyano - They get the Dispel psionic power on spawn
+  # Begin DeltaV Additions
+  - Mantis
+  - Chapel # Chaplain is in Epistemics
+  - Robotics
+  - External # Needed to access the AI satellite
+  - Library # moved librarian to epistemics
+  # end DeltaV Additions
+  special:
   - !type:AddImplantSpecial
     implants: [ MindShieldImplant ]
   - !type:AddComponentSpecial
     components:
       - type: CommandStaff
+      # Begin DeltaV Additions
+      - type: BibleUser # Lets them heal with bibles
+      - type: Psionic # They start with telepathic chat
+      - type: DispelPower # They get the Dispel psionic power on spawn
+      # End DeltaV Additions
 
 - type: startingGear
   id: ResearchDirectorGear
   equipment:
     id: RnDPDA
     ears: ClothingHeadsetRD
-    belt: BibleMystagogue # Nyanotrasen - Mystagogue book for their Ifrit
   storage:
     back:
     - Flash
+
+- type: chameleonOutfit
+  id: ResearchDirectorChameleonOutfit
+  job: ResearchDirector
+  hasMindShield: true
+  equipment:
+    head: ClothingHeadHatBeretRND
+    eyes: ClothingEyesGlasses
+    mask: ClothingMaskGas
+    neck: ClothingNeckCloakRd
+    outerClothing: ClothingOuterCoatRD
+    gloves: ClothingHandsGlovesColorPurple

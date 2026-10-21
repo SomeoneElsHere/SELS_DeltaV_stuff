@@ -10,6 +10,11 @@
   - Headphones
   - PlushieLizard
   - PlushieSpaceLizard
+  # Begin DeltaV Additions
+  - PlushieExperiment
+  - PlushieBee
+  # End DeltaV Additions
+  - ThreeCandles
   - Lighter
   - CigPackGreen
   - CigPackRed
@@ -17,40 +22,71 @@
   - CigPackBlack
   - CigarCase
   - CigarGold
+  - BoxFolderBaseThreePapers
+  - BoxFolderPlasticClipboardThreePapers
+  - BoxFolderClipboardThreePapers
   - ClothingNeckLGBTPin
+  - ClothingNeckAllyPin
   - ClothingNeckAromanticPin
   - ClothingNeckAsexualPin
+  - ClothingNeckAroacePin
   - ClothingNeckBisexualPin
   - ClothingNeckGayPin
   - ClothingNeckIntersexPin
   - ClothingNeckLesbianPin
   - ClothingNeckNonBinaryPin
   - ClothingNeckPansexualPin
+  - ClothingNeckPluralPin
+  - ClothingNeckOmnisexualPin
+  - ClothingNeckGenderqueerPin
+  - ClothingNeckGenderfluidPin
   - ClothingNeckTransPin
   - ClothingNeckAutismPin
   - ClothingNeckGoldAutismPin
-  - TowelColorBlack
-  - TowelColorDarkBlue
-  - TowelColorDarkGreen
-  - TowelColorGold
+  - ClothingNeckLanyard
+  - OffsetCane
+  - OffsetCaneWood
+  - OffsetCaneClown
+  - OffsetCaneMime
+  - OffsetCaneNT
+  - Cane
+  - TowelColorWhite
   - TowelColorGray
+  - TowelColorBlack
+  - TowelColorRed
+  - TowelColorOrange
+  - TowelColorLightBrown
+  - TowelColorYellow
+  - TowelColorDarkGreen
   - TowelColorGreen
   - TowelColorLightBlue
-  - TowelColorLightBrown
+  - TowelColorDarkBlue
+  - TowelColorPurple
   - TowelColorMaroon
   - TowelColorMime
-  - TowelColorOrange
-  - TowelColorPurple
-  - TowelColorRed
   - TowelColorSilver
-  - TowelColorLightBlue
-  - TowelColorWhite
-  - TowelColorYellow
-  - AACTablet # DeltaV
-  - GoldRing # DeltaV
-  - SilverRing # DeltaV
-  - Cane # DeltaV
-  - WhiteCane #DeltaV
+  #- TowelColorWhite # DeltaV - Removed due because of being a duplicate
+  #- TowelColorYellow # DeltaV - Removed due because of being a duplicate
+  - TowelColorGold
+  # Begin DeltaV Additions
+  - AACTablet
+  - GoldRing
+  - SilverRing
+  - WhiteCane
+  - CDDogtags # taken from Cosmatic Drift
+  - TapeRecorder
+  - ClothingHeadHatUshanka
+  - Eyepatch
+  - LighterFlippo
+  - LighterDonkCo
+  - LighterHonkCo
+  - LighterWaffleCo
+  - LighterDiscountDan
+  - LighterInterdyne
+  - LighterNanotrasen
+  - MatchboxGorlex
+  - NoviceMark # from imp
+  # End DeltaV Additions
 
 - type: loadoutGroup
   id: Glasses
@@ -79,7 +115,9 @@
   - EmergencyNitrogen
   - EmergencyOxygen
   - LoadoutSpeciesVoxNitrogen
+  - EmergencyWaterVapor # DeltaV
 
+# nitrogen or oxygen tank, depending on what your species needs
 - type: loadoutGroup
   id: GroupEVATank
   name: loadout-group-EVA-tank
@@ -87,6 +125,15 @@
   loadouts:
   - LoadoutSpeciesEVANitrogen
   - LoadoutSpeciesEVAOxygen
+  - LoadoutSpeciesEVAWaterVapor # DeltaV
+
+# vox get a nitrogen tank, other species get nothing
+- type: loadoutGroup
+  id: GroupEVATankVox
+  name: loadout-group-vox-tank
+  hidden: true
+  loadouts:
+  - LoadoutSpeciesVoxNitrogen
 
 - type: loadoutGroup
   id: GroupPocketTankDouble
@@ -95,6 +142,7 @@
   loadouts:
   - LoadoutSpeciesPocketDoubleNitrogen
   - LoadoutSpeciesPocketDoubleOxygen
+  - LoadoutSpeciesPocketDoubleWaterVapor # DeltaV
 
 # Command
 - type: loadoutGroup
@@ -104,7 +152,10 @@
   loadouts:
   - CaptainHead
   - CaptainCap
-  - CaptainBeret # DeltaV
+  # Begin DeltaV changes
+  - CaptainBeret
+  - CaptainCavalier
+  # End DeltaV changes
 
 - type: loadoutGroup
   id: CaptainJumpsuit
@@ -115,14 +166,6 @@
   - CaptainFormalSuit
   - CaptainFormalSkirt
 
-- type: loadoutGroup # DeltaV
-  id: CaptainGloves
-  name: loadout-group-captain-gloves
-  minLimit: 0
-  loadouts:
-  - CaptainGloves
-  - InspectionGloves
-
 - type: loadoutGroup
   id: CaptainNeck
   name: loadout-group-captain-neck
@@ -131,6 +174,7 @@
   - CaptainCloak
   - CaptainCloakFormal
   - CaptainMantle
+  - CaptainBoatCloak # DeltaV
 
 - type: loadoutGroup
   id: CaptainBackpack
@@ -145,16 +189,17 @@
   name: loadout-group-captain-outerclothing
   loadouts:
   - CaptainOuterClothing
+  - CaptainLongcoat # DeltaV - Longcoats
   - CaptainWintercoat
+  - CaptainWintercoatArmored #DeltaV
 
-- type: loadoutGroup # DeltaV
-  id: CaptainShoes
-  name: loadout-group-captain-shoes
+- type: loadoutGroup
+  id: CaptainJobTrinkets
+  name: loadout-group-jobtrinkets
+  minLimit: 0
   loadouts:
-  - BrownLeatherShoes
-  - WhiteLeatherShoes
-  - LaceupShoes
-  - CaptainWinterBoots
+  - LizardPlushieCaptain
+  - LighterCentComm # DeltaV
 
 - type: loadoutGroup
   id: HoPHead
@@ -162,14 +207,7 @@
   minLimit: 0
   loadouts:
   - HoPHead
-
-- type: loadoutGroup # DeltaV
-  id: HoPGloves
-  name: loadout-group-hop-gloves
-  minLimit: 0
-  loadouts:
-  - HoPGloves
-  - InspectionGloves
+  - HoPBeret
 
 - type: loadoutGroup
   id: HoPJumpsuit
@@ -177,10 +215,13 @@
   loadouts:
   - HoPJumpsuit
   - HoPJumpskirt
-  - HoPFormal # DeltaV
-  - HoPMessSkirt # DeltaV
-  - HoPMessSuit # DeltaV
-  - HoPBoatswain # DeltaV
+  # Begin DeltaV additions
+  - HoPFormal
+  - HoPFormalDress
+  - HoPMessSkirt
+  - HoPMessSuit
+  - HoPBoatswain
+  # End DeltaV additions
 
 - type: loadoutGroup
   id: HoPNeck
@@ -195,9 +236,14 @@
   id: HoPBackpack
   name: loadout-group-hop-backpack
   loadouts:
-  - CommonBackpack
-  - CommonSatchel
-  - CommonDuffel
+  # Start DeltaV changes
+  # - CommonBackpack
+  # - CommonSatchel
+  # - CommonDuffel
+  - BackpackHoP
+  - SatchelHoP
+  - HopDuffel
+  # End of DeltaV changes
   - HoPBackpackIan
 
 - type: loadoutGroup
@@ -205,19 +251,20 @@
   name: loadout-group-hop-outerclothing
   minLimit: 0
   loadouts:
-  - HoPFormalCoat # DeltaV
-  - HoPArmoredCoat # DeltaV
-  - DuraVest # DeltaV
+  # Begin DeltaV additions
+  - HoPFormalCoat
+  - HoPArmoredCoat
+  - DuraVest
+  - HoPLongcoat
+  # End DeltaV additions
   - HoPWintercoat
 
-- type: loadoutGroup # DeltaV
-  id: HoPShoes
-  name: loadout-group-hop-shoes
+- type: loadoutGroup
+  id: HoPJobTrinkets
+  name: loadout-group-jobtrinkets
+  minLimit: 0
   loadouts:
-  - BrownLeatherShoes
-  - WhiteLeatherShoes
-  - LaceupShoes
-  - HoPWinterBoots
+  - LizardPlushieHeadOfPersonnel
 
 # Civilian
 - type: loadoutGroup
@@ -226,16 +273,65 @@
   loadouts:
   - GreyJumpsuit
   - GreyJumpskirt
-  - MioSkirt # Start DeltaV Changes
+  # Begin DeltaV additions
+  - WhiteJumpsuit
+  - WhiteJumpskirt
+  - BlackJumpsuit
+  - BlackJumpskirt
+  - BlueJumpsuit
+  - BlueJumpskirt
+  - DarkBlueJumpsuit
+  - DarkBlueJumpskirt
+  - TealJumpsuit
+  - TealJumpskirt
+  - GreenJumpsuit
+  - GreenJumpskirt
+  - DarkGreenJumpsuit
+  - DarkGreenJumpskirt
+  - OrangeJumpsuit
+  - OrangeJumpskirt
+  - PinkJumpsuit
+  - PinkJumpskirt
+  - RedJumpsuit
+  - RedJumpskirt
+  - YellowJumpsuit
+  - YellowJumpskirt
+  - PurpleJumpsuit
+  - PurpleJumpskirt
+  - LightBrownJumpsuit
+  - LightBrownJumpskirt
+  - BrownJumpsuit
+  - BrownJumpskirt
+  - MaroonJumpsuit
+  - MaroonJumpskirt
+  - MioSkirt
   - NaotaHoodie
   - CasualBlueSkirt
   - CasualBlueSuit
   - CasualRedSkirt
   - CasualRedSuit
   - CasualPurpleSkirt
-  - CasualPurpleSuit # End DeltaV Changes
+  - CasualPurpleSuit
+  - BlackElegantDress
+  - RedElegantDress
+  - GreenElegantDress
+  - BlueElegantDress
+  - PurpleElegantDress
+  - CyanStripedDress
+  - RedStripedDress
+  - GreenStripedDress
+  - PinkStripedDress
+  - OrangeStripedDress
+  - PurpleTurtleneckDress
+  - RedTurtleneckDress
+  - GreenTurtleneckDress
+  - BlueTurtleneckDress
+  - YellowTurtleneckDress
+  - OldYellowDress
+  # End DeltaV additions
   - AncientJumpsuit
   - RainbowJumpsuit
+  - RainbowJumpskirt
 
 - type: loadoutGroup
   id: PassengerFace
@@ -243,6 +339,15 @@
   minLimit: 0
   loadouts:
   - PassengerFace
+  # Begin DeltaV additions
+  - BlackBandanaMask
+  - GoldBandanaMask
+  - GreenBandanaMask
+  - GreyBandanaMask
+  - RedBandanaMask
+  - SkullBandanaMask
+  - BrownBandanaMask
+  # End DeltaV additions
 
 - type: loadoutGroup
   id: PassengerGloves
@@ -250,6 +355,20 @@
   minLimit: 0
   loadouts:
   - PassengerGloves
+  # Begin DeltaV additions
+  - PurpleGloves
+  - RedGloves
+  - BlueGloves
+  - TealGloves
+  - BrownGloves
+  - LightBrownGloves
+  - GreyGloves
+  - GreenGloves
+  - OrangeGloves
+  - WhiteGloves
+  - BlackGloves
+  - FingerlessGloves
+  # End DeltaV additions
 
 - type: loadoutGroup
   id: CommonBackpack
@@ -272,6 +391,29 @@
   minLimit: 0
   loadouts:
   - PassengerWintercoat
+  # Begin DeltaV additions
+  - LongcoatBlack
+  - LongcoatBrown
+  - LongcoatNanoTrasen
+  - BomberJacket
+  - BomberCheckered
+  - BlackWinterCoat
+  - PurpleWinterCoat
+  - RedWinterCoat
+  - BlueWinterCoat
+  - BrownWinterCoat
+  - LightBrownWinterCoat
+  - GrayWinterCoat
+  - GreenWinterCoat
+  - OrangeWinterCoat
+  - WhiteWinterCoat
+  - YellowWinterCoat
+  - BlackHoodie
+  - GrayHoodie
+  - FlannelRed
+  - FlannelBlue
+  - FlannelGreen
+  # End DeltaV additions
 
 - type: loadoutGroup
   id: PassengerShoes
@@ -279,6 +421,27 @@
   loadouts:
   - BlackShoes
   - WinterBoots
+  # Begin DeltaV additions
+  - WhiteShoes
+  - BlueShoes
+  - BrownShoes
+  - GreenShoes
+  - OrangeShoes
+  - RedShoes
+  - YellowShoes
+  - PurpleShoes
+  - HighHeels
+  - BrownCowboyBoots
+  - BlackCowboyBoots
+  - WhiteCowboyBoots
+  # End DeltaV additions
+
+- type: loadoutGroup
+  id: PassengerJobTrinkets
+  name: loadout-group-jobtrinkets
+  minLimit: 0
+  loadouts:
+  - LizardPlushiePassenger
 
 - type: loadoutGroup
   id: BartenderHead
@@ -287,23 +450,7 @@
   loadouts:
   - BartenderHead
   - BartenderBowler
-
-- type: loadoutGroup # DeltaV
-  id: BartenderGlasses
-  name: loadout-group-bartender-glasses
-  minLimit: 0
-  loadouts:
-  - Glasses
-  - BartenderGlasses
-  - GlassesCheapSunglasses
-
-- type: loadoutGroup # DeltaV
-  id: BartenderNeck
-  name: loadout-group-bartender-neck
-  minLimit: 0
-  loadouts:
-  - ScarfBlack
-  - ScarfPurple
+  - SodaJerkCap #DeltaV - Adding retro style outfit for ice cream connoisseurs
 
 - type: loadoutGroup
   id: BartenderJumpsuit
@@ -312,6 +459,13 @@
   - BartenderJumpsuit
   - BartenderJumpskirt
   - BartenderJumpsuitPurple
+  # Begin Imp additions
+  - ClothingUniformNightclubSuit
+  - ClothingUniformNightclubSuitSkirt
+  - ClothingUniformSeniorBartender
+  - ClothingUniformSeniorBartenderSkirt
+  # End Imp additions
+  - SodaJerkUniform #DeltaV - Adding retro style outfit for ice cream connoisseurs
 
 - type: loadoutGroup
   id: BartenderOuterClothing
@@ -321,6 +475,21 @@
   - BartenderVest
   - BartenderApron
   - BartenderWintercoat
+
+- type: loadoutGroup
+  id: BartenderJobTrinkets
+  name: loadout-group-jobtrinkets
+  minLimit: 0
+  loadouts:
+  - LizardPlushieBartender
+  - BartenderGoldenShaker
+
+- type: loadoutGroup
+  id: ServiceWorkerJobTrinkets
+  name: loadout-group-jobtrinkets
+  minLimit: 0
+  loadouts:
+  - LizardPlushieServiceWorker
 
 - type: loadoutGroup
   id: ChefHead
@@ -342,6 +511,7 @@
   loadouts:
   - ChefJumpsuit
   - ChefJumpskirt
+  - ChefKimono # DeltaV - Adding kimono for chefs
 
 - type: loadoutGroup
   id: ChefOuterClothing
@@ -352,12 +522,12 @@
   - ChefJacket
   - ChefWintercoat
 
-- type: loadoutGroup # DeltaV
-  id: LibrarianNeck
-  name: loadout-group-librarian-neck
+- type: loadoutGroup
+  id: ChefJobTrinkets
+  name: loadout-group-jobtrinkets
+  minLimit: 0
   loadouts:
-  - ScarfGreen
-  - ScarfRed
+  - LizardPlushieChef
 
 - type: loadoutGroup
   id: LibrarianJumpsuit
@@ -367,6 +537,17 @@
   - LibrarianJumpskirt
   - CuratorJumpsuit
   - CuratorJumpskirt
+  # Begin Imp additions
+  - ClothingUniformCreamSuit
+  - ClothingUniformCreamSuitSkirt
+  # End Imp additions
+
+- type: loadoutGroup
+  id: LibrarianJobTrinkets
+  name: loadout-group-jobtrinkets
+  minLimit: 0
+  loadouts:
+  - LizardPlushieLibrarian
 
 - type: loadoutGroup
   id: LawyerJumpsuit
@@ -382,6 +563,10 @@
   - LawyerJumpskirtRed
   - LawyerJumpsuitGood
   - LawyerJumpskirtGood
+  # Begin Imp additions
+  - ClothingUniformCreamSuit
+  - ClothingUniformCreamSuitSkirt
+  # End Imp additions
 
 - type: loadoutGroup
   id: LawyerNeck
@@ -389,10 +574,19 @@
   minLimit: 0
   loadouts:
   - LawyerNeck
-  - ScarfRed # Delta V
-  - ScarfBlue # Delta V
-  - ScarfBlack # Delta V
-  - ScarfPurple # Delta V
+  # Begin DeltaV additions
+  - ScarfRed
+  - ScarfBlue
+  - ScarfBlack
+  - ScarfPurple
+  # End DeltaV additions
+
+- type: loadoutGroup
+  id: LawyerJobTrinkets
+  name: loadout-group-jobtrinkets
+  minLimit: 0
+  loadouts:
+  - LizardPlushieLawyer
 
 - type: loadoutGroup
   id: ChaplainHead
@@ -420,6 +614,10 @@
   - ChaplainJumpskirt
   - ChaplainRobesLight
   - ChaplainRobesDark
+  # Begin Imp additions
+  - ClothingUniformFuneralSuit
+  - ClothingUniformFuneralSuitSkirt
+  # End Imp additions
 
 - type: loadoutGroup
   id: ChaplainOuterClothing
@@ -440,6 +638,25 @@
   - ScarfBlack # DeltaV
 
 - type: loadoutGroup
+  id: ChaplainJobTrinkets
+  name: loadout-group-jobtrinkets
+  minLimit: 0
+  loadouts:
+  - LizardPlushieChaplain
+
+- type: loadoutGroup
+  id: ChaplainBible
+  name: loadout-group-chaplain-bible
+  minLimit: 1
+  loadouts:
+  - Bible
+  - BibleNanoTrasen
+  - BibleDruid
+  - BibleHonk
+  - BibleRatvar
+  - BibleNarsie
+
+- type: loadoutGroup
   id: JanitorHead
   name: loadout-group-janitor-head
   minLimit: 0
@@ -452,13 +669,6 @@
   loadouts:
   - JanitorJumpsuit
   - JanitorJumpskirt
-
-- type: loadoutGroup # DeltaV
-  id: JanitorNeck
-  name: loadout-group-janitor-neck
-  minLimit: 0
-  loadouts:
-  - ScarfPurple
 
 - type: loadoutGroup
   id: JanitorGloves
@@ -477,10 +687,11 @@
   - JanitorWintercoat
 
 - type: loadoutGroup
-  id: JanitorPlunger
-  name: loadout-group-janitor-plunger
+  id: JanitorJobTrinkets
+  name: loadout-group-jobtrinkets
   minLimit: 0
   loadouts:
+  - LizardPlushieJanitor
   - JanitorGoldenPlunger
 
 - type: loadoutGroup
@@ -498,6 +709,7 @@
   - BotanistJumpsuit
   - BotanistJumpskirt
   - BotanistOveralls
+  - BotanistJumpskirtOveralls # DeltaV
 
 - type: loadoutGroup
   id: BotanistBackpack
@@ -507,14 +719,6 @@
   - BotanistSatchel
   - BotanistDuffel
 
-- type: loadoutGroup # DeltaV
-  id: BotanistNeck
-  name: loadout-group-botanist-neck
-  minLimit: 0
-  loadouts:
-  - ScarfGreen
-  - ScarfBrown
-
 - type: loadoutGroup
   id: BotanistOuterClothing
   name: loadout-group-botanist-outerclothing
@@ -522,6 +726,14 @@
   loadouts:
   - BotanistApron
   - BotanistWintercoat
+  - BomberService # DeltaV
+
+- type: loadoutGroup
+  id: BotanistJobTrinkets
+  name: loadout-group-jobtrinkets
+  minLimit: 0
+  loadouts:
+  - LizardPlushieBotanist
 
 - type: loadoutGroup
   id: ClownHead
@@ -536,6 +748,7 @@
   name: loadout-group-clown-jumpsuit
   loadouts:
   - ClownSuit
+  - ClownSkirt # Starlight
   - JesterSuit
   - JesterAltSuit
 
@@ -571,6 +784,15 @@
   - EmergencyNitrogenClown
   - EmergencyOxygenClown
   - LoadoutSpeciesVoxNitrogen
+  - EmergencyWaterVaporClown # DeltaV
+
+- type: loadoutGroup
+  id: ClownJobTrinkets
+  name: loadout-group-jobtrinkets
+  minLimit: 0
+  loadouts:
+  - LizardPlushieClown
+  - FlowerWaterClown
 
 - type: loadoutGroup
   id: MimeHead
@@ -580,14 +802,10 @@
   - MimeHead
   - MimeFrenchBeret
   - MimeCap
-
-- type: loadoutGroup # DeltaV
-  id: MimeNeck
-  name: loadout-group-mime-neck
-  minLimit: 0
-  loadouts:
-  - ScarfBlack
-  - ScarfZebra
+  # Begin DeltaV Additions
+  - MimeBeretTassledBlack
+  - MimeBeretTassledWhite
+  # End DeltaV Additions
 
 - type: loadoutGroup
   id: MimeMask
@@ -596,6 +814,7 @@
   - MimeMask
   - MimeMaskSad
   - MimeMaskScared
+  - MimeMaskBlushing # DeltaV
 
 - type: loadoutGroup
   id: MimeJumpsuit
@@ -603,6 +822,10 @@
   loadouts:
   - MimeJumpsuit
   - MimeJumpskirt
+  # Begin DeltaV Additions
+  - MimeTurtleneckPants
+  - MimeTurtleneckSkirt
+  # End DeltaV Additions
 
 - type: loadoutGroup
   id: MimeBackpack
@@ -618,15 +841,10 @@
   minLimit: 0
   loadouts:
   - MimeWintercoat
-
-- type: loadoutGroup # DeltaV
-  id: MusicianNeck
-  name: loadout-group-musician-neck
-  minLimit: 0
-  loadouts:
-  - ScarfBlack
-  - ScarfPurple
-  - ScarfZebra
+  # Begin DeltaV Additions
+  - MimeWintercoatLong
+  - MimeFurCoat
+  # End DeltaV Additions
 
 - type: loadoutGroup
   id: MimeBelt
@@ -634,6 +852,7 @@
   loadouts:
   - MimeSuspendersRed
   - MimeSuspendersBlack
+  - FoamSabre # DeltaV - Add foam sabre to the mime's loadout.
 
 - type: loadoutGroup
   id: SurvivalMime
@@ -643,7 +862,16 @@
   loadouts:
   - EmergencyNitrogenMime
   - EmergencyOxygenMime
+  - EmergencySpeciesMothMime
   - LoadoutSpeciesVoxNitrogen
+  - EmergencyWaterVaporMime # DeltaV
+
+- type: loadoutGroup
+  id: MimeJobTrinkets
+  name: loadout-group-jobtrinkets
+  minLimit: 0
+  loadouts:
+  - LizardPlushieMime
 
 - type: loadoutGroup
   id: MusicianJumpsuit
@@ -651,6 +879,10 @@
   loadouts:
   - MusicianJumpsuit
   - MusicianJumpskirt
+  # Begin Imp additions
+  - ClothingUniformMrSpaceWide
+  - ClothingUniformMrSpaceWideSkirt
+  # End Imp additions
 
 - type: loadoutGroup
   id: MusicianOuterClothing
@@ -693,6 +925,14 @@
   - PanFlute
   - Ocarina
   - Bagpipe
+  - SuperSynthesizerInstrument # DeltaV - Make SuperSynths musician only
+
+- type: loadoutGroup
+  id: MusicianJobTrinkets
+  name: loadout-group-jobtrinkets
+  minLimit: 0
+  loadouts:
+  - LizardPlushieMusician
 
 # Cargo
 - type: loadoutGroup
@@ -713,6 +953,7 @@
   - QuartermasterTurtleneck
   - QuartermasterTurtleneckSkirt
   - QuartermasterFormalSuit
+  - QuartermasterFormalDress # DeltaV
 
 - type: loadoutGroup
   id: QuartermasterNeck
@@ -728,7 +969,9 @@
   name: loadout-group-quartermaster-outerclothing
   minLimit: 0
   loadouts:
+  - QuartermasterLongcoat # DeltaV - Longcoats
   - QuartermasterWintercoat
+  - BomberLogistic # DeltaV
 
 - type: loadoutGroup
   id: QuartermasterShoes
@@ -739,23 +982,27 @@
   - QuartermasterWinterBoots # DeltaV
 
 - type: loadoutGroup
+  id: QuartermasterJobTrinkets
+  name: loadout-group-jobtrinkets
+  minLimit: 0
+  loadouts:
+  - LizardPlushieQuartermaster
+
+- type: loadoutGroup
   id: CargoTechnicianHead
   name: loadout-group-cargo-technician-head
   minLimit: 0
   loadouts:
   - CargoTechnicianHead
-
-- type: loadoutGroup # DeltaV
-  id: CargoTechnicianNeck
-  name: loadout-group-cargo-technician-neck
-  minLimit: 0
-  loadouts:
-  - ScarfBrown
+  - CargoTechnicianBeret # DeltaV
 
 - type: loadoutGroup
   id: CargoTechnicianJumpsuit
   name: loadout-group-cargo-technician-jumpsuit
   loadouts:
+  - ClothingUniformJumpsuitCargoTechPants # DeltaV
+  - ClothingUniformJumpsuitCargoTechOveralls # DeltaV
+  - ClothingUniformJumpskirtCargoTechRomper # DeltaV
   - CargoTechnicianJumpsuit
   - CargoTechnicianJumpskirt
 
@@ -773,6 +1020,7 @@
   minLimit: 0
   loadouts:
   - CargoTechnicianWintercoat
+  - BomberLogistic # DeltaV
 
 - type: loadoutGroup
   id: CargoTechnicianShoes
@@ -781,13 +1029,12 @@
   - BlackShoes
   - CargoWinterBoots
 
-- type: loadoutGroup # DeltaV
-  id: SalvageSpecialistNeck
-  name: loadout-group-salvage-specialist-neck
+- type: loadoutGroup
+  id: CargoTechnicianJobTrinkets
+  name: loadout-group-jobtrinkets
   minLimit: 0
   loadouts:
-  - SalvageCloak
-  - ScarfBrown
+  - LizardPlushieCargoTechnician
 
 - type: loadoutGroup
   id: SalvageSpecialistBackpack
@@ -809,8 +1056,17 @@
   name: loadout-group-salvage-specialist-shoes
   loadouts:
   - SalvageBoots
+  # Begin DeltaV changes
   #- CargoWinterBoots
-  - SalvageWinterBoots # DeltaV
+  - SalvageWinterBoots
+  # End DeltaV changes
+
+- type: loadoutGroup
+  id: SalvageSpecialistJobTrinkets
+  name: loadout-group-jobtrinkets
+  minLimit: 0
+  loadouts:
+  - LizardPlushieSalvageSpecialist
 
 # Engineering
 - type: loadoutGroup
@@ -837,22 +1093,45 @@
   loadouts:
   - ChiefEngineerCloak
   - ChiefEngineerMantle
-  - ScarfOrange # DeltaV
+  # Begin DeltaV Additions
+  - ScarfOrange
+  - ScarfRed
+  - ScarfBlue
+  - ScarfGreen
+  # End DeltaV Additions
 
 - type: loadoutGroup
   id: ChiefEngineerOuterClothing
   name: loadout-group-chief-engineer-outerclothing
   minLimit: 0
   loadouts:
+  - ChiefEngineerLongcoat # DeltaV - Longcoats
   - ChiefEngineerWintercoat
+  - BomberEngineering # DeltaV
 
 - type: loadoutGroup
   id: ChiefEngineerShoes
   name: loadout-group-chief-engineer-shoes
   loadouts:
-  - BrownShoes
+  #- BrownShoes # DeltaV - Engi loadout rework
   - EngineeringWinterBoots
-  - ChiefEngineerWinterBoots # DeltaV
+  # Begin DeltaV Additions
+  - AtmosWinterBoots
+  - ChiefEngineerWinterBoots
+  - WorkBoots
+  - RedShoes
+  - OrangeShoes
+  - YellowShoes
+  - BlueShoes
+  - GreenShoes
+  # End DeltaV Additions
+
+- type: loadoutGroup
+  id: ChiefEngineerJobTrinkets
+  name: loadout-group-jobtrinkets
+  minLimit: 0
+  loadouts:
+  - LizardPlushieChiefEngineer
 
 - type: loadoutGroup
   id: TechnicalAssistantJumpsuit
@@ -862,21 +1141,21 @@
   - YellowJumpskirt
 
 - type: loadoutGroup
+  id: TechnicalAssistantJobTrinkets
+  name: loadout-group-jobtrinkets
+  minLimit: 0
+  loadouts:
+  - LizardPlushieTechnicalAssistant
+
+- type: loadoutGroup
   id: StationEngineerHead
   name: loadout-group-station-engineer-head
-  minLimit: 0 # DeltaV - Not everyone remembers their (hard)hats
+  minLimit: 0
   loadouts:
   - StationEngineerHardhatYellow
   - StationEngineerHardhatOrange
   - StationEngineerHardhatRed
   - SeniorEngineerBeret
-
-- type: loadoutGroup # DeltaV
-  id: StationEngineerNeck
-  name: loadout-group-station-engineer-neck
-  minLimit: 0
-  loadouts:
-  - ScarfOrange
 
 - type: loadoutGroup
   id: StationEngineerJumpsuit
@@ -903,6 +1182,7 @@
   loadouts:
   - StationEngineerOuterVest
   - StationEngineerWintercoat
+  - BomberEngineering # DeltaV
 
 - type: loadoutGroup
   id: StationEngineerShoes
@@ -910,6 +1190,11 @@
   loadouts:
   - WorkBoots
   - EngineeringWinterBoots
+  # Begin DeltaV Additions
+  - RedShoes
+  - OrangeShoes
+  - YellowShoes
+  # End DeltaV additions
 
 - type: loadoutGroup
   id: StationEngineerID
@@ -917,16 +1202,18 @@
   loadouts:
   - StationEngineerPDA
   - SeniorEngineerPDA
-  - ElectricianPDA # DeltaV
-  - MechanicPDA # DeltaV
+  # Begin DeltaV additions
+  - ElectricianPDA
+  - MechanicPDA
+  - NuclearScientistPDA
+  # End DeltaV additions
 
-- type: loadoutGroup # DeltaV
-  id: AtmosphericTechnicianNeck
-  name: loadout-group-atmospheric-technician-neck
+- type: loadoutGroup
+  id: StationEngineerJobTrinkets
+  name: loadout-group-jobtrinkets
   minLimit: 0
   loadouts:
-  - ScarfLightBlue
-  - ScarfOrange
+  - LizardPlushieStationEngineer
 
 - type: loadoutGroup
   id: AtmosphericTechnicianJumpsuit
@@ -935,6 +1222,7 @@
   - AtmosphericTechnicianJumpsuit
   - AtmosphericTechnicianJumpskirt
   - AtmosphericTechnicianJumpsuitCasual
+  - AtmosphericTechnicianJumpskirtCasual # DeltaV
 
 - type: loadoutGroup
   id: AtmosphericTechnicianOuterClothing
@@ -942,6 +1230,7 @@
   minLimit: 0
   loadouts:
   - AtmosphericTechnicianWintercoat
+  - BomberEngineering # DeltaV
 
 - type: loadoutGroup
   id: AtmosphericTechnicianBackpack
@@ -955,8 +1244,22 @@
   id: AtmosphericTechnicianShoes
   name: loadout-group-atmospheric-technician-shoes
   loadouts:
-  - WhiteShoes
-  - EngineeringWinterBoots
+  #- WhiteShoes # DeltaV - Engi loadout rework
+  #- EngineeringWinterBoots # DeltaV - Engi loadout rework
+  # Begin DeltaV Additions
+  - WorkBoots
+  - BlueShoes
+  - OrangeShoes
+  - RedShoes
+  - AtmosWinterBoots
+  # End DeltaV Additions
+
+- type: loadoutGroup
+  id: AtmosphericTechnicianJobTrinkets
+  name: loadout-group-jobtrinkets
+  minLimit: 0
+  loadouts:
+  - LizardPlushieAtmosphericTechnician
 
 - type: loadoutGroup
   id: SurvivalExtended
@@ -967,6 +1270,7 @@
   - EmergencyNitrogenExtended
   - EmergencyOxygenExtended
   - LoadoutSpeciesVoxNitrogen
+  - EmergencyWaterVaporExtended # DeltaV
 
 # Science
 - type: loadoutGroup
@@ -984,9 +1288,11 @@
   minLimit: 0
   loadouts:
   - ResearchDirectorMantle
+  # Begin DeltaV changes
   #- ResearchDirectorCloak
-  - MystagogueCloak # DeltaV - Replaced RD cloak with MG
-  - ScarfPurple # DeltaV
+  - MystagogueCloak # Replaced RD cloak with MG
+  - ScarfPurple
+  # End DeltaV changes
 
 - type: loadoutGroup
   id: ResearchDirectorJumpsuit
@@ -1001,8 +1307,10 @@
   minLimit: 0
   loadouts:
   - ResearchDirectorLabCoat
-  - MystaLabCoat #DeltaV
+  - MystaLabCoat # DeltaV
+  - ResearchDirectorLongcoat # DeltaV - Longcoats
   - ResearchDirectorWintercoat
+  - BomberEpistemic # DeltaV
 
 - type: loadoutGroup
   id: ResearchDirectorShoes
@@ -1013,11 +1321,18 @@
   - ResearchDirectorWinterBoots # DeltaV
 
 - type: loadoutGroup
+  id: ResearchDirectorJobTrinkets
+  name: loadout-group-jobtrinkets
+  minLimit: 0
+  loadouts:
+  - LizardPlushieResearchDirector
+
+- type: loadoutGroup
   id: ScientistHead
   name: loadout-group-scientist-head
   minLimit: 0
   loadouts:
-  - RoboticistCap
+  #- RoboticistCap # DeltaV: Moved to RoboticistHead
   - SkullBandana
   - ScientificBeret
 
@@ -1035,10 +1350,14 @@
   loadouts:
   - ScientistJumpsuit
   - ScientistJumpskirt
-  - RoboticistJumpsuit
-  - RoboticistJumpskirt
+  # Begin DeltaV changes
+  #- RoboticistJumpsuit # Moved to RoboticistJumpsuit
+  #- RoboticistJumpskirt # Moved to RoboticistJumpsuit
+  # End DeltaV changes
   - SeniorResearcherJumpsuit
   - SeniorResearcherJumpskirt
+  - FormalScientistJumpsuit # DeltaV - more jumpskirts
+  - FormalScientistJumpskirt # DeltaV - more jumpskirts
 
 - type: loadoutGroup
   id: ScientistBackpack
@@ -1054,9 +1373,10 @@
   minLimit: 0
   loadouts:
   - RegularLabCoat
+  - LongLabCoat # DeltaV
   - ScienceLabCoat
-  - RoboticistLabCoat # DeltaV
   - ScienceWintercoat
+  - BomberEpistemic # DeltaV
   - SeniorResearcherLabCoat
 
 - type: loadoutGroup
@@ -1066,7 +1386,7 @@
   loadouts:
   - LatexGloves
   - PurpleGloves
-  - RobohandsGloves
+  #- RobohandsGloves # DeltaV: Moved to RoboticistGloves
 
 - type: loadoutGroup
   id: ScientistShoes
@@ -1081,9 +1401,17 @@
   loadouts:
   - ScientistPDA
   - SeniorResearcherPDA
-  - LabTechPDA # DeltaV
-  - XenoarchPDA # DeltaV
-  - RoboticistPDA # DeltaV
+  # Begin DeltaV changes
+  - LabTechPDA
+  - XenoarchPDA
+  # End DeltaV changes
+
+- type: loadoutGroup
+  id: ScientistJobTrinkets
+  name: loadout-group-jobtrinkets
+  minLimit: 0
+  loadouts:
+  - LizardPlushieScientist
 
 - type: loadoutGroup
   id: ResearchAssistantJumpsuit
@@ -1091,6 +1419,13 @@
   loadouts:
   - WhiteJumpsuit
   - WhiteJumpskirt
+
+- type: loadoutGroup
+  id: ResearchAssistantJobTrinkets
+  name: loadout-group-jobtrinkets
+  minLimit: 0
+  loadouts:
+  - LizardPlushieResearchAssistant
 
 # Security
 - type: loadoutGroup
@@ -1100,6 +1435,7 @@
   loadouts:
   - HeadofSecurityHead
   - HeadofSecurityBeret
+  - HeadofSecurityCavalier # DeltaV
 
 - type: loadoutGroup
   id: HeadofSecurityJumpsuit
@@ -1107,16 +1443,18 @@
   loadouts:
   - HeadofSecurityJumpsuit
   - HeadofSecurityJumpskirt
-  - HeadofSecurityJumpsuitGrey # DeltaV
-  - HeadofSecurityJumpskirtGrey # DeltaV
-  - HeadofSecurityJumpsuitBlue # DeltaV
-  - HeadofSecurityJumpskirtBlue # DeltaV
   - HeadofSecurityTurtleneck
   - HeadofSecurityTurtleneckSkirt
   - HeadofSecurityFormalSuit
   - HeadofSecurityFormalSkirt
-#  - HeadofSecurityParadeSuit # DeltaV - removed for incongruence
-#  - HeadofSecurityParadeSkirt # DeltaV - removed for incongruence
+  # - HeadofSecurityParadeSuit # DeltaV - disabled for bluesec
+  # - HeadofSecurityParadeSkirt # DeltaV - disabled for bluesec
+  # Begin DeltaV changes
+  - HeadofSecurityJumpsuitGrey
+  - HeadofSecurityJumpskirtGrey
+  - HeadofSecurityJumpsuitWhite
+  - HeadofSecurityJumpskirtWhite
+  # End DeltaV changes
 
 - type: loadoutGroup
   id: HeadofSecurityNeck
@@ -1125,26 +1463,38 @@
   loadouts:
   - HeadofSecurityCloak
   - HeadofSecurityMantle
-  - ScarfRed # DeltaV
+  # Begin DeltaV changes
+  - ScarfBlue
+  - ScarfBlack
+  - HeadOfSecurityRobe
+  - HeadOfSecurityCloakBoat
+  # End DeltaV changes
 
 - type: loadoutGroup
   id: HeadofSecurityOuterClothing
   name: loadout-group-head-of-security-outerclothing
   loadouts:
-#  - HeadofSecurityCoat # DeltaV - removed for incongruence
-#  - HeadofSecurityWinterCoat # DeltaV - removed for incongruence
-  - PlateCarrier # DeltaV
-  - DuraVest # DeltaV
-  - StasecWinterCoatHoS # DeltaV
+  - HeadofSecurityCoat
+  - HeadofSecurityWinterCoat
 
 - type: loadoutGroup # DeltaV
   id: HeadofSecurityShoes
   name: loadout-group-head-of-security-shoes
   loadouts:
-#  - CombatBoots # DeltaV - removed for standardisation of equipment
-  - JackBoots # DeltaV
+  # Begin DeltaV changes
+  - CombatBoots
+  - JackBoots
+  - HeadOfSecurityWinterBoots
+  # End DeltaV changes
   - SecurityWinterBoots
-  - HeadOfSecurityWinterBoots # DeltaV
+
+- type: loadoutGroup
+  id: HeadofSecurityJobTrinkets
+  name: loadout-group-jobtrinkets
+  minLimit: 0
+  loadouts:
+  - LizardPlushieHeadofSecurity
+  - SecStar
 
 - type: loadoutGroup
   id: WardenHead
@@ -1160,22 +1510,30 @@
   loadouts:
   - WardenJumpsuit
   - WardenJumpskirt
-  - WardenJumpsuitGrey # DeltaV
-  - WardenJumpskirtGrey # DeltaV
-  - WardenJumpsuitBlue # DeltaV
-  - WardenJumpskirtBlue # DeltaV
-  - WardenTurtlesuit # DeltaV
-  - WardenTurtleskirt # DeltaV
+  # Begin DeltaV additions
+  - WardenJumpsuitGrey
+  - WardenJumpskirtGrey
+  - WardenJumpsuitWhite
+  - WardenJumpskirtWhite
+  - WardenTurtlesuit
+  - WardenTurtleskirt
+  # End DeltaV additions
 
 - type: loadoutGroup
   id: WardenOuterClothing
   name: loadout-group-warden-outerclothing
   loadouts:
-#  - WardenCoat # DeltaV - removed for incongruence
-#  - WardenArmoredWinterCoat # DeltaV - removed for incongruence
-  - PlateCarrier # DeltaV
-  - DuraVest # DeltaV
-  - StasecWinterCoatWarden # DeltaV
+  - WardenLongcoat # DeltaV - Longcoats
+  - WardenCoat
+  - WardenArmoredWinterCoat
+
+- type: loadoutGroup
+  id: WardenJobTrinkets
+  name: loadout-group-jobtrinkets
+  minLimit: 0
+  loadouts:
+  - LizardPlushieWarden
+  - SecStar
 
 - type: loadoutGroup
   id: SecurityHead
@@ -1183,7 +1541,9 @@
   minLimit: 0
   loadouts:
   - SecurityHelmet
+  - SecurityCap # DeltaV
   - SecurityBeret
+  - SecurityBeretGrey #DeltaV
 #  - SecurityHat # DeltaV - removed for incongruence
 #  - MimeHead # DeltaV - Red Beret | removed for incongruence
 
@@ -1195,12 +1555,18 @@
   - SecurityJumpskirt
   - SecurityJumpsuitGrey
   - SecurityJumpskirtGrey
-  - SecurityJumpsuitBlue # DeltaV
-  - SecurityJumpskirtBlue # DeltaV
-#  - SeniorOfficerJumpsuit # DeltaV - removed for incongruence
-#  - SeniorOfficerJumpskirt # DeltaV - removed for incongruence
-  - SeniorSecOfficerJumpsuit # DeltaV
-  - SeniorSecOfficerJumpskirt # DeltaV
+  # Begin DeltaV changes
+  - SecurityJumpsuitWhite
+  - SecurityJumpskirtWhite
+#  - SeniorOfficerJumpsuit # Removed for incongruence
+#  - SeniorOfficerJumpskirt # Removed for incongruence
+  - SeniorSecOfficerTurtlesuit
+  - SeniorSecOfficerTurtleskirt
+  - SeniorSecOfficerJumpsuit
+  - SeniorSecOfficerJumpskirt
+  - SeniorSecOfficerFormalSuit
+  - SeniorSecOfficerFormalSkirt
+  # End DeltaV changes
 
 - type: loadoutGroup
   id: SecurityBackpack
@@ -1221,18 +1587,15 @@
   id: SecurityOuterClothing
   name: loadout-group-security-outerclothing
   loadouts:
-#  - ArmorVest # DeltaV - removed for incongruence
-  - PlateCarrier # DeltaV
-  - DuraVest # DeltaV
-#  - ArmorVestSlim - removed for incongruence
-#  - SecurityOfficerWintercoat - removed for incongruence
-  - StasecSweater # DeltaV
-  - StasecWinterCoat # DeltaV
+  - ArmorVest
+  - ArmorVestSlim
+  - SecurityOfficerWintercoat
 
 - type: loadoutGroup
   id: SecurityShoes
   name: loadout-group-security-shoes
   loadouts:
+  - CombatBoots # DeltaV
   - JackBoots
   - SecurityWinterBoots
 
@@ -1243,12 +1606,13 @@
   - SecurityPDA
   - SeniorOfficerPDA
 
-- type: loadoutGroup # DeltaV
-  id: SecurityNeck
-  name: loadout-group-security-neck
+- type: loadoutGroup
+  id: SecurityJobTrinkets
+  name: loadout-group-jobtrinkets
   minLimit: 0
   loadouts:
-  - ScarfRed
+  - LizardPlushieSecurity
+  - SecStar
 
 - type: loadoutGroup
   id: DetectiveHead
@@ -1265,38 +1629,45 @@
   minLimit: 0
   loadouts:
   - DetectiveTie
-  - ScarfRed # DeltaV
+  - ScarfBlue # DeltaV - Was ScarfRed
 
 - type: loadoutGroup
   id: DetectiveJumpsuit
   name: loadout-group-detective-jumpsuit
   loadouts:
-#  - DetectiveJumpsuit # DeltaV - removed for incongruence
-#  - DetectiveJumpskirt # DeltaV - removed for incongruence
-#  - NoirJumpsuit # DeltaV - removed for incongruence
-#  - NoirJumpskirt # DeltaV - removed for incongruence
-  - ForensicSpecJumpsuit # DeltaV
-  - ForensicSpecJumpskirt # DeltaV
-  - ForensicSpecTurtlesuit # DeltaV
-  - ForensicSpecTurtleskirt # DeltaV
+  - DetectiveJumpsuit
+  - DetectiveJumpskirt
+  - NoirJumpsuit
+  - NoirJumpskirt
 
 - type: loadoutGroup
   id: DetectiveOuterClothing
   name: loadout-group-detective-outerclothing
+  loadouts:
+  - DetectiveArmorVest
+  - DetectiveCoat
+
+- type: loadoutGroup
+  id: DetectiveJobTrinkets
+  name: loadout-group-jobtrinkets
   minLimit: 0
   loadouts:
-#  - DetectiveArmorVest # DeltaV - removed for incongruence
-#  - DetectiveCoat # DeltaV - removed for incongruence
-  - StasecWinterCoatDet # DeltaV
-  - PlateCarrier # DeltaV
-  - DuraVest # DeltaV
+  - LizardPlushieDetective
+  - SecStar
 
 - type: loadoutGroup
   id: SecurityCadetJumpsuit
   name: loadout-group-security-cadet-jumpsuit
   loadouts:
-  - RedJumpsuit
-  - RedJumpskirt
+  - SecurityCadetJumpsuit # DeltaV - was RedJumpsuit
+  - SecurityCadetJumpskirt # DeltaV - was RedJumpskirt
+
+- type: loadoutGroup
+  id: SecurityCadetJobTrinkets
+  name: loadout-group-jobtrinkets
+  minLimit: 0
+  loadouts:
+  - LizardPlushieSecurityCadet
 
 - type: loadoutGroup
   id: SurvivalSecurity
@@ -1307,13 +1678,7 @@
   - EmergencyNitrogenSecurity
   - EmergencyOxygenSecurity
   - LoadoutSpeciesVoxNitrogen
-
-- type: loadoutGroup
-  id: SecurityStar
-  name: loadout-group-security-star
-  minLimit: 0
-  loadouts:
-  - SecStar
+  - EmergencyWaterVaporSecurity # DeltaV
 
 # Medical
 - type: loadoutGroup
@@ -1332,6 +1697,13 @@
   - ChiefMedicalOfficerJumpskirt
   - ChiefMedicalOfficerTurtleneckJumpsuit
   - ChiefMedicalOfficerTurtleneckJumpskirt
+  # Begin DeltaV Additions - Medical Clothing Overhaul
+  - ChiefMedicalOfficerVestJumpsuit
+  - ChiefMedicalOfficerVestJumpskirt
+  - ChiefMedicalOfficerFormalJumpsuit
+  - ChiefMedicalOfficerFormalJumpskirt
+  - ChiefMedicalOfficerSummerShirt
+  # End DeltaV Additions - Medical Clothing Overhaul
 
 - type: loadoutGroup
   id: ChiefMedicalOfficerOuterClothing
@@ -1339,7 +1711,10 @@
   minLimit: 0
   loadouts:
   - ChiefMedicalOfficerLabCoat
+  - ChiefMedicalOfficerLongcoat # DeltaV - Longcoats
+  - ChiefMedicalOfficerLongLabCoat # DeltaV - Medical Clothing Overhaul
   - ChiefMedicalOfficerWintercoat
+  - BomberMedical # DeltaV
 
 - type: loadoutGroup
   id: ChiefMedicalOfficerNeck
@@ -1348,7 +1723,10 @@
   loadouts:
   - ChiefMedicalOfficerCloak
   - ChiefMedicalOfficerMantle
+  - ChiefMedicalOfficerOverTheShoulderCoat # DeltaV - Medical Clothing Overhaul
+  - ChiefMedicalOfficerShawl # DeltaV - Medical Clothing Overhaul
   - ScarfBlue # DeltaV
+  - ScarfLightBlue #DeltaV
   - Stethoscope # DeltaV
 
 - type: loadoutGroup
@@ -1356,8 +1734,17 @@
   name: loadout-group-chief-medical-officer-shoes
   loadouts:
   - BrownShoes
+  - LeatherShoes # DeltaV
+  - LaceupShoes # DeltaV
   - MedicalWinterBoots
   - ChiefMedicalOfficerWinterBoots
+
+- type: loadoutGroup
+  id: ChiefMedicalOfficerJobTrinkets
+  name: loadout-group-jobtrinkets
+  minLimit: 0
+  loadouts:
+  - LizardPlushieChiefMedicalOfficer
 
 - type: loadoutGroup
   id: MedicalDoctorHead
@@ -1365,20 +1752,20 @@
   minLimit: 0
   loadouts:
   - MedicalBeret
+  - BlueMedicalBeret # DeltaV - Medical Clothing Overhaul
   - SeniorPhysicianBeret
   - MedicalHeadMirror
   - BlueSurgeryCap
   - GreenSurgeryCap
   - PurpleSurgeryCap
+  # Begin DeltaV Additions
+  - BlackSurgeryCap
+  - CyanSurgeryCap
+  - PinkSurgeryCap
+  - WhiteSurgeryCap
+  - RainbowSurgeryCap
+  # End DeltaV Additions
   - NurseHat
-
-- type: loadoutGroup # DeltaV
-  id: MedicalDoctorNeck
-  name: loadout-group-medical-doctor-neck
-  minLimit: 0
-  loadouts:
-  - Stethoscope
-  - ScarfBlue
 
 - type: loadoutGroup
   id: MedicalDoctorJumpsuit
@@ -1391,6 +1778,27 @@
   - MedicalBlueScrubs
   - MedicalGreenScrubs
   - MedicalPurpleScrubs
+  # Begin DeltaV Additions
+  - MedicalBlackScrubs
+  - MedicalCyanScrubs
+  - MedicalPinkScrubs
+  - MedicalWhiteScrubs
+  - MedicalRainbowScrubs
+  # End DeltaV Additions
+  # Begin DeltaV Additions - Medical Clothing Overhaul
+  - MedicalApronJumpsuit
+  - MedicalApronJumpskirt
+  - MedicalOffsetJumpsuit
+  - MedicalOffsetJumpskirt
+  - MedicalVestJumpsuit
+  - MedicalVestJumpskirt
+  - BlueTurtleneckJumpsuit
+  - BlueTurtleneckJumpskirt
+  - DarkBlueTurtleneckJumpsuit
+  - DarkBlueTurtleneckJumpskirt
+  - WhiteTurtleneckJumpsuit
+  - WhiteTurtleneckJumpskirt
+   # End DeltaV Additions - Medical Clothing Overhaul
 
 - type: loadoutGroup
   id: MedicalDoctorOuterClothing
@@ -1398,7 +1806,11 @@
   minLimit: 0
   loadouts:
   - RegularLabCoat
+  - MedicalLabCoat # DeltaV - Medical Clothing Overhaul
+  - LongLabCoat # DeltaV - Medical Clothing Overhaul
+  - MedicalLongLabCoat # DeltaV - Medical Clothing Overhaul
   - MedicalDoctorWintercoat
+  - BomberMedical # DeltaV
   - SeniorPhysicianLabCoat
 
 - type: loadoutGroup
@@ -1414,6 +1826,8 @@
   name: loadout-group-medical-doctor-shoes
   loadouts:
   - WhiteShoes
+  - LeatherShoes # DeltaV
+  - LaceupShoes # DeltaV
   - MedicalWinterBoots
 
 - type: loadoutGroup
@@ -1423,6 +1837,7 @@
   - MedicalDoctorPDA
   - SeniorPhysicianPDA
   - ClinicianPDA # DeltaV
+  - CryogenicsSpecialistPDA # DeltaV
 
 - type: loadoutGroup
   id: MedicalGloves
@@ -1440,6 +1855,13 @@
   - SterileMask
 
 - type: loadoutGroup
+  id: MedicalDoctorJobTrinkets
+  name: loadout-group-jobtrinkets
+  minLimit: 0
+  loadouts:
+  - LizardPlushieMedicalDoctor
+
+- type: loadoutGroup
   id: MedicalInternJumpsuit
   name: loadout-group-medical-intern-jumpsuit
   loadouts:
@@ -1448,12 +1870,29 @@
   - WhiteJumpskirt
 
 - type: loadoutGroup
+  id: MedicalInternJobTrinkets
+  name: loadout-group-jobtrinkets
+  minLimit: 0
+  loadouts:
+  - LizardPlushieMedicalIntern
+
+- type: loadoutGroup
   id: ChemistJumpsuit
   name: loadout-group-chemist-jumpsuit
   loadouts:
   - ChemistJumpsuit
   - ChemistJumpskirt
-  - ChemistFormalSuit # DeltaV
+  # Begin of DeltaV Additions
+  - ChemistFormalSuit
+  - ChemistFormalSkirt # more jumpskirts
+  - PharmacistJumpsuit
+  - PharmacistJumpskirt
+  - PharmacistJumpsuitFormal
+  - SeniorChemistJumpsuit # Medical Clothing Overhaul
+  - SeniorChemistJumpskirt # Medical Clothing Overhaul
+  - OrangeTurtleneckJumpsuit
+  - OrangeTurtleneckJumpskirt
+  # End of DeltaV Additions
 
 - type: loadoutGroup
   id: ChemistOuterClothing
@@ -1462,6 +1901,10 @@
   loadouts:
   - RegularLabCoat
   - ChemistLabCoat
+  - PharmacistLabCoat # DeltaV
+  - SeniorChemistLabCoat # DeltaV - Medical Clothing Overhaul
+  - LongLabCoat # DeltaV - Medical Clothing Overhaul
+  - ChemistLongLabCoat # DeltaV - Medical Clothing Overhaul
   - ChemistWintercoat
   - ChemistApron # DeltaV
 
@@ -1473,34 +1916,12 @@
   - ChemistSatchel
   - ChemistDuffel
 
-# Chemist Neck - DeltaV
 - type: loadoutGroup
-  id: ChemistNeck
-  name: loadout-group-chemist-neck
+  id: ChemistJobTrinkets
+  name: loadout-group-jobtrinkets
   minLimit: 0
   loadouts:
-  - ChemistTie # DeltaV
-  - ScarfOrange
-  - ScarfBlue
-
-# Chemist Gloves - DeltaV
-- type: loadoutGroup
-  id: ChemistGloves
-  name: loadout-group-chemist-gloves
-  minLimit: 0
-  loadouts:
-  - LatexGloves
-  - NitrileGloves
-  - ChemistGloves # DeltaV
-
-# Chemist Shoes - DeltaV
-- type: loadoutGroup
-  id: ChemistShoes
-  name: loadout-group-chemist-shoes
-  loadouts:
-  - WhiteShoes
-  - ChemistWinterBoots # DeltaV
-  - ChemistShoes # DeltaV
+  - LizardPlushieChemist
 
 - type: loadoutGroup
   id: ParamedicHead
@@ -1508,6 +1929,7 @@
   minLimit: 0
   loadouts:
   - ParamedicHead
+  - ParamedicBeret # DeltaV - Medical Clothing Overhaul
 
 - type: loadoutGroup
   id: ParamedicJumpsuit
@@ -1515,6 +1937,8 @@
   loadouts:
   - ParamedicJumpsuit
   - ParamedicJumpskirt
+  - ParamedicJumpSuitJumper # DeltaV - Medical Clothing Overhaul
+  - ParamedicJumpSkirtJumper # DeltaV - Medical Clothing Overhaul
 
 - type: loadoutGroup
   id: ParamedicOuterClothing
@@ -1522,6 +1946,7 @@
   minLimit: 0
   loadouts:
   - ParamedicWindbreaker
+  - ParamedicJacket # DeltaV - Medical Clothing Overhaul
   - ParamedicWintercoat
 
 - type: loadoutGroup
@@ -1529,8 +1954,31 @@
   name: loadout-group-paramedic-shoes
   loadouts:
   - BlueShoes
+  - WhiteShoes
+  - BlackShoes # DeltaV
+  - LeatherShoes # DeltaV
+  - LaceupShoes # DeltaV
   - MedicalWinterBoots
   - ParamedicWinterBoots # DeltaV
+
+- type: loadoutGroup
+  id: ParamedicJobTrinkets
+  name: loadout-group-jobtrinkets
+  minLimit: 0
+  loadouts:
+  - LizardPlushieParamedic
+
+- type: loadoutGroup
+  id: MedicalEyewear
+  name: loadout-group-medical-glasses
+  minLimit: 0
+  loadouts:
+  - MedicalHud
+  - MedicalEyePatchHud
+  - PrescriptionMedHud # DeltaV
+  - Glasses
+  - GlassesJamjar
+  - GlassesJensen
 
 - type: loadoutGroup
   id: SurvivalMedical
@@ -1541,6 +1989,7 @@
   - EmergencyNitrogenMedical
   - EmergencyOxygenMedical
   - LoadoutSpeciesVoxNitrogen
+  - EmergencyWaterVaporMedical # DeltaV
 
 # Wildcards
 - type: loadoutGroup
@@ -1549,6 +1998,29 @@
   loadouts:
   - ReporterJumpsuit
   - JournalistJumpsuit
+  - ClothingUniformBrosBlazer #imp
+  - ClothingUniformBrosBlazerSkirt #imp
+
+- type: loadoutGroup
+  id: ReporterHead
+  name: loadout-group-reporter-head
+  minLimit: 0
+  loadouts:
+  - ReporterPressFedora
+
+- type: loadoutGroup
+  id: ReporterOuterClothing
+  name: loadout-group-reporter-outerclothing
+  minLimit: 0
+  loadouts:
+  - ReporterPressVest
+
+- type: loadoutGroup
+  id: ReporterJobTrinkets
+  name: loadout-group-jobtrinkets
+  minLimit: 0
+  loadouts:
+  - LizardPlushieReporter
 
 - type: loadoutGroup
   id: PsychologistJumpsuit
@@ -1556,22 +2028,22 @@
   loadouts:
   - PsychologistJumpsuit
   - PsychologistJumpskirt
-
+  # Begin DeltaV Additions
+  - MedicalVestJumpsuit #DeltaV - Medical Clothing Overhaul
+  - MedicalVestJumpskirt #DeltaV - Medical Clothing Overhaul
+  - BlueTurtleneckJumpsuit
+  - BlueTurtleneckJumpskirt
+  - DarkBlueTurtleneckJumpsuit
+  - DarkBlueTurtleneckJumpskirt
+  - WhiteTurtleneckJumpsuit
+  - WhiteTurtleneckJumpskirt
+  # End DeltaV Additions
 - type: loadoutGroup
-  id: BoxerJumpsuit
-  name: loadout-group-boxer-jumpsuit
+  id: PsychologistJobTrinkets
+  name: loadout-group-jobtrinkets
+  minLimit: 0
   loadouts:
-  - BoxerShorts
-  - BoxerShortsWithTop
-
-- type: loadoutGroup
-  id: BoxerGloves
-  name: loadout-group-boxer-gloves
-  loadouts:
-  - RedBoxingGloves
-  - BlueBoxingGloves
-  - GreenBoxingGloves
-  - YellowBoxingGloves
+  - LizardPlushiePsychologist
 
 # Other
 - type: loadoutGroup
@@ -1583,6 +2055,16 @@
   - EmergencyNitrogenSyndicate
   - EmergencyOxygenSyndicate
   - LoadoutSpeciesVoxNitrogen
+  - EmergencyWaterVaporSyndicate # DeltaV
+
+- type: loadoutGroup
+  id: SurvivalMilitaryDouble
+  name: loadout-group-survival-military
+  minLimit: 2
+  hidden: true
+  loadouts:
+  - EmergencyNitrogenMilitaryDouble
+  - EmergencyOxygenMilitaryDouble
 
 - type: loadoutGroup
   id: GroupSpeciesBreathTool

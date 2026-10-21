@@ -1,10 +1,11 @@
+using Content.Shared.Damage.Components;
 using Content.Shared.Projectiles;
-using Content.Shared.Weapons.Ranged.Components;
 using Content.Shared.Standing;
-using Robust.Shared.Physics.Events;
+using Content.Shared.Weapons.Ranged.Components;
 using Robust.Shared.Containers;
+using Robust.Shared.Physics.Events;
 
-namespace Content.Shared.Damage.Components;
+namespace Content.Shared.Damage.Systems;
 
 public sealed class RequireProjectileTargetSystem : EntitySystem
 {
@@ -26,12 +27,21 @@ public sealed class RequireProjectileTargetSystem : EntitySystem
             return;
 
         var other = args.OtherEntity;
-        if (TryComp(other, out ProjectileComponent? projectile) &&
-            CompOrNull<TargetedProjectileComponent>(other)?.Target != ent)
+
+        if (TryComp(other, out TargetedProjectileComponent? targeted) && // Imp
+            (targeted.Target == null || targeted.Target == ent))
+            return;
+
+        if (TryComp(other, out ProjectileComponent? projectile))
         {
             // Prevents shooting out of while inside of crates
             var shooter = projectile.Shooter;
             if (!shooter.HasValue)
+                return;
+
+            // ProjectileGrenades delete the entity that's shooting the projectile,
+            // so it's impossible to check if the entity is in a container
+            if (TerminatingOrDeleted(shooter.Value))
                 return;
 
             if (!_container.IsEntityOrParentInContainer(shooter.Value))

@@ -1,7 +1,7 @@
 - type: entity
   name: rat king
   id: MobRatKing
-  parent: [ SimpleMobBase, MobCombat ]
+  parent: [ BaseMobRat, SimpleMobBase, MobCombat, DVNodeCrawler ] # DeltaV - node Crawling
   description: He's da rat. He make da roolz.
   components:
   - type: CombatMode
@@ -57,9 +57,6 @@
       types:
         Slash: 12
         Piercing: 8
-  - type: Body
-    prototype: Rat
-    requiredLegs: 1 # TODO: More than 1 leg
   - type: Hunger # probably should be prototyped
     thresholds:
       Overfed: 200
@@ -77,7 +74,6 @@
       Dead: 0
     baseDecayRate: 0.1
   - type: DamageStateVisuals
-    rotate: true
     states:
       Alive:
         Base: regalrat
@@ -90,7 +86,9 @@
     makeSentient: true
     name: ghost-role-information-rat-king-name
     description: ghost-role-information-rat-king-description
-    rules: ghost-role-information-freeagent-rules
+    rules: ghost-role-information-antagonist-rules
+    mindRoles:
+    - MindRoleGhostRoleSoloAntagonist
     raffle:
       settings: default
   - type: GhostTakeoverAvailable
@@ -99,13 +97,17 @@
       - CannotSuicide
       - FootstepSound
   - type: NoSlip
+  - type: Insulated
+    coefficient: 0.5 # rat king touches more wires, see?
+  - type: Rummager
   - type: RatKing
-    hungerPerArmyUse: 25
+    hungerPerArmyUse: 10 # DeltaV changed from 25 to 10. Gets multiplied with a modifier to be dynamic
     hungerPerDomainUse: 50
-  - type: Rummager # DeltaV: Make rummaging a generic component
-  - type: MobsterAccent
+  - type: ReplacementAccent # DeltaV - replace mobster accent with mouse speech replacement
+    accent: mouse
   - type: Speech
     speechVerb: SmallMob
+    speechSounds: Squeak # DeltaV addition
   - type: Butcherable
     spawned:
     - id: ClothingHeadHatFancyCrown #how did that get there?
@@ -114,8 +116,9 @@
     price: 2500 # rat wealth
   - type: RandomMetadata
     nameSegments:
-    - RegalRatNameKingdom
-    - RegalRatNameTitle
+    - NamesRegalratKingdom
+    - NamesRegalratTitle
+    nameFormat: name-format-regal-rat
   - type: GuideHelp
     guides:
     - MinorAntagonists
@@ -123,7 +126,8 @@
     attributes:
       gender: male
   - type: Sharp
-  - type: PotentialPsionic # Nyano
+  - type: NightVision #Delta-v - Added nightvision
+    color: "#808080"
 
 - type: entity
   id: MobRatKingBuff
@@ -165,16 +169,16 @@
 - type: entity
   name: rat servant
   id: MobRatServant
-  parent: [ SimpleMobBase, MobCombat ]
+  parent: [ BaseMobRat, SimpleMobBase, MobCombat, DVNodeCrawler ] # DeltaV - node crawling
   description: He's da mini rat. He don't make da roolz.
   categories: [ HideSpawnMenu ] #Must be configured to a King or the AI breaks.
   components:
-  - type: Carriable #DeltaV
+  - type: Carriable # DeltaV
     freeHandsRequired: 1
   - type: CombatMode
   - type: MovementSpeedModifier
     baseWalkSpeed : 3.5
-    baseSprintSpeed : 3.5
+    baseSprintSpeed : 4.5 #Delta-V was 3.5
   - type: InputMover
   - type: MobMover
   - type: HTN
@@ -203,7 +207,6 @@
     - map: [ "enum.DamageStateVisualLayers.BaseUnshaded"]
       state: eyes
       shader: unshaded
-
   - type: SpriteMovement
     movementLayers:
       movement:
@@ -228,10 +231,19 @@
   - type: MobThresholds
     thresholds:
       0: Alive
-      15: Critical
-      30: Dead
+      15: Dead # Delta-V nobody is reviving rats
+      #30: Dead
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTypeTrigger
+        damageType: Blunt
+        damage: 60
+      behaviors:
+      - !type:GibBehavior
+        recursive: false
   - type: Stamina
-    critThreshold: 60
+    baseCritThreshold: 60
   - type: MeleeWeapon
     soundHit:
         path: /Audio/Weapons/bladeslice.ogg
@@ -239,11 +251,8 @@
     animation: WeaponArcClaw
     damage:
       types:
-        Slash: 5
-        Piercing: 3
-  - type: Body
-    prototype: Rat
-    requiredLegs: 1 # TODO: More than 1 leg
+        Slash: 4 #Delta-V was 5
+        Piercing: 2 #Delta-V was 3
   - type: Hunger # probably should be prototyped
     thresholds:
       Overfed: 200
@@ -284,6 +293,8 @@
       - CannotSuicide
       - FootstepSound
   - type: NoSlip
+  - type: Insulated
+    coefficient: 0.2 # they don't make da roolz, but they sneaky
   - type: MobPrice
     price: 500 # rat wealth
   - type: MobsterAccent
@@ -294,51 +305,76 @@
     guides:
     - MinorAntagonists
   - type: FelinidFood # Nyanotrasen - Felinid, ability to eat rat, see Content.Server/Nyanotrasen/Abilities/Felinid/FelinidSystem.cs
-  - type: Food
+  - type: Edible
+  # Begin DeltaV - Make them edible and grabbable
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        reagents:
+        - ReagentId: UncookedAnimalProteins
+          Quantity: 3
+  - type: FlavorProfile
+    flavors:
+    - meaty
   - type: Item
-    size: Tiny # Delta V - Make them edible and pickable.
+    size: Tiny
+  # End DeltaV - Make them edible and grabbable
   - type: FireVisuals
     sprite: Mobs/Effects/onfire.rsi
     normalState: Mouse_burning
+  - type: NightVision #DeltaV - Added nightvision to animals
+    color: "#808080"
 
-- type: weightedRandomEntity
+- type: entityTable
   id: RatKingLoot
-  weights: # DeltaV: Rebalanced for Rodentia rummaging because we don't have Rat King
-    RandomSpawner100: 70 #garbage
-    FoodCheeseSlice: 15 #food
-    RandomSnacks: 10
-    RandomFoodSingle: 5
+  table: !type:GroupSelector
+    children:
+    - id: RandomSpawner100
+      weight: 66
+    - id: FoodCheeseSlice # DeltaV
+      weight: 15 # DeltaV
+    - id: RandomSnacks # DeltaV
+      weight: 10 # DeltaV
+    - id: RandomFoodSingle # DeltaV
+      weight: 5
+    #- id: IngotGold1
+    #  weight: 5
 
 - type: entity
+  parent: BaseAction
   id: ActionRatKingRaiseArmy
   name: Raise Army
   description: Spend some hunger to summon an allied rat to help defend you.
   components:
-  - type: InstantAction
+  - type: Action
     useDelay: 4
     icon:
       sprite: Interface/Actions/actions_rat_king.rsi
       state: ratKingArmy
+  - type: InstantAction
     event: !type:RatKingRaiseArmyActionEvent
 
 - type: entity
+  parent: BaseAction
   id: ActionRatKingDomain
   name: Rat King's Domain
-  description: Spend some hunger to release a cloud of ammonia into the air.
+  description: Spend some hunger to release a cloud of miasma into the air. # DeltaV
   components:
-  - type: InstantAction
+  - type: Action
     useDelay: 6
     icon:
       sprite: Interface/Actions/actions_rat_king.rsi
       state: ratKingDomain
+  - type: InstantAction
     event: !type:RatKingDomainActionEvent
 
 - type: entity
+  parent: BaseAction
   id: ActionRatKingOrderStay
   name: Stay
   description: Command your army to stand in place.
   components:
-  - type: InstantAction
+  - type: Action
     useDelay: 1
     icon:
       sprite: Interface/Actions/actions_rat_king.rsi
@@ -346,17 +382,18 @@
     iconOn:
       sprite: Interface/Actions/actions_rat_king.rsi
       state: stay
-    event:
-      !type:RatKingOrderActionEvent
-        type: Stay
     priority: 5
+  - type: InstantAction
+    event: !type:RatKingOrderActionEvent
+      type: Stay
 
 - type: entity
+  parent: BaseAction
   id: ActionRatKingOrderFollow
   name: Follow
   description: Command your army to follow you around.
   components:
-  - type: InstantAction
+  - type: Action
     useDelay: 1
     icon:
       sprite: Interface/Actions/actions_rat_king.rsi
@@ -364,17 +401,18 @@
     iconOn:
       sprite: Interface/Actions/actions_rat_king.rsi
       state: follow
-    event:
-      !type:RatKingOrderActionEvent
-      type: Follow
     priority: 6
+  - type: InstantAction
+    event: !type:RatKingOrderActionEvent
+      type: Follow
 
 - type: entity
+  parent: BaseAction
   id: ActionRatKingOrderCheeseEm
   name: Cheese 'Em
   description: Command your army to attack whoever you point at.
   components:
-  - type: InstantAction
+  - type: Action
     useDelay: 1
     icon:
       sprite: Interface/Actions/actions_rat_king.rsi
@@ -382,17 +420,18 @@
     iconOn:
       sprite: Interface/Actions/actions_rat_king.rsi
       state: attack
-    event:
-      !type:RatKingOrderActionEvent
-      type: CheeseEm
     priority: 7
+  - type: InstantAction
+    event: !type:RatKingOrderActionEvent
+      type: CheeseEm
 
 - type: entity
+  parent: BaseAction
   id: ActionRatKingOrderLoose
   name: Loose
   description: Command your army to act at their own will.
   components:
-  - type: InstantAction
+  - type: Action
     useDelay: 1
     icon:
       sprite: Interface/Actions/actions_rat_king.rsi
@@ -400,7 +439,8 @@
     iconOn:
       sprite: Interface/Actions/actions_rat_king.rsi
       state: loose
+    priority: 8
+  - type: InstantAction
     event:
       !type:RatKingOrderActionEvent
       type: Loose
-    priority: 8

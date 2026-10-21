@@ -11,20 +11,30 @@ public sealed partial class CargoBountyMenu : FancyWindow
 {
     public Action<string>? OnLabelButtonPressed;
     public Action<string>? OnSkipButtonPressed;
+    public Action<string>? OnClaimButtonPressed; // DeltaV
+    public Action<string, int>? OnStatusOptionSelected; // DeltaV
 
     public CargoBountyMenu()
     {
         RobustXamlLoader.Load(this);
+
+        MasterTabContainer.SetTabTitle(0, Loc.GetString("bounty-console-tab-available-label"));
+        MasterTabContainer.SetTabTitle(1, Loc.GetString("bounty-console-tab-history-label"));
     }
 
-    public void UpdateEntries(List<CargoBountyData> bounties, TimeSpan untilNextSkip)
+    public void UpdateEntries(List<CargoBountyData> bounties, List<CargoBountyHistoryData> history, TimeSpan untilNextSkip)
     {
+        MasterTabContainer.SetTabTitle(0, Loc.GetString("bounty-console-tab-available-label"));
+        MasterTabContainer.SetTabTitle(1, Loc.GetString("bounty-console-tab-history-label"));
+
         BountyEntriesContainer.Children.Clear();
         foreach (var b in bounties)
         {
             var entry = new BountyEntry(b, untilNextSkip);
             entry.OnLabelButtonPressed += () => OnLabelButtonPressed?.Invoke(b.Id);
             entry.OnSkipButtonPressed += () => OnSkipButtonPressed?.Invoke(b.Id);
+            entry.OnClaimButtonPressed += () => OnClaimButtonPressed?.Invoke(b.Id); // DeltaV
+            entry.BountyStatusSelector.OnItemSelected += args => OnStatusOptionSelected?.Invoke(b.Id, args.Id); // DeltaV
 
             BountyEntriesContainer.AddChild(entry);
         }
@@ -32,5 +42,21 @@ public sealed partial class CargoBountyMenu : FancyWindow
         {
             MinHeight = 10
         });
+
+        BountyHistoryContainer.Children.Clear();
+        if (history.Count == 0)
+        {
+            NoHistoryLabel.Visible = true;
+        }
+        else
+        {
+            NoHistoryLabel.Visible = false;
+
+            // Show the history in reverse, so last entry is first in the list
+            for (var i = history.Count - 1; i >= 0; i--)
+            {
+                BountyHistoryContainer.AddChild(new BountyHistoryEntry(history[i]));
+            }
+        }
     }
 }

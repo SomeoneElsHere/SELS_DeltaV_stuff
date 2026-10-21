@@ -14,6 +14,7 @@ using Content.Shared.Mech.Equipment.Components;
 using Content.Shared.Movement.Components;
 using Content.Shared.Movement.Systems;
 using Content.Shared.Popups;
+using Content.Shared.Storage.Components;
 using Content.Shared.Weapons.Melee;
 using Content.Shared.Whitelist;
 using Robust.Shared.Containers;
@@ -26,7 +27,7 @@ namespace Content.Shared.Mech.EntitySystems;
 /// <summary>
 /// Handles all of the interactions, UI handling, and items shennanigans for <see cref="MechComponent"/>
 /// </summary>
-public abstract class SharedMechSystem : EntitySystem
+public abstract partial class SharedMechSystem : EntitySystem
 {
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly INetManager _net = default!;
@@ -48,6 +49,7 @@ public abstract class SharedMechSystem : EntitySystem
         SubscribeLocalEvent<MechComponent, UserActivateInWorldEvent>(RelayInteractionEvent);
         SubscribeLocalEvent<MechComponent, ComponentStartup>(OnStartup);
         SubscribeLocalEvent<MechComponent, DestructionEventArgs>(OnDestruction);
+        SubscribeLocalEvent<MechComponent, EntityStorageIntoContainerAttemptEvent>(OnEntityStorageDump);
         SubscribeLocalEvent<MechComponent, GetAdditionalAccessEvent>(OnGetAdditionalAccess);
         SubscribeLocalEvent<MechComponent, DragDropTargetEvent>(OnDragDrop);
         SubscribeLocalEvent<MechComponent, CanDropTargetEvent>(OnCanDragDrop);
@@ -55,6 +57,14 @@ public abstract class SharedMechSystem : EntitySystem
         SubscribeLocalEvent<MechPilotComponent, GetMeleeWeaponEvent>(OnGetMeleeWeapon);
         SubscribeLocalEvent<MechPilotComponent, CanAttackFromContainerEvent>(OnCanAttackFromContainer);
         SubscribeLocalEvent<MechPilotComponent, AttackAttemptEvent>(OnAttackAttempt);
+        SubscribeLocalEvent<MechPilotComponent, EntGotRemovedFromContainerMessage>(OnEntGotRemovedFromContainer);
+
+        InitializeRelay();
+    }
+    // GoobStation: Fixes scram implants or teleports locking the pilot out of being able to move.
+    private void OnEntGotRemovedFromContainer(EntityUid uid, MechPilotComponent component, EntGotRemovedFromContainerMessage args)
+    {
+        TryEject(component.Mech, pilot: uid);
     }
 
     private void OnToggleEquipmentAction(EntityUid uid, MechComponent component, MechToggleEquipmentEvent args)
@@ -102,6 +112,12 @@ public abstract class SharedMechSystem : EntitySystem
         BreakMech(uid, component);
     }
 
+    private void OnEntityStorageDump(Entity<MechComponent> entity, ref EntityStorageIntoContainerAttemptEvent args)
+    {
+        // There's no reason we should dump into /any/ of the mech's containers.
+        args.Cancelled = true;
+    }
+
     private void OnGetAdditionalAccess(EntityUid uid, MechComponent component, ref GetAdditionalAccessEvent args)
     {
         var pilot = component.PilotSlot.ContainedEntity;
@@ -145,7 +161,7 @@ public abstract class SharedMechSystem : EntitySystem
     }
 
     /// <summary>
-    /// Destroys the mech, removing the user and ejecting all installed equipment.
+    /// Destroys the mech, removing the user and ejecting anything contained.
     /// </summary>
     /// <param name="uid"></param>
     /// <param name="component"></param>
@@ -235,14 +251,19 @@ public abstract class SharedMechSystem : EntitySystem
     /// <param name="toRemove"></param>
     /// <param name="component"></param>
     /// <param name="equipmentComponent"></param>
-    /// <param name="forced">Whether or not the removal can be cancelled</param>
+    /// <param name="forced">
+    ///     Whether or not the removal can be cancelled, and if non-mech equipment should be ejected.
+    /// </param>
     public void RemoveEquipment(EntityUid uid, EntityUid toRemove, MechComponent? component = null,
         MechEquipmentComponent? equipmentComponent = null, bool forced = false)
     {
         if (!Resolve(uid, ref component))
             return;
 
-        if (!Resolve(toRemove, ref equipmentComponent))
+        // When forced, we also want to handle the possibility that the "equipment" isn't actually equipment.
+        // This /shouldn't/ be possible thanks to OnEntityStorageDump, but there's been quite a few regressions
+        // with entities being hardlock stuck inside mechs.
+        if (!Resolve(toRemove, ref equipmentComponent) && !forced)
             return;
 
         if (!forced)
@@ -259,13 +280,16 @@ public abstract class SharedMechSystem : EntitySystem
         if (component.CurrentSelectedEquipment == toRemove)
             CycleEquipment(uid, component);
 
-        equipmentComponent.EquipmentOwner = null;
+        if (forced && equipmentComponent != null)
+            equipmentComponent.EquipmentOwner = null;
+
         _container.Remove(toRemove, component.EquipmentContainer);
         UpdateUserInterface(uid, component);
     }
 
     /// <summary>
     /// Attempts to change the amount of energy in the mech.
+    /// TODO: Power cells are predicted now, so no need to duplicate the charge level
     /// </summary>
     /// <param name="uid">The mech itself</param>
     /// <param name="delta">The change in energy</param>
@@ -371,24 +395,27 @@ public abstract class SharedMechSystem : EntitySystem
         return true;
     }
 
+
     /// <summary>
     /// Attempts to eject the current pilot from the mech
     /// </summary>
     /// <param name="uid"></param>
     /// <param name="component"></param>
+    /// <param name="pilot">The pilot to eject</param>
     /// <returns>Whether or not the pilot was ejected.</returns>
-    public bool TryEject(EntityUid uid, MechComponent? component = null)
+    public bool TryEject(EntityUid uid, MechComponent? component = null, EntityUid? pilot = null)
     {
         if (!Resolve(uid, ref component))
             return false;
 
-        if (component.PilotSlot.ContainedEntity == null)
+        if (component.PilotSlot.ContainedEntity != null)
+            pilot = component.PilotSlot.ContainedEntity.Value;
+
+        if (pilot == null)
             return false;
 
-        var pilot = component.PilotSlot.ContainedEntity.Value;
-
-        RemoveUser(uid, pilot);
-        _container.RemoveEntity(uid, pilot);
+        RemoveUser(uid, pilot.Value);
+        _container.RemoveEntity(uid, pilot.Value);
         UpdateAppearance(uid, component);
         return true;
     }

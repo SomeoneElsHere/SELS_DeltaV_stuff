@@ -38,6 +38,7 @@
     quickEquip: false
     slots:
     - back
+    - suitStorage # DeltaV addition
   - type: Tool
     qualities:
       - Prying
@@ -69,6 +70,7 @@
     quickEquip: false
     slots:
     - back
+    - suitStorage # DeltaV addition
   - type: Tool
     qualities:
-    - Prying #DeltaV - Makes so it can only pry tiles, not plates. #1844
+    - Prying # DeltaV - Makes so it can only pry tiles, not plates. #1844

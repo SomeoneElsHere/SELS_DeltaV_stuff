@@ -39,7 +39,7 @@
       
 - type: entity
   name: shadow cat
-  parent: BaseShadowMob
+  parent: [ BaseShadowMob ]
   id: MobCatShadow
   description: A lovely piece of darkness. Hope he doesn't bring you a curse.
   components:
@@ -65,3 +65,20 @@
   - type: Tag
     tags:
     - VimPilot
+  # Begin DeltaV additions - Make shadow cat a ghost role
+  - type: GhostRole
+    makeSentient: true
+    name: ghost-role-information-shadow-cat-name
+    description: ghost-role-information-shadow-cat-description
+    rules: ghost-role-information-nonantagonist-rules
+    raffle:
+      settings: short
+  - type: GhostTakeoverAvailable
+  - type: JumpAbility # Give cats a pounce :3
+    jumpThrowSpeed: 16 # Fastest it can be without hurting themselves by run+jumping into a wall
+    jumpDistance: 3
+    action: ActionCatJump
+  - type: Speech
+    speechSounds: Cat
+    speechVerb: SmallMob
+  # End DeltaV additions

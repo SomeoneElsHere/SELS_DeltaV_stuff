@@ -1,0 +1,230 @@
+- type: entity
+  parent: SpawnPointJobBase
+  id: SpawnPointGladiator
+  name: gladiator
+  components:
+  - type: SpawnPoint
+    job_id: Gladiator
+  - type: Sprite
+    layers:
+      - state: green
+      - sprite: &job-rsi-dv _DV/Markers/jobs.rsi
+        state: gladiator
+
+- type: entity
+  parent: SpawnPointJobBase
+  id: SpawnPointPrisoner
+  name: prisoner
+  components:
+  - type: SpawnPoint
+    job_id: Prisoner
+  - type: Sprite
+    layers:
+      - state: green
+      - state: prisoner
+
+- type: entity
+  parent: SpawnPointJobBase
+  id: SpawnPointPrisonGuard
+  name: prison guard
+  components:
+  - type: SpawnPoint
+    job_id: PrisonGuard
+  - type: Sprite
+    layers:
+      - state: green
+      - sprite: *job-rsi-dv
+        state: prisonguard
+
+- type: entity
+  parent: SpawnPointJobBase
+  id: SpawnPointMartialArtist
+  name: martial artist
+  components:
+  - type: SpawnPoint
+    job_id: MartialArtist
+  - type: Sprite
+    layers:
+      - state: green
+      - sprite: *job-rsi-dv
+        state: martialartist
+
+- type: entity
+  parent: SpawnPointJobBase
+  id: SpawnPointForensicMantis
+  name: psionic mantis # DeltaV - Rename Forensic Mantis to Psionic Mantis
+  components:
+  - type: SpawnPoint
+    job_id: ForensicMantis
+  - type: Sprite
+    layers:
+      - state: green
+      - sprite: *job-rsi-dv
+        state: psionicmantis
+
+
+- type: entity
+  parent: SpawnPointJobBase
+  id: SpawnPointChiefJustice
+  name: chiefjustice
+  components:
+  - type: SpawnPoint
+    job_id: ChiefJustice
+  - type: Sprite
+    layers:
+    - state: green
+    - sprite: *job-rsi-dv
+      state: chiefjustice
+
+- type: entity
+  parent: SpawnPointJobBase
+  id: SpawnPointClerk # TODO - Remove for Justice Rework
+  name: clerk
+  components:
+  - type: SpawnPoint
+    job_id: Clerk
+  - type: Sprite
+    layers:
+    - state: green
+    - sprite: *job-rsi-dv
+      state: clerk
+
+- type: entity
+  parent: SpawnPointJobBase
+  id: SpawnPointProsecutor
+  name: prosecutor
+  components:
+  - type: SpawnPoint
+    job_id: Prosecutor
+  - type: Sprite
+    layers:
+    - state: green
+    - sprite: *job-rsi-dv
+      state: prosecutor
+
+- type: entity
+  parent: SpawnPointJobBase
+  id: SpawnPointAttorney
+  name: attorney
+  components:
+  - type: SpawnPoint
+    job_id: Attorney
+  - type: Sprite
+    layers:
+    - state: green
+    - state: lawyer
+
+- type: entity
+  parent: SpawnPointJobBase
+  id: SpawnPointJusticeWarden
+  name: warden
+  suffix: Justice Warden
+  components:
+  - type: SpawnPoint
+    job_id: JusticeWarden
+  - type: Sprite
+    layers:
+    - state: green
+    - sprite: *job-rsi-dv
+      state: prisonguard
+
+- type: entity
+  parent: SpawnPointJobBase
+  id: SpawnPointMarshal
+  name: marshal
+  components:
+  - type: SpawnPoint
+    job_id: Clerk
+  - type: Sprite
+    layers:
+    - state: green
+    - sprite: *job-rsi-dv
+      state: clerk
+
+- type: entity
+  parent: SpawnPointJobBase
+  id: SpawnPointArmorer
+  name: armorer
+  components:
+  - type: SpawnPoint
+    job_id: Armorer
+  - type: Sprite
+    layers:
+    - state: green
+    - state: warden
+
+- type: entity
+  parent: SpawnPointJobBase
+  id: SpawnPointCourier
+  name: courier
+  components:
+  - type: SpawnPoint
+    job_id: Courier
+  - type: Sprite
+    layers:
+    - state: green
+    - sprite: *job-rsi-dv
+      state: courier
+
+- type: entity
+  parent: SpawnPointJobBase
+  id: SpawnPointRoboticist
+  name: roboticist
+  components:
+  - type: SpawnPoint
+    job_id: Roboticist
+  - type: Sprite
+    layers:
+    - state: green
+    - sprite: *job-rsi-dv
+      state: roboticist
+
+- type: entity
+  parent: SpawnPointJobBase
+  id: SpawnPointCargoAssistant
+  name: cargo assistant
+  components:
+  - type: SpawnPoint
+    job_id: CargoAssistant
+  - type: Sprite
+    layers:
+    - state: green
+    - sprite: *job-rsi-dv
+      state: cargoassistant
+
+- type: entity
+  parent: SpawnPointJobBase
+  id: SpawnPointSurgeon
+  name: surgeon
+  components:
+  - type: SpawnPoint
+    job_id: Surgeon
+  - type: Sprite
+    layers:
+    - state: green
+    - sprite: *job-rsi-dv
+      state: surgeon
+
+- type: entity
+  parent: SpawnPointJobBase
+  id: SpawnPointBoxer
+  name: boxer
+  components:
+  - type: SpawnPoint
+    job_id: Boxer
+  - type: Sprite
+    layers:
+      - state: green
+      - state: boxer
+
+- type: entity
+  parent: SpawnPointJobBase
+  id: SpawnPointZookeeper
+  name: zookeeper
+  components:
+  - type: SpawnPoint
+    job_id: Zookeeper
+  - type: Sprite
+    layers:
+      - state: green
+      - state: zookeeper

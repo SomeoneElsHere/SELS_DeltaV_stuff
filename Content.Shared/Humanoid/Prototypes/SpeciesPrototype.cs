@@ -1,9 +1,13 @@
+using System.Numerics; // DeltaV
+using Content.Shared.Body;
+using Content.Shared.Dataset;
+using Content.Shared.Humanoid.Markings;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
 
 namespace Content.Shared.Humanoid.Prototypes;
 
-[Prototype("species")]
+[Prototype]
 public sealed partial class SpeciesPrototype : IPrototype
 {
     /// <summary>
@@ -32,18 +36,6 @@ public sealed partial class SpeciesPrototype : IPrototype
     [DataField(required: true)]
     public bool RoundStart { get; private set; } = false;
 
-    // The below two are to avoid fetching information about the species from the entity
-    // prototype.
-
-    // This one here is a utility field, and is meant to *avoid* having to duplicate
-    // the massive SpriteComponent found in every species.
-    // Species implementors can just override SpriteComponent if they want a custom
-    // sprite layout, and leave this null. Keep in mind that this will disable
-    // sprite accessories.
-
-    [DataField("sprites")]
-    public string SpriteSet { get; private set; } = default!;
-
     /// <summary>
     ///     Default skin tone for this species. This applies for non-human skin tones.
     /// </summary>
@@ -56,12 +48,6 @@ public sealed partial class SpeciesPrototype : IPrototype
     /// </summary>
     [DataField]
     public int DefaultHumanSkinTone { get; private set; } = 20;
-
-    /// <summary>
-    ///     The limit of body markings that you can place on this species.
-    /// </summary>
-    [DataField("markingLimits")]
-    public string MarkingPoints { get; private set; } = default!;
 
     /// <summary>
     ///     Humanoid species variant used by this entity.
@@ -79,16 +65,16 @@ public sealed partial class SpeciesPrototype : IPrototype
     /// Method of skin coloration used by the species.
     /// </summary>
     [DataField(required: true)]
-    public HumanoidSkinColor SkinColoration { get; private set; }
+    public ProtoId<SkinColorationPrototype> SkinColoration { get; private set; }
 
     [DataField]
-    public string MaleFirstNames { get; private set; } = "names_first_male";
+    public ProtoId<LocalizedDatasetPrototype> MaleFirstNames { get; private set; } = "NamesFirstMale";
 
     [DataField]
-    public string FemaleFirstNames { get; private set; } = "names_first_female";
+    public ProtoId<LocalizedDatasetPrototype> FemaleFirstNames { get; private set; } = "NamesFirstFemale";
 
     [DataField]
-    public string LastNames { get; private set; } = "names_last";
+    public ProtoId<LocalizedDatasetPrototype> LastNames { get; private set; } = "NamesLast";
 
     [DataField]
     public SpeciesNaming Naming { get; private set; } = SpeciesNaming.FirstLast;
@@ -106,13 +92,13 @@ public sealed partial class SpeciesPrototype : IPrototype
     ///     Characters younger than this appear young.
     /// </summary>
     [DataField]
-    public int YoungAge = 30;
+    public int YoungAge = 40; // DeltaV - up from 30
 
     /// <summary>
     ///     Characters older than this appear old. Characters in between young and old age appear middle aged.
     /// </summary>
     [DataField]
-    public int OldAge = 60;
+    public int OldAge = 70; // DeltaV - up from 60
 
     /// <summary>
     ///     Characters cannot be older than this. Only used for restrictions...
@@ -120,6 +106,52 @@ public sealed partial class SpeciesPrototype : IPrototype
     /// </summary>
     [DataField]
     public int MaxAge = 120;
+
+    // Begin DV - CD Character Records shouldn't nuke species heights
+    /// <summary>
+    /// The base height scale for this species
+    /// </summary>
+    [DataField("baseScale")]
+    public Vector2 BaseScale = new(1f, 1f);
+    // End DV - CD Character Records shouldn't nuke species heights
+
+    // Begin CD - Character Records
+    /// <summary>
+    /// The minimum height for this species
+    /// </summary>
+    [DataField("minHeight")]
+    public float MinHeight = 0.8f; // DeltaV
+
+    /// <summary>
+    /// The maximum height for this species
+    /// </summary>
+    [DataField("maxHeight")]
+    public float MaxHeight = 1.2f; // DeltaV
+
+    /// <summary>
+    /// The default height for this species
+    /// </summary>
+    [DataField("defaultHeight")]
+    public float DefaultHeight = 1f;
+
+    /// <summary>
+    /// The default width for this species
+    /// </summary>
+    [DataField("defaultWidth")]
+    public float DefaultWidth = 1f;
+
+    /// <summary>
+    /// Whether to scale horizontally or not
+    /// </summary>
+    [DataField("scaleWidth")]
+    public bool ScaleWidth = true;
+
+    /// <summary>
+    /// Whether to scale vertically or not
+    /// </summary>
+    [DataField("scaleHeight")]
+    public bool ScaleHeight = true;
+    // End CD - Character Records
 }
 
 public enum SpeciesNaming : byte
